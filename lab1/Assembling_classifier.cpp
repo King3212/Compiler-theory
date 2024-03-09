@@ -7,25 +7,15 @@ enum WORD{
     IDENTIFIER, KEYWORD, NUMBER, STRING, NOTE, DELIMITER, OPERATOR, SPECIA_SYMBLE
 };
 
-std::vector<std::pair<std::string,WORD>> workLine(std::string oneline);
+std::vector<std::pair<std::string,WORD>> _Line(std::string oneline);
 
-std::vector<std::pair<std::string,WORD>> Assembling_classifiers(std::vector<std::string> text){
+std::vector<std::pair<std::string,WORD>> Assembling_classifiers(std::string file_name){
     std::vector<std::pair<std::string,WORD>> result = std::vector<std::pair<std::string,WORD>>();
-
-    for (std::string oneline : text)
-    {
-        for (std::pair<std::string,WORD> word : workLine(oneline))
-        {
-            result.emplace_back(word);
-        }
-        
-    }
-    return result;
     
 }
 
 
-/**
+/**_String 寻找该行里的非转义字符串结束符
  * 参数1：字符串及后续的内容
  * 参数2：是否为长字符串
  * 
@@ -42,7 +32,7 @@ std::vector<std::pair<std::string,WORD>> Assembling_classifiers(std::vector<std:
  * 返回：7,6
  * 
 */
-int workString(std::string oneline, bool &longString){
+int _String(std::string oneline, bool &longString){
     int len = 0;
     for (int j = 0; j < oneline.size(); j++)
     {
@@ -69,7 +59,7 @@ int workString(std::string oneline, bool &longString){
 /**
  * 
 */
-std::vector<std::pair<std::string,WORD>> workLine(std::string oneline){
+std::vector<std::pair<std::string,WORD>> _Line(std::string oneline){
     static bool longComment;
     static bool longString;
     std::vector<std::pair<std::string,WORD>> result;
@@ -84,12 +74,12 @@ std::vector<std::pair<std::string,WORD>> workLine(std::string oneline){
         //string
         if (longString || oneline[i] == '"')
         {
-            int len = workString(oneline.substr(i+1),longString);
+            int len = _String(oneline.substr(i+1),longString);
 
             if (longString)
             {
+                len++;
                 result[result.size()-1].first.append(oneline.substr(i,len));
-                break;
             }
             else{
                 oneResult = std::pair<std::string,WORD>();
@@ -99,11 +89,19 @@ std::vector<std::pair<std::string,WORD>> workLine(std::string oneline){
                 
             }
             i += len;
+            continue;
         }
-        // else if()
+        //comment
+        else if(longComment || oneline[i] == '/'){
+            if (i == oneline.size())
+            {
+                
+            }
+            
+        }
         
         
         
     }
-    
+    return result;
 }

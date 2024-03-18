@@ -35,6 +35,10 @@
         "format": "cpp",
         "span": "cpp",
         "regex": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "CGEN.C": "cpp",
+        "ostream": "cpp",
+        "chrono": "cpp",
+        "functional": "cpp"
     }
 }

@@ -1,11 +1,8 @@
 #include"../include/scanner.hh"
-#include<QString>
+#include<fstream>
+#include<assert.h>
 #pragma once
 
 vector<string> readFile(string filename);
 
 string getToken(TOKEN token);
-
-QString intoQstring(vector <pair<string,TOKEN>> result);
-
-string getError(ERROR error);

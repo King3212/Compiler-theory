@@ -1,6 +1,4 @@
 #include"../include/scanner.hh"
-#include<string>
-#include<algorithm>
 
 /**
  * 寻找字符串结尾
@@ -17,12 +15,12 @@ int findStringEnd(string line){
             }else{
                 return i;
             }
-
+            
         }
-
+        
     }
     return -1;
-
+    
 }
 
 int fineCommentEnd(string line){
@@ -35,7 +33,7 @@ int fineCommentEnd(string line){
                 {
                     return i;
                 }
-
+                
             }
         }
     }
@@ -54,7 +52,7 @@ int word(string line, vector<pair<string,TOKEN>> &result){
         }else{
             break;
         }
-
+        
     }
     result.emplace_back(pair<string,TOKEN>(_word_,IDENTIFIER));
     return pos;
@@ -72,7 +70,7 @@ int isKeyword(string word){
         }
     }
     return 0;
-
+    
 }
 
 int isDelimiter(string x){
@@ -83,7 +81,7 @@ int isDelimiter(string x){
         {
             return 1;
         }
-
+        
     }
     return 0;
 }
@@ -133,7 +131,7 @@ int number(string line, vector<pair<string,TOKEN>> &result){
             {
                 return -4;//e后面必须为整数
             }
-
+            
             hasDot = true;
         }else if('a'<=line[pos] && 'f' >= line[pos] && isHex){
             //do nothing
@@ -166,14 +164,14 @@ int number(string line, vector<pair<string,TOKEN>> &result){
         result.emplace_back(pair<string,TOKEN>(num,INTERGER));
     }
     return pos;
-
+    
 }
 
 
 
 ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代码
-{
-    static bool longComment = false;
+{   
+    static bool longComment = false; 
     static bool longString = false;
     int CommentStartPos = 0;
     int StringStartPos = 0;
@@ -188,8 +186,8 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
                 result.emplace_back(pair<string,TOKEN>("",STRING));
                 pos++;
             }
-
-
+            
+            
             while (pos < line.size())
             {
                 if (line[pos] == '"'&& (pos == 0 || line[pos] != '\\'))
@@ -206,7 +204,7 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
                 result[result.size()-1].first.append(line.substr(StringStartPos,pos-StringStartPos-1));
                 longString = true;
             }
-
+            
         }else if (longComment)
         {
             while (pos < line.size()-1)
@@ -241,7 +239,7 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
             {
                 result[result.size()-1].second = KEYWORD;
             }
-
+            
         }else if(isDelimiter(string(1,line[pos])))//是分隔符
         {
             result.emplace_back(pair<string,TOKEN>(string(1,line[pos]),DELIMITER));
@@ -256,7 +254,7 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
                     pos++;
                 }
                 result.push_back(pair<string,TOKEN>(line.substr(start,pos+1-start),SPECIAL_SYMBOL));
-
+                
             }else if (line[pos] == '"')
             {
                 while (line[pos] != '"' && pos < line.size())
@@ -278,24 +276,26 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
                 pos += 2;
                 continue;
             }
-        }else if(isOperator(line[pos]))//是运算符号
+        }
+        
+        else if(isOperator(line[pos]))//是运算符号
         {
             pos += Operator(line.substr(pos),result);
-        }else if(line[pos] == '\'')//是字符
-        {
+        }else if(line[pos] == '\''){
             if (line[pos+1] == '\\' && line[pos+3] == '\'')
             {
-                result.emplace_back(pair<string,TOKEN>(line.substr(pos,4),CHAR));
+                result.emplace_back(pair<string,TOKEN>(line.substr(pos,3),CHAR));
                 pos += 4;
             }else if(line[pos+1] != '\\' && line[pos+2] == '\''){
-                result.emplace_back(pair<string,TOKEN>(line.substr(pos,3),CHAR));
+                result.emplace_back(pair<string,TOKEN>(line.substr(pos,4),CHAR));
                 pos += 3;
             }
-
+            
         }else if(line[pos] == '\\' && pos == line.size()-1){
             pos++;
             continue;
-        }else{
+        }
+        else{
             return Error_bad_char;
         }
     }

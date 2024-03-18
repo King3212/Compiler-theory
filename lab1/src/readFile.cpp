@@ -1,4 +1,4 @@
-#include"../include/readFile.hh"
+﻿#include"../include/readFile.hh"
 
 vector<string> readFile(string filename){
     vector<string> lines;

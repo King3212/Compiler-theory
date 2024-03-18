@@ -1,5 +1,7 @@
+﻿#include<iostream>
 #include<vector>
 #include<string>
+#include<algorithm>
 #pragma once
 using namespace std;
 

@@ -1,0 +1,3 @@
+C:/Users/King3212/Desktop/Lab1/build/CMakeFiles/GuiLite.dir
+C:/Users/King3212/Desktop/Lab1/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/King3212/Desktop/Lab1/build/CMakeFiles/ZERO_CHECK.dir

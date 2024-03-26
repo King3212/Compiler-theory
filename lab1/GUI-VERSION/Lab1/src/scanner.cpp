@@ -191,7 +191,27 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
 
     while (pos < line.size())
     {
-        if(longString || line[pos] == '"'){
+        if(!result.empty() && result[result.size()-1].first == "include" && (line[pos] == '"'|| line[pos] == '<'))//是头文件（特殊符号）
+        {
+            int start = pos;
+            if (line[pos] == '<')
+            {
+                while (line[pos] != '>' && pos < line.size())
+                {
+                    pos++;
+                }
+                result.push_back(pair<string,TOKEN>(line.substr(start,pos+1-start),SPECIAL_SYMBOL));
+
+            }else if (line[pos] == '"')
+            {
+                while (line[pos] != '"' && pos < line.size())
+                {
+                    pos++;
+                }
+                result.push_back(pair<string,TOKEN>(line.substr(start,pos-start),SPECIAL_SYMBOL));
+            }
+            pos++;
+        }else if(longString || line[pos] == '"'){
             if (!longString)
             {
                 StringStartPos = pos;
@@ -259,26 +279,6 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
         }else if(isDelimiter(string(1,line[pos])))//是分隔符
         {
             result.emplace_back(pair<string,TOKEN>(string(1,line[pos]),DELIMITER));
-            pos++;
-        }else if(!result.empty() && result[result.size()-1].first == "include" && (line[pos] == '"'|| line[pos] == '<'))//是头文件（特殊符号）
-        {
-            int start = pos;
-            if (line[pos] == '<')
-            {
-                while (line[pos] != '>' && pos < line.size())
-                {
-                    pos++;
-                }
-                result.push_back(pair<string,TOKEN>(line.substr(start,pos+1-start),SPECIAL_SYMBOL));
-
-            }else if (line[pos] == '"')
-            {
-                while (line[pos] != '"' && pos < line.size())
-                {
-                    pos++;
-                }
-                result.push_back(pair<string,TOKEN>(line.substr(start,pos-start),SPECIAL_SYMBOL));
-            }
             pos++;
         }else if(line[pos] == '/' && pos+1 < line.size())//注释
         {

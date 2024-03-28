@@ -3,6 +3,47 @@
 #include<algorithm>
 #pragma execution_character_set("utf-8")
 
+/**
+ * 寻找字符串结尾
+*/
+int findStringEnd(string line){
+
+    for (int i = 0; i < line.size(); i++)
+    {
+        if (line[i] == '"')
+        {
+            if (line[i-1] == '\\')
+            {
+                continue;
+            }else{
+                return i;
+            }
+
+        }
+
+    }
+    return -1;
+
+}
+
+int fineCommentEnd(string line){
+    for (int i = 0; i < line.size(); i++)
+    {
+        if(line[i] == '/'){
+            if (i-1 >= 0&&line[i-1] == '*')
+            {
+                if (i-2 < 0 && line[i-2] != '\\')
+                {
+                    return i;
+                }
+
+            }
+        }
+    }
+    return -1;
+
+}
+
 int word(string line, vector<pair<string,TOKEN>> &result){
     string _word_ = line.substr(0,1);
     int pos = 1;
@@ -71,7 +112,6 @@ int Operator(string line, vector<pair<string,TOKEN>> &result){
 int number(string line, vector<pair<string,TOKEN>> &result){
     bool isHex = false;
     bool hasE = false;
-    bool isOct = false;
     bool hasDot = false;
     int pos = 0;
     string num = "";
@@ -87,20 +127,12 @@ int number(string line, vector<pair<string,TOKEN>> &result){
             }else hasE = true;
         }else if(line[pos] == '.')
         {
-            if (pos == 1 && line[pos] == 0)
-            {
-                isOct = true;
-            }else if (isOct)
-            {
-                return -6;//八进制不能带小数点
-            }
-            else if (hasDot)
+            if (hasDot)
             {
                 return -3;//.出现了两次
-            }else if (hasE){
+            }if (hasE)
+            {
                 return -4;//e后面必须为整数
-            }else if(isHex){
-                return -5;//十六进制不能带小数点
             }
 
             hasDot = true;
@@ -118,13 +150,11 @@ int number(string line, vector<pair<string,TOKEN>> &result){
         {
             break;
         }
-        else if(line[pos] >= '0' && line[pos] <= '7'){
+        else if(isdigit(line[pos])){
             //do nothing
-        }else if(isdigit(line[pos]) && isOct){
-            return -8;//八进制不能出现8和9
         }
         else{
-            return -1;//其他错误
+            return -1;//同上
         }
 
         num.append(string(1,line[pos]));
@@ -161,7 +191,28 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
 
     while (pos < line.size())
     {
-        if(longString || line[pos] == '"'){
+        if(!result.empty() && result[result.size()-1].first == "include" && (line[pos] == '"'|| line[pos] == '<'))//是头文件（特殊符号）
+        {
+            int start = pos;
+            if (line[pos] == '<')
+            {
+                while (line[pos] != '>' && pos < line.size())
+                {
+                    pos++;
+                }
+                result.push_back(pair<string,TOKEN>(line.substr(start,pos+1-start),SPECIAL_SYMBOL));
+
+            }else if (line[pos] == '"')
+            {
+                pos++;
+                while (line[pos] != '"' && pos < line.size())
+                {
+                    pos++;
+                }
+                result.push_back(pair<string,TOKEN>(line.substr(start,pos-start),SPECIAL_SYMBOL));
+            }
+            pos++;
+        }else if(longString || line[pos] == '"'){
             if (!longString)
             {
                 StringStartPos = pos;
@@ -230,26 +281,6 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
         {
             result.emplace_back(pair<string,TOKEN>(string(1,line[pos]),DELIMITER));
             pos++;
-        }else if(!result.empty() && result[result.size()-1].first == "include" && (line[pos] == '"'|| line[pos] == '<'))//是头文件（特殊符号）
-        {
-            int start = pos;
-            if (line[pos] == '<')
-            {
-                while (line[pos] != '>' && pos < line.size())
-                {
-                    pos++;
-                }
-                result.push_back(pair<string,TOKEN>(line.substr(start,pos+1-start),SPECIAL_SYMBOL));
-
-            }else if (line[pos] == '"')
-            {
-                while (line[pos] != '"' && pos < line.size())
-                {
-                    pos++;
-                }
-                result.push_back(pair<string,TOKEN>(line.substr(start,pos-start),SPECIAL_SYMBOL));
-            }
-            pos++;
         }else if(line[pos] == '/' && pos+1 < line.size())//注释
         {
             if (line[pos+1] == '/')
@@ -286,8 +317,7 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
                 return Error_char;
             }
             
-        }
-        else
+        }else//错误退出
         {
             return Error_bad_char;
         }

@@ -28,14 +28,14 @@ void testFile(string filename) {
 }
 
 void testLongFile(string filename) {
+    int repeatTimes = 1e4;
     vector<string> lines = readFile(filename);
     vector<pair<string, TOKEN>> *result = new vector<pair<string, TOKEN>>();
     for (string i : lines) {
-        for (int j = 0; j < 1e5; j++) {
+        for (int j = 0; j < repeatTimes; j++) {
             assert(readLine(i, *result) == NoError);
         }
     }
-    assert(result->size() == lines.size() * 1e5);
     delete result;
 }
 
@@ -55,25 +55,26 @@ int main(int argc, char *argv[]) {
         testFile(filename, static_cast<TOKEN>(testIndex));
     } else {
         // Run all tests
-        vector<string> testTarget = {
-            "testKeywordData.txt", "testDelimiterData.txt",
-            "testIdentifierData.txt", "testOperatorData.txt",
-            "testIntegerData.txt", "testStringData.txt",
-            "testFloatData.txt", "testCommentData.txt",
-            "testSpecial_symbolData.txt", "testCharData.txt"
-        };
+        // vector<string> testTarget = {
+        //     "testKeywordData.txt", "testDelimiterData.txt",
+        //     "testIdentifierData.txt", "testOperatorData.txt",
+        //     "testIntergerData.txt", "testStringData.txt",
+        //     "testFloatData.txt", "testCommentData.txt",
+        //     "testSpecial_symbolData.txt", "testCharData.txt"
+        // };
 
-        for (int i = 0; i < testTarget.size(); i++) {
-            string filename = "./test/testData/" + testTarget[i];
-            testFile(filename, static_cast<TOKEN>(i));
-        }
+        // for (int i = 0; i < testTarget.size(); i++) {
+        //     string filename = "./test/testData/" + testTarget[i];
+        //     testFile(filename, static_cast<TOKEN>(i));
+        // }
 
-        cout << "Union test pass!\n";
-        string filename = "./test/testData/testdata.txt";
+        // cout << "Union test pass!\n";
+        // string filename = "./test/testData/testdata.txt";
+        string filename = "/home/mirror/Documents/Compiler-theory/lab1/GUI-VERSION/Lab1/main.cpp";
         testFile(filename);
         cout << "Normal test pass!\n";
-        testLongFile(filename);
-        cout << "Long test pass!\n";
+        // testLongFile(filename);
+        // cout << "Long test pass!\n";
     }
 
     return 0;

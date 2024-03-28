@@ -11,6 +11,7 @@ vector<string> readFile(string filename,QWidget *widget){
 
     if(!file.is_open()){
         QMessageBox::critical(widget, "错误", "无法打开文件！\n");
+        return lines;
     }
 
     string line;

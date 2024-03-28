@@ -204,6 +204,7 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
 
             }else if (line[pos] == '"')
             {
+                pos++;
                 while (line[pos] != '"' && pos < line.size())
                 {
                     pos++;

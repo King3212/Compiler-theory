@@ -8,7 +8,6 @@
 #include <QVBoxLayout>
 #include "include/readFile.h"
 #include "include/scanner.h"
-
 #pragma execution_character_set("utf-8")
 
 class MyWidget : public QWidget

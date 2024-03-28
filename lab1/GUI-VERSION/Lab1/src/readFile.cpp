@@ -1,13 +1,17 @@
 ﻿#include"../include/readFile.h"
 #include<fstream>
+#include<QMessageBox>
+#include<QWidget>
 #include<assert.h>
 #pragma execution_character_set("utf-8")
 
-vector<string> readFile(string filename){
+vector<string> readFile(string filename,QWidget *widget){
     vector<string> lines;
     ifstream file(filename);
 
-    assert(file.is_open());
+    if(!file.is_open()){
+        QMessageBox::critical(widget, "错误", "无法打开文件！\n");
+    }
 
     string line;
     while (getline(file, line)) {
@@ -22,7 +26,7 @@ vector<string> readFile(string filename){
 
 QString intoQstring(vector <pair<string,TOKEN>> result){
     QString Qresult = "";
-    static const QString tokens[10] = {"关键字","分界符号", "标识符", "运算符号", "整数", "字符串", "浮点数", "注释", "特殊符号"};
+    static const QString tokens[10] = {"关键字","分界符号", "标识符", "运算符号", "整数", "字符串", "浮点数", "注释", "特殊符号","字符"};
     for(pair<string,TOKEN> i : result){
         Qresult.append(QString::fromStdString(i.first + "\t"));
         Qresult.append(tokens[i.second]);

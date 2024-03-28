@@ -302,7 +302,21 @@ ERROR readLine(string line, vector<pair<string,TOKEN>> &result)//读取一行代
         }else if(line[pos] == '~'){
             result.emplace_back(pair<string,TOKEN>(line.substr(pos,1),SPECIAL_SYMBOL));
             pos++;
-        }else
+        }else if (line[pos] == '\'' && (pos-1 < 0 || line[pos-1] != '\\'))//是字符
+        {
+            if(line[pos+1] == '\\' && line[pos+3] == '\''){
+                result.emplace_back(pair<string,TOKEN>(line.substr(pos,4),CHAR));
+                pos += 4;
+            }
+            else if (line[pos+2] == '\'')
+            {
+                result.emplace_back(pair<string,TOKEN>(line.substr(pos,3),CHAR));
+                pos += 3;
+            }else{
+                return Error_char;
+            }
+            
+        }else//错误退出
         {
             return Error_bad_char;
         }

@@ -5,83 +5,76 @@
 #include "../include/scanner.h"
 using namespace std;
 
-void testFile(string filename,TOKEN test){
+void testFile(string filename, TOKEN test) {
     vector<string> lines = readFile(filename);
-    vector<pair<string,TOKEN>> result;
-    for(string i : lines){
-        assert(readLine(i,result) == NoError);
+    vector<pair<string, TOKEN>> result;
+    for (string i : lines) {
+        assert(readLine(i, result) == NoError);
     }
-    for (auto i : result)
-    {
+    for (auto i : result) {
         assert(i.second == test);
     }
-    
 }
-void testFile(string filename){
+
+void testFile(string filename) {
     vector<string> lines = readFile(filename);
-    vector<pair<string,TOKEN>> result;
-    for(string i : lines){
-        assert(readLine(i,result) == NoError);
+    vector<pair<string, TOKEN>> result;
+    for (string i : lines) {
+        assert(readLine(i, result) == NoError);
     }
-    for (auto i : result)
-    {
+    for (auto i : result) {
         cout << i.first << " " << getToken(i.second) << endl;
     }
-    
 }
 
-
-void testLongFile(string filename){
+void testLongFile(string filename) {
     vector<string> lines = readFile(filename);
-    vector<pair<string,TOKEN>> *result = new vector<pair<string,TOKEN>>();
-    for(string i : lines){
-        for (int j = 0; j < 1e5; j++)
-        {
-            assert(readLine(i,*result) == NoError);
+    vector<pair<string, TOKEN>> *result = new vector<pair<string, TOKEN>>();
+    for (string i : lines) {
+        for (int j = 0; j < 1e5; j++) {
+            assert(readLine(i, *result) == NoError);
         }
-
     }
-    assert(result->size() == lines.size()*1e5);
+    assert(result->size() == lines.size() * 1e5);
     delete result;
 }
 
-
-int charToInt(char x){
+int charToInt(char x) {
     assert(isdigit(x));
-    return x-'0';
+    return x - '0';
 }
-int main(int argc, char *argv[]){
-    string filename;
-    assert(argc == 0 || argc == 1);
-    vector<string> testTarget = {
-        "testKeywordData.txt","testDelimiterData.txt",
-        "testIdentifierData.txt","testOperatorData.txt",
-        "testIntergerData.txt","testStringData.txt",
-        "testFloatData.txt","testCommentData.txt",
-        "testSpecial_symbolData.txt","testCharData.txt"
-    };
 
+int main(int argc, char *argv[]) {
+    assert(argc <= 2);
 
-    
+    if (argc == 2) {
+        int testIndex = charToInt(argv[1][0]);
+        assert(testIndex >= 0 && testIndex < 10); // Assuming there are 10 different tests
 
+        string filename = "./test/testData/test" + to_string(testIndex) + ".txt";
+        testFile(filename, static_cast<TOKEN>(testIndex));
+    } else {
+        // Run all tests
+        vector<string> testTarget = {
+            "testKeywordData.txt", "testDelimiterData.txt",
+            "testIdentifierData.txt", "testOperatorData.txt",
+            "testIntegerData.txt", "testStringData.txt",
+            "testFloatData.txt", "testCommentData.txt",
+            "testSpecial_symbolData.txt", "testCharData.txt"
+        };
 
-    if (argc == 1)
-    {
-        assert(argv[0][0] < 10);
-        filename = "./test/testData/"+testTarget[charToInt(argv[0][0])];
-        testFile(filename,TOKEN(charToInt(argv[0][0])));
-    }else{
-        for (int i = 0; i < testTarget.size(); i++)
-        {
-            filename = "./test/testData/"+testTarget[i];
-            testFile(filename,TOKEN(i));
+        for (int i = 0; i < testTarget.size(); i++) {
+            string filename = "./test/testData/" + testTarget[i];
+            testFile(filename, static_cast<TOKEN>(i));
         }
+
         cout << "Union test pass!\n";
-        filename = "./test/testData/testdata.txt";
+        string filename = "./test/testData/testdata.txt";
         testFile(filename);
         cout << "Normal test pass!\n";
         testLongFile(filename);
-        cout << "Long test pass!";
-
+        cout << "Long test pass!\n";
     }
+
+    return 0;
 }

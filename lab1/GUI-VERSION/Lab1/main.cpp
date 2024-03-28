@@ -54,7 +54,12 @@ private slots:
         // 创建文件对话框对象
         QString filePath = QFileDialog::getOpenFileName(this, "选择文件", "/path/to/default/directory", "All Files (*)");
         filename = filePath.toStdString();
-        processFile();
+        if (filename == "")
+        {
+            QMessageBox::critical(this, "提醒", "未选择文件！\n");
+        }else{
+            processFile();
+        }
     }
 
 private:
@@ -64,17 +69,18 @@ private:
     // 点击按钮后显示消息框
     void processFile()
     {
-        vector <pair<string,TOKEN>> result;
+        vector <pair<string,TOKEN>> *result = new vector <pair<string,TOKEN>>();
         ERROR the_error = NoError;
-        for(auto i: readFile(filename)){
-            the_error = readLine(i,result);
+        for(auto i: readFile(filename,this)){
+            the_error = readLine(i,*result);
             if(the_error != NoError){
                 QMessageBox::critical(this, "错误", "处理文件时出现错误:\n"+getError(the_error)+"\n");
                 return; // 返回以避免继续处理文件
             }
         }
 
-        message = intoQstring(result);
+        message = intoQstring(*result);
+        delete result;
         textEdit->setPlainText(message);
         textEdit->adjustSize();
         textEdit->repaint();

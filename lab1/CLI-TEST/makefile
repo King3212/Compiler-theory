@@ -1,4 +1,4 @@
 CC=g++
 
-testScanner: ./test/testscanner.cpp ./src/* ./include/*
-	$(CC) -o testScanner ./test/testscanner.cpp ./src/* ./include/* -g
+Test: ./test/testscanner.cpp ./src/* ./include/* ./test/testData/*
+	$(CC) -o Test ./test/testscanner.cpp ./src/* ./include/* -g

@@ -1,0 +1,10 @@
+ CLI-TEST 文件夹包含用于命令行测试的扫描程序。其中，main函数里提供了开关测试结果写文件的选项。
+ 测试全部在linux环境下进行，没有测试过windows平台能否正常运行，请酌情使用wsl等工具进行测试。
+ 
+ GUI-VERSION 文件夹中包含Windows界面代码，最终构建也是在该文件夹中构建。
+
+
+编译说明：
+测试全部在linux环境下进行，没有测试过windows平台能否正常运行，请酌情使用wsl等工具在linux环境下进行测试，编译器选择gcc,makefile可用。
+项目使用Qt5开发，GUI-VERSION/lab1/lab1.pro是Qt Creator的项目文件，请配合Qt Creator构建，或使用qmake
+若windows下构建失败，出现rc.exe字样，请搜索rc.exe文件以及配套的dll,将其复制到编译器bin目录下。

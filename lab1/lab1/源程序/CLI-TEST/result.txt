@@ -1,0 +1,489 @@
+Results for file: ./test/testData/testKeywordData.txt
+if 关键字
+while 关键字
+for 关键字
+---------------------------------------------
+Results for file: ./test/testData/testDelimiterData.txt
+( 分界符号
+) 分界符号
+{ 分界符号
+} 分界符号
+; 分界符号
+; 分界符号
+; 分界符号
+---------------------------------------------
+Results for file: ./test/testData/testIdentifierData.txt
+apple 标识符
+---------------------------------------------
+Results for file: ./test/testData/testOperatorData.txt
++= 运算符号
+-- 运算符号
+& 运算符号
+---------------------------------------------
+Results for file: ./test/testData/testIntergerData.txt
+12345 整数
+0xfff 整数
+01587 整数
+0x1234 整数
+1234 整数
+---------------------------------------------
+Results for file: ./test/testData/testStringData.txt
+"I like apple" 字符串
+"I like appleand pear" 字符串
+---------------------------------------------
+Results for file: ./test/testData/testFloatData.txt
+123.24 浮点数
+1.26e6 浮点数
+1e3 浮点数
+---------------------------------------------
+Results for file: ./test/testData/testCommentData.txt
+// I have a apple 注释
+/** 注释
+ * apple yeah! 注释
+ * apple yeah! 注释
+*/ 注释
+/*I like apple*/ 注释
+---------------------------------------------
+Results for file: ./test/testData/testSpecial_symbolData.txt
+~ 特殊符号
+---------------------------------------------
+Results for file: ./test/testData/testCharData.txt
+'a' 
+'b' 
+'c' 
+'d' 
+'e' 
+'6' 
+'A' 
+'#' 
+'/' 
+'\\' 
+'(' 
+')' 
+'&' 
+---------------------------------------------
+Results for file: ./test/testData/testdata.txt
+# 分界符号
+include 关键字
+<QApplication> 特殊符号
+# 分界符号
+include 关键字
+<QWidget> 特殊符号
+# 分界符号
+include 关键字
+<QTextEdit> 特殊符号
+# 分界符号
+include 关键字
+<QScrollArea> 特殊符号
+# 分界符号
+include 关键字
+<QPushButton> 特殊符号
+# 分界符号
+include 关键字
+<QMessageBox> 特殊符号
+# 分界符号
+include 关键字
+<QFileDialog> 特殊符号
+# 分界符号
+include 关键字
+<QVBoxLayout> 特殊符号
+# 分界符号
+include 关键字
+"include/readFile.h 特殊符号
+# 分界符号
+include 关键字
+"include/scanner.h 特殊符号
+# 分界符号
+pragma 标识符
+execution_character_set 标识符
+( 分界符号
+"utf-8" 字符串
+) 分界符号
+class 关键字
+MyWidget 标识符
+: 运算符号
+public 关键字
+QWidget 标识符
+{ 分界符号
+public 关键字
+: 运算符号
+MyWidget 标识符
+( 分界符号
+QWidget 标识符
+* 运算符号
+parent 标识符
+= 运算符号
+nullptr 关键字
+) 分界符号
+: 运算符号
+QWidget 标识符
+( 分界符号
+parent 标识符
+) 分界符号
+{ 分界符号
+// 设置窗口标题 注释
+setWindowTitle 标识符
+( 分界符号
+"C++单词拼装分类器" 字符串
+) 分界符号
+; 分界符号
+resize 标识符
+( 分界符号
+720 整数
+, 分界符号
+540 整数
+) 分界符号
+; 分界符号
+// 创建一个按钮，并设置按钮文本 注释
+QPushButton 标识符
+* 运算符号
+button 标识符
+= 运算符号
+new 关键字
+QPushButton 标识符
+( 分界符号
+"选择文件" 字符串
+, 分界符号
+this 关键字
+) 分界符号
+; 分界符号
+QVBoxLayout 标识符
+* 运算符号
+layout 标识符
+= 运算符号
+new 关键字
+QVBoxLayout 标识符
+( 分界符号
+this 关键字
+) 分界符号
+; 分界符号
+// 连接按钮的点击事件到槽函数 注释
+connect 标识符
+( 分界符号
+button 标识符
+, 分界符号
+& 运算符号
+QPushButton 标识符
+:: 运算符号
+clicked 标识符
+, 分界符号
+this 关键字
+, 分界符号
+& 运算符号
+MyWidget 标识符
+:: 运算符号
+openFile 标识符
+) 分界符号
+; 分界符号
+textEdit 标识符
+= 运算符号
+new 关键字
+QTextEdit 标识符
+; 分界符号
+textEdit 标识符
+-> 运算符号
+setPlainText 标识符
+( 分界符号
+message 标识符
+) 分界符号
+; 分界符号
+textEdit 标识符
+-> 运算符号
+setReadOnly 标识符
+( 分界符号
+true 关键字
+) 分界符号
+; 分界符号
+// 创建滚动区域 注释
+QScrollArea 标识符
+* 运算符号
+scrollArea 标识符
+= 运算符号
+new 关键字
+QScrollArea 标识符
+; 分界符号
+scrollArea 标识符
+-> 运算符号
+setWidgetResizable 标识符
+( 分界符号
+true 关键字
+) 分界符号
+; 分界符号
+// 让滚动区域自适应部件大小 注释
+// 设置滚动区域的部件大小为窗口大小减去按钮大小 注释
+scrollArea 标识符
+-> 运算符号
+setFixedSize 标识符
+( 分界符号
+720 整数
+, 分界符号
+540 整数
+- 运算符号
+button 标识符
+-> 运算符号
+height 标识符
+( 分界符号
+) 分界符号
+) 分界符号
+; 分界符号
+// 将文本编辑器设置为滚动区域的部件 注释
+scrollArea 标识符
+-> 运算符号
+setWidget 标识符
+( 分界符号
+textEdit 标识符
+) 分界符号
+; 分界符号
+layout 标识符
+-> 运算符号
+addWidget 标识符
+( 分界符号
+button 标识符
+) 分界符号
+; 分界符号
+layout 标识符
+-> 运算符号
+addWidget 标识符
+( 分界符号
+scrollArea 标识符
+) 分界符号
+; 分界符号
+} 分界符号
+private 关键字
+slots 标识符
+: 运算符号
+// 槽函数，用于打开文件对话框并获取所选文件的路径 注释
+void 关键字
+openFile 标识符
+( 分界符号
+) 分界符号
+{ 分界符号
+// 创建文件对话框对象 注释
+QString 标识符
+filePath 标识符
+= 运算符号
+QFileDialog 标识符
+:: 运算符号
+getOpenFileName 标识符
+( 分界符号
+this 关键字
+, 分界符号
+"选择文件" 字符串
+, 分界符号
+"/path/to/default/directory" 字符串
+, 分界符号
+"All Files (*)" 字符串
+) 分界符号
+; 分界符号
+filename 标识符
+= 运算符号
+filePath 标识符
+. 运算符号
+toStdString 标识符
+( 分界符号
+) 分界符号
+; 分界符号
+if 关键字
+( 分界符号
+filename 标识符
+== 运算符号
+"" 字符串
+) 分界符号
+{ 分界符号
+QMessageBox 标识符
+:: 运算符号
+critical 标识符
+( 分界符号
+this 关键字
+, 分界符号
+"提醒" 字符串
+, 分界符号
+"未选择文件！\n" 字符串
+) 分界符号
+; 分界符号
+} 分界符号
+else 关键字
+{ 分界符号
+processFile 标识符
+( 分界符号
+) 分界符号
+; 分界符号
+} 分界符号
+} 分界符号
+private 关键字
+: 运算符号
+QTextEdit 标识符
+* 运算符号
+textEdit 标识符
+; 分界符号
+std 标识符
+:: 运算符号
+string 标识符
+filename 标识符
+; 分界符号
+QString 标识符
+message 标识符
+; 分界符号
+// 点击按钮后显示消息框 注释
+void 关键字
+processFile 标识符
+( 分界符号
+) 分界符号
+{ 分界符号
+vector 标识符
+< 运算符号
+pair 标识符
+< 运算符号
+string 标识符
+, 分界符号
+TOKEN 标识符
+>> 运算符号
+* 运算符号
+result 标识符
+= 运算符号
+new 关键字
+vector 标识符
+< 运算符号
+pair 标识符
+< 运算符号
+string 标识符
+, 分界符号
+TOKEN 标识符
+>> 运算符号
+( 分界符号
+) 分界符号
+; 分界符号
+ERROR 标识符
+the_error 标识符
+= 运算符号
+NoError 标识符
+; 分界符号
+for 关键字
+( 分界符号
+auto 关键字
+i 标识符
+: 运算符号
+readFile 标识符
+( 分界符号
+filename 标识符
+, 分界符号
+this 关键字
+) 分界符号
+) 分界符号
+{ 分界符号
+the_error 标识符
+= 运算符号
+readLine 标识符
+( 分界符号
+i 标识符
+, 分界符号
+* 运算符号
+result 标识符
+) 分界符号
+; 分界符号
+if 关键字
+( 分界符号
+the_error 标识符
+!= 运算符号
+NoError 标识符
+) 分界符号
+{ 分界符号
+QMessageBox 标识符
+:: 运算符号
+critical 标识符
+( 分界符号
+this 关键字
+, 分界符号
+"错误" 字符串
+, 分界符号
+"处理文件时出现错误:\n" 字符串
++ 运算符号
+getError 标识符
+( 分界符号
+the_error 标识符
+) 分界符号
++ 运算符号
+"\n" 字符串
+) 分界符号
+; 分界符号
+return 关键字
+; 分界符号
+// 返回以避免继续处理文件 注释
+} 分界符号
+} 分界符号
+message 标识符
+= 运算符号
+intoQstring 标识符
+( 分界符号
+* 运算符号
+result 标识符
+) 分界符号
+; 分界符号
+delete 关键字
+result 标识符
+; 分界符号
+textEdit 标识符
+-> 运算符号
+setPlainText 标识符
+( 分界符号
+message 标识符
+) 分界符号
+; 分界符号
+textEdit 标识符
+-> 运算符号
+adjustSize 标识符
+( 分界符号
+) 分界符号
+; 分界符号
+textEdit 标识符
+-> 运算符号
+repaint 标识符
+( 分界符号
+) 分界符号
+; 分界符号
+} 分界符号
+} 分界符号
+; 分界符号
+int 关键字
+main 标识符
+( 分界符号
+int 关键字
+argc 标识符
+, 分界符号
+char 关键字
+* 运算符号
+argv 标识符
+[ 分界符号
+] 分界符号
+) 分界符号
+{ 分界符号
+// 创建Qt应用程序对象 注释
+QApplication 标识符
+app 标识符
+( 分界符号
+argc 标识符
+, 分界符号
+argv 标识符
+) 分界符号
+; 分界符号
+// 创建自定义窗口对象 注释
+MyWidget 标识符
+window 标识符
+; 分界符号
+// 显示窗口 注释
+window 标识符
+. 运算符号
+show 标识符
+( 分界符号
+) 分界符号
+; 分界符号
+// 运行应用程序事件循环 注释
+return 关键字
+app 标识符
+. 运算符号
+exec 标识符
+( 分界符号
+) 分界符号
+; 分界符号
+} 分界符号
+---------------------------------------------

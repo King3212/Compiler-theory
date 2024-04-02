@@ -1,0 +1,1 @@
+在Microsoft Windows环境下双击lab1.exe即可运行 

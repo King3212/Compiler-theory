@@ -13,10 +13,8 @@ edge closePackage(edge data,int &size);
 
 /**
  * 这个函数输入一个正则表达式，返回一个NFA图
- * 处理过程如：
- * 
 */
-Gragh NFA(std::string re){
+void Gragh::toNFA(std::string re){
     std::stack<edge> edges;
     std::stack<char> signal;
     Gragh result;
@@ -53,6 +51,8 @@ Gragh NFA(std::string re){
     }
     
 }
+
+
 
 
 

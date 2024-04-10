@@ -21,4 +21,4 @@ struct finalData
  * 将高级运算转化为基础三种运算
  * 最终返回需要转换DFA的名称及其正则表达式
 */
-std::vector<finalData> scanner(std::vector<std::string> lines);
+std::vector<finalData> *scanner(std::vector<std::string> lines);

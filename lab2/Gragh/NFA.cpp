@@ -39,7 +39,7 @@ void Gragh::toNFA(std::string re){
         }else{
             IsSignal = false;
             tempEdge = singleExpressIntoEdge(re[pos],size);
-            result.edges.push_back(tempEdge);
+            // result.edges.push_back(tempEdge);
             if (re[pos+1] == '*')
             {
                 edges.push(closePackage(tempEdge,size));

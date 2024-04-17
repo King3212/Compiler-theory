@@ -168,7 +168,7 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
                     
                 }
                 //去除替换最后一个|并加括号
-                replaceStr.push_back();
+                replaceStr.pop_back();
                 replaceStr+=")";
                 //替换
                 data->reExpress.replace(pos,end-pos,replaceStr);

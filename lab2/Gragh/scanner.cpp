@@ -59,21 +59,6 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 }
 
 /**
- * 此函数进行基础化替换
- * 将简化正则表达式转换为基本正则表达式（只含有基础三种运算）
- * 
- * 例如：
- * 
- * input:
- * >>> _numbers = ([0-9])*
- * output:
- * >>> _numbers = ((0|1|2|3|4|5|6|7|8|9))*
-*/
-std::vector<finalData>* baseRe(std::vector<scanData*> &reExpresses){
-    
-}
-
-/**
  * 此函数进行替换扫描
  * 从第一行开始往后搜索所含字符串是否被定义
  * 如果被定义就进行替换修改为相应的正则表达式
@@ -86,17 +71,17 @@ std::vector<finalData>* baseRe(std::vector<scanData*> &reExpresses){
  * output:
  * >>> _numbers = ([0-9])*
 */
-void replaceRe(std::vector<scanData*> &reExpresses) {
+std::vector<finalData*>* replaceRe(std::vector<scanData*> *reExpresses) {
     // 创建一个映射，将标识符与其对应的正则表达式关联起来
     std::map<std::string, std::string> definitions;
     
     // 遍历扫描到的正则表达式，将其标识符及定义存储到映射中
-    for (scanData* scanDataPtr : reExpresses) {
+    for (scanData* scanDataPtr : *reExpresses) {
         definitions[scanDataPtr->name] = scanDataPtr->re;
     }
 
     // 替换每个正则表达式中的标识符
-    for (scanData* data : reExpresses) {
+    for (scanData* data : *reExpresses) {
         std::string& re = data->re;
         
         // 在正则表达式中查找标识符的位置并替换为其定义
@@ -119,22 +104,32 @@ void replaceRe(std::vector<scanData*> &reExpresses) {
             pos = endPos;
         }
     }
-    for (int i = 0; i < reExpresses.size(); i++)
+    std::vector<finalData*> *temp = new std::vector<finalData*>();
+    finalData *one = nullptr;
+    for (int i = 0; i < reExpresses->size(); i++)
     {
         
+        if ((*reExpresses)[i]->needToScan)
+        {
+            one = new finalData();
+            one->name = (*reExpresses)[i]->name;
+            one->reExpress = (*reExpresses)[i]->re;
+            temp->push_back(one);
+        }
+        delete (*reExpresses)[i];
+        
     }
-    
-    
+    delete reExpresses;
+    return temp;
 }
 
 
-std::vector<finalData>* scanner(std::vector<std::string> lines){
+std::vector<finalData*>* scanner(std::vector<std::string> lines){
     if (lines.size() == 0)
     {
         return nullptr;
     }
     std::vector<scanData*> *datas;
     datas = scanAll(lines);
-    replaceRe(*datas);
-    return baseRe(*datas);
+    return replaceRe(datas);
 }

@@ -18,7 +18,6 @@ struct finalData
 
 /** * 这个函数处理一个文件中的所有正则表达式
  * 对定义的临时变量进行替换
- * 将高级运算转化为基础三种运算
  * 最终返回需要转换DFA的名称及其正则表达式
 */
-std::vector<finalData> *scanner(std::vector<std::string> lines);
+std::vector<finalData*> *scanner(std::vector<std::string> lines);

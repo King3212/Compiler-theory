@@ -124,6 +124,64 @@ std::vector<finalData*>* replaceRe(std::vector<scanData*> *reExpresses) {
 }
 
 
+/**
+ * 此函数进行基础化替换
+ * 除去[]运算
+ * 只含有"*" "+" "|" "(" ")" "\"符号（以及省略的连接符）
+ * 
+ * 例如：
+ * 
+ * input:
+ * >>> _numbers = ([0-9])*
+ * output:
+ * >>> _numbers = ((0|1|2|3|4|5|6|7|8|9))*
+*/
+std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
+    int pos = 0;
+    int end = 0;
+    std::string replaceStr = "";
+    for (finalData* data : *reExpresses)//取出数据
+    {
+        while (pos < data->reExpress.size())//处理每一行
+        {
+            pos = 0;
+            end = 0;
+            replaceStr = "(";
+            if (data->reExpress[pos] == '[' && (pos == 0 || data->reExpress[pos-1] != '\\'))//搜索到"["
+            {
+                end = data->reExpress.find_first_of(']',pos);
+                while (data->reExpress[end-1] == '\\')
+                {
+                    end = data->reExpress.find_first_of(']',end+1);
+                }
+                
+                for (int i = pos; i < end; i++)//替换
+                {
+                    if (data->reExpress[i] == '-' &&  (pos == 0 || data->reExpress[pos-1] != '\\'))
+                    {
+                        for (char i = data->reExpress[i-1]; i < data->reExpress[i+1]; i++)
+                        {
+                            replaceStr += std::string(i,1) + "|";
+                        }
+                        
+                    }
+                    
+                }
+                //去除替换最后一个|并加括号
+                replaceStr.push_back();
+                replaceStr+=")";
+                //替换
+                data->reExpress.replace(pos,end-pos,replaceStr);
+                pos += replaceStr.size();
+            }else pos++;
+            
+        }
+        
+    }
+    
+}
+
+
 std::vector<finalData*>* scanner(std::vector<std::string> lines){
     if (lines.size() == 0)
     {
@@ -131,5 +189,5 @@ std::vector<finalData*>* scanner(std::vector<std::string> lines){
     }
     std::vector<scanData*> *datas;
     datas = scanAll(lines);
-    return replaceRe(datas);
+    return baseRe(replaceRe(datas));
 }

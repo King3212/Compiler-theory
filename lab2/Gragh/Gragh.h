@@ -2,6 +2,7 @@
 #include<vector>
 #include<stack>
 #include<scanner.h>
+#include<unordered_set>
 #pragma once
 
 enum sign{
@@ -72,6 +73,7 @@ private:
     void compressDFA();
 
     void aNewEdge(std::string x);
+    void makeGraph(std::unordered_set<int> start,gragh oldG, );
 
     void andConnet();
     void orConnet();

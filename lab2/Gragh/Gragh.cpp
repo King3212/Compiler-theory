@@ -136,7 +136,10 @@ void Gragh::aNewEdge(std::string x)
     //添加条件并压栈
 }
 
+void Gragh::makeGraph()
+{
 
+}
 
 void Gragh::andConnet()
 {
@@ -214,10 +217,53 @@ void Gragh::positive_closure()
 }
 
 /**
+ * 这个函数从starts出发,寻找所有的str闭包
+ * 将str闭包添加到starts中
+ * 返回所有可能从starts跳转条件
+*/
+std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &G){
+    std::unordered_set<std::string> jump;
+    std::unordered_set<int> add;
+    for(int start : starts){
+        for(edge e: *(G.edges)){
+            if (e.begin == start && e.calEx == true)
+            {
+                if (e.express == "")
+                {
+                    add.insert(e.end);
+                }else{
+                    jump.insert(e.express);
+                }
+                
+                
+            }
+            
+        }
+    }
+    for(auto elem : eclosure(add,G)){
+        jump.insert(elem);
+    }
+    for(auto elem : add){
+        starts.insert(elem);
+    }
+}
+
+/**
+ * 这个函数从起点开始调用eclosure函数
+ * 开出一个jump大的vector数组jumps
+ * 遍历图,得到满足jump
+*/
+
+
+/**
  * 这个函数输入一个NFA图，返回一个DFA图
 */
 void Gragh::toDFA(){
-    
+    gragh *oldG = this->inGragh;
+
+    this->inGragh = new gragh();
+
+
 }
 
 

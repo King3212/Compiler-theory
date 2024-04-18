@@ -136,10 +136,8 @@ void Gragh::aNewEdge(std::string x)
     //添加条件并压栈
 }
 
-void Gragh::makeGraph()
-{
 
-}
+
 
 void Gragh::andConnet()
 {
@@ -253,17 +251,63 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
  * 开出一个jump大的vector数组jumps
  * 遍历图,得到满足jump
 */
-
+void Gragh::makeGraph(std::unordered_set<int> end, gragh oldG, int in,std::string jump)
+{
+    int out = this->inGragh->size;
+    (this->inGragh->size)++;
+    //取新节点
+    std::unordered_set<std::string> jumps;
+    jumps = eclosure(end,oldG);
+    //获得e闭包,所有跳转
+    inGragh->edges->push_back(edge(in,out,true,jump));
+    //对e闭包进行写入图
+    
+    if (end.find(oldG.end) != end.end())
+    {
+        inGragh->finalNodes.insert(out);
+    }
+    //检查此节点是否为结束节点
+    
+    
+    std::vector<std::unordered_set<int>> jumpVec;
+    int st = 0;
+    for (auto j : jumps){
+        for (auto e : *oldG.edges){
+            if (e.express == j && end.find(e.begin) != end.end())
+            {
+                jumpVec[st].insert(e.end);
+            }
+        }
+        st++;
+    }
+    //对所有跳转寻找一层终点
+    st = 0;
+    for (auto i : jumps){
+        makeGraph(jumpVec[st],oldG,out,i);
+    }
+    //递归寻找闭包
+}
 
 /**
- * 这个函数输入一个NFA图，返回一个DFA图
+ * 这个函数读入NFA图，得到一个DFA图
 */
 void Gragh::toDFA(){
     gragh *oldG = this->inGragh;
-
     this->inGragh = new gragh();
-
-
+    //修改全局图
+    int out = this->inGragh->size;
+    (this->inGragh->size)++;
+    //取新节点
+    std::unordered_set<int> start = {oldG->start};
+    makeGraph(start,*oldG,-1,"");
+    //虚构一个终点(实为起点),用makeGragh生成起点
+    while ((*inGragh->edges)[0].begin == -1)
+    {
+        inGragh->edges->erase(inGragh->edges->begin());
+    }
+    //删除不应该存在的边
+    inGragh->start = 0;
+    //添加图起点
 }
 
 

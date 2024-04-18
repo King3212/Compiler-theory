@@ -3,6 +3,7 @@
 #include<stack>
 #include<scanner.h>
 #include<unordered_set>
+#include<map>
 #pragma once
 
 enum sign{
@@ -53,6 +54,7 @@ struct gragh
     int start;
     int end;
     int size;
+    std::unordered_set<int>finalNodes;
     std::vector<edge> *edges;
 };
 
@@ -73,7 +75,7 @@ private:
     void compressDFA();
 
     void aNewEdge(std::string x);
-    void makeGraph(std::unordered_set<int> start,gragh oldG, );
+    void makeGraph(std::unordered_set<int> start,gragh oldG,int lastNode, std::string jump);
 
     void andConnet();
     void orConnet();
@@ -83,7 +85,7 @@ public:
     void process(std::string reExpress){
         inGragh = new gragh();
         toNFA(reExpress);
-        toDFA;
+        toDFA();
         compressDFA();
     }
     gragh getGragh(){

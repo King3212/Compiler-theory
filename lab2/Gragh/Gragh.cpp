@@ -116,15 +116,6 @@ void Gragh::toNFA(std::string re){
     //出栈
 }
 
-std::vector<std::vector<char>> GraghIntoMatrix();
-
-/**
- * 这个函数输入一个DFA图，返回一个最小化的DFA图
-*/
-void Gragh::compressDFA(){
-    
-}
-
 void Gragh::aNewEdge(std::string x)
 {
     int start = this->inGragh->size;
@@ -311,6 +302,175 @@ void Gragh::toDFA(){
 }
 
 
+bool cmpStr(const std::pair<int, std::string>& pair1, const std::pair<int, std::string>& pair2) {
+    return pair1.second < pair2.second;
+}
 
+std::vector<std::vector<char>> GraghIntoMatrix();
+
+/**
+ * 这个函数输入一个DFA图，返回一个最小化的DFA图
+*/
+void Gragh::compressDFA(){
+    std::vector<std::string> jumps; 
+    //跳转集
+    std::vector<std::unordered_set<int>*> closures11 = std::vector<std::unordered_set<int>*>();
+    //终止状态闭包
+    std::vector<std::unordered_set<int>*> closures00 = std::vector<std::unordered_set<int>*>();
+    //非终止状态闭包
+    std::vector<std::unordered_set<int>*> closures01 = std::vector<std::unordered_set<int>*>();
+    //终止到非终止
+    std::vector<std::unordered_set<int>*> closures10 = std::vector<std::unordered_set<int>*>();
+    //非终止到终止
+
+
+    for (auto e : *inGragh->edges){
+        auto pos = std::find(jumps.begin(),jumps.end(),e.express);
+        if(pos == jumps.end()){
+            jumps.push_back(e.express);
+            closures00.push_back(new std::unordered_set<int>());
+            closures11.push_back(new std::unordered_set<int>());
+        }//新出现的跳转就添加进跳转集
+        if (inGragh->finalNodes.find(e.end) == inGragh->finalNodes.end() /*边的终点是终止状态*/)
+        {
+            if (inGragh->finalNodes.find(e.begin) == inGragh->finalNodes.end())
+            {
+                closures11[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是终止状态*/
+            }else{
+                closures01[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是非终止状态*/
+            }
+        }else/*边的终点是非终止状态*/
+        {
+            if (inGragh->finalNodes.find(e.begin) != inGragh->finalNodes.end() ){
+                closures00[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是非终止状态*/
+            }else{
+                closures10[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是终止状态*/
+            }
+        }
+    }
+    //寻找所有闭包
+    std::vector<std::pair<int,std::string>> *nodes = new std::vector<std::pair<int,std::string>>(inGragh->size);
+    for (int nPos = 0; nPos < inGragh->size; nPos++)
+    {
+        for (int jPos = 0; jPos < jumps.size(); jPos++)
+        {
+            if (inGragh->finalNodes.find(jPos)!= inGragh->finalNodes.end())//是终止状态
+            {
+                if (closures11[jPos]->find(nPos) != closures11[jPos]->end())
+                {
+                    (*nodes)[nPos].second += "1";
+                }else{
+                    (*nodes)[nPos].second += "0";
+                }
+                if (closures11[jPos]->find(nPos) != closures10[jPos]->end())
+                {
+                    (*nodes)[nPos].second += "1";
+                }else{
+                    (*nodes)[nPos].second += "0";
+                }
+                
+                //在closure11和closure10中搜索是否在其中,结果加入二进制串
+            }else{//非终止状态
+                if (closures11[jPos]->find(nPos) != closures01[jPos]->end())
+                {
+                    (*nodes)[nPos].second += "1";
+                }else{
+                    (*nodes)[nPos].second += "0";
+                }
+                if (closures11[jPos]->find(nPos) != closures00[jPos]->end())
+                {
+                    (*nodes)[nPos].second += "1";
+                }else{
+                    (*nodes)[nPos].second += "0";
+                }
+                //在closure01和closure00中搜索是否在其中,结果加入二进制串
+            }
+            
+        }
+        
+    }
+    
+    //使用一个jumps.size()*2位的二进制数,标识所有结点的属性(每个跳转首位为终止,次位为非终止)
+
+    gragh *oldG = this->inGragh;
+    this->inGragh = new gragh();
+    //创建新图
+
+    std::sort(nodes->begin(),nodes->end(),cmpStr);
+    std::vector<std::vector<int>> unionVec;
+    std::string lastOne = "";
+    for (int nPos = 0; nPos < nodes->size(); nPos++)
+    {
+        if ((*nodes)[nPos].second != lastOne)
+        {
+            if (oldG->finalNodes.find((*nodes)[nPos].first) != oldG->finalNodes.end())
+            {
+                inGragh->size = unionVec.size();
+            }
+            unionVec.push_back((std::vector<int>){(*nodes)[nPos].first});
+            
+            
+        }else{
+            unionVec[unionVec.size()-1].push_back((*nodes)[nPos].first);
+        }
+        
+    }
+    //如果属性相同,则两个节点可以合并(终止状态和非终止状态分离),得到合并集合
+    
+    inGragh->size = unionVec.size();
+    std::unordered_set<edge> *edgeSet = new std::unordered_set<edge>(0);
+    //创建节点集合数个节点和边集
+
+    for (auto e : *oldG->edges){//遍历边
+        int stB = 0;//记录开始集合
+        int stE = 0;//记录结束集合
+        for (auto vec : unionVec){//遍历集合
+            bool Break = false;
+            for (auto node: vec){
+                if (e.begin == node)
+                {
+                    Break = true;
+                    break;
+                }
+                
+            }
+            if (Break)
+            {
+                break;
+            }else{
+                stB++;
+            }
+            
+        }
+        
+
+        for (auto vec : unionVec){//遍历集合
+            bool Break = false;
+            for (auto node: vec){
+                if (e.end == node)
+                {
+                    Break = true;
+                    break;
+                }
+                
+            }
+            if (Break)
+            {
+                break;
+            }else{
+                stE++;
+            }
+            
+        }
+
+        edgeSet->insert(edge(stB,stE,true,e.express));
+    }
+    //遍历边,添加到边集中
+    delete oldG;
+    for (auto e : *edgeSet){
+        inGragh->edges->push_back(e);
+    }
+    //将边集中的边添加到图中
+}
 
 

@@ -4,6 +4,7 @@
 #include<scanner.h>
 #include<unordered_set>
 #include<map>
+#include<algorithm>
 #pragma once
 
 enum sign{
@@ -33,16 +34,6 @@ struct edge
         this->calEx = calEx;
         this->express = express;
     }
-};
-
-/**result
- * 这个数据结构储存着一个正则表达式DFA图和它的正则表达式
- * 作为结果DFA图返回
-*/
-struct result
-{
-    std::string name;
-    Gragh DFA;
 };
 
 /**gragh
@@ -81,6 +72,9 @@ private:
     void orConnet();
     void closure();
     void positive_closure();
+
+public:
+    std::string reExpress;
 public:
     void process(std::string reExpress){
         inGragh = new gragh();

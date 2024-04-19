@@ -34,6 +34,9 @@ struct edge
         this->calEx = calEx;
         this->express = express;
     }
+    std::string toString(){
+        return std::to_string(begin) + "-- " + express + " -->" + std::to_string(end);
+    }
 };
 
 /**gragh
@@ -87,6 +90,26 @@ public:
     }
     ~Gragh(){
         delete inGragh;
+    }
+    std::vector<std::string> toString(){
+        std::vector<std::string> result;
+        for (auto e : *inGragh->edges){
+            std::string str = "";
+            if(inGragh->start == e.begin){
+                str += "- ";
+            }else{
+                str += "  ";
+            }//检查是否为入口
+            if (inGragh->finalNodes.size() == 0 && e.begin == inGragh->end)
+            {
+                str += "+ ";
+            }else if(inGragh->finalNodes.find(e.begin) != inGragh->finalNodes.end()){
+                str += "+ ";
+            }else{
+                str += "  ";
+            }//检查是否为出口
+            str += e.toString();
+        }
     }
 };
 

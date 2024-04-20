@@ -1,7 +1,7 @@
 #include<string>
 #include<vector>
 #include<stack>
-#include<scanner.h>
+#include"scanner.h"
 #include<unordered_set>
 #include<map>
 #include<algorithm>
@@ -35,9 +35,30 @@ struct edge
         this->express = express;
     }
     std::string toString(){
-        return std::to_string(begin) + "-- " + express + " -->" + std::to_string(end);
+        return std::to_string(begin) + "---" + express + "-->" + std::to_string(end);
     }
+    // 定义相等运算符
+    bool operator==(const edge& other) const {
+        return begin == other.begin && end == other.end && calEx == other.calEx && express == other.express;
+    }
+
 };
+namespace std {
+    template <>
+    struct hash<edge> {
+        std::size_t operator()(const edge& e) const {
+            // 组合成员变量的哈希值
+            std::size_t hashBegin = std::hash<int>()(e.begin);
+            std::size_t hashEnd = std::hash<int>()(e.end);
+            std::size_t hashCalEx = std::hash<bool>()(e.calEx);
+            std::size_t hashExpress = std::hash<std::string>()(e.express);
+            
+            // 结合哈希值，生成最终的哈希值
+            std::size_t hashCombined = hashBegin ^ (hashEnd << 1) ^ (hashCalEx << 2) ^ (hashExpress << 3);
+            return hashCombined;
+        }
+    };
+}
 
 /**gragh
  * 这个数据结构储存着一个图的起始点以及规模
@@ -50,6 +71,10 @@ struct gragh
     int size;
     std::unordered_set<int>finalNodes;
     std::vector<edge> *edges;
+    gragh(){
+        this->edges = new std::vector<edge>();
+        size = 0;
+    }
 };
 
 /**
@@ -69,7 +94,7 @@ private:
     void compressDFA();
 
     void aNewEdge(std::string x);
-    void makeGraph(std::unordered_set<int> start,gragh oldG,int lastNode, std::string jump);
+    void makeGragh(std::unordered_set<int> start,gragh oldG,int lastNode, std::string jump);
 
     void andConnet();
     void orConnet();
@@ -108,9 +133,30 @@ public:
             }else{
                 str += "  ";
             }//检查是否为出口
+            //检查起点
+
             str += e.toString();
+            //转换边
+            
+            if(inGragh->start == e.end){
+                str += " -";
+            }else{
+                str += "  ";
+            }//检查是否为入口
+            if (inGragh->finalNodes.size() == 0 && e.end == inGragh->end)
+            {
+                str += " +";
+            }else if(inGragh->finalNodes.find(e.end) != inGragh->finalNodes.end()){
+                str += " +";
+            }else{
+                str += "  ";
+            }//检查是否为出口
+            //检查终点
+            result.push_back(str);
         }
+        return result;
     }
+    
 };
 
 

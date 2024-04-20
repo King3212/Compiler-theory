@@ -1,4 +1,4 @@
-#include<Gragh.h>
+#include"Gragh.h"
 #include<stack>
 
 
@@ -34,8 +34,9 @@ sign dealSign(char sign)
 void Gragh::toNFA(std::string re){
     
     std::vector<edge>*edges = this->inGragh->edges;
+    this->subG = std::stack<edge>();
     int pos = 0;
-    bool lastOneIsSign = false;//判断是否加入AND
+    bool lastOneIsSign = true;//判断是否加入AND(真就不加)
     bool turn;//判断是否转义
     while (pos < re.size())
     {
@@ -90,11 +91,11 @@ void Gragh::toNFA(std::string re){
             pos++;
         }else//当作元素处理
         {
-            lastOneIsSign = false;
             if (!lastOneIsSign)
             {
                 signs.push(AND);
             }
+            lastOneIsSign = false;
             aNewEdge(re.substr(pos,1));
             //添加新边
             pos++;
@@ -114,6 +115,10 @@ void Gragh::toNFA(std::string re){
         }
     }
     //出栈
+    this->inGragh->start =  this->subG.top().begin;
+    this->inGragh->end =  this->subG.top().end;
+    this->reExpress = re;
+    //检查边栈栈顶
 }
 
 void Gragh::aNewEdge(std::string x)
@@ -124,6 +129,7 @@ void Gragh::aNewEdge(std::string x)
     (this->inGragh->size)++;
     //取新节点
     this->inGragh->edges->push_back(edge(start,end,true,x));
+    this->subG.push(edge(start,end,true,x));
     //添加条件并压栈
 }
 
@@ -164,6 +170,8 @@ void Gragh::orConnet()
     //添加空边
     subG.push(edge(start,end,false));
     //压栈
+
+    
 }
 
 void Gragh::closure()
@@ -229,12 +237,18 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
             
         }
     }
-    for(auto elem : eclosure(add,G)){
-        jump.insert(elem);
+    if (add.size() != 0)
+    {
+        for(auto elem : eclosure(add,G)){
+            jump.insert(elem);
+        }
+        for(auto elem : add){
+            starts.insert(elem);
+        }
     }
-    for(auto elem : add){
-        starts.insert(elem);
-    }
+    
+    return jump;
+    
 }
 
 /**
@@ -242,9 +256,9 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
  * 开出一个jump大的vector数组jumps
  * 遍历图,得到满足jump
 */
-void Gragh::makeGraph(std::unordered_set<int> end, gragh oldG, int in,std::string jump)
+void Gragh::makeGragh(std::unordered_set<int> end, gragh oldG, int in,std::string jump)
 {
-    int out = this->inGragh->size;
+    int out = this->inGragh->size -1;
     (this->inGragh->size)++;
     //取新节点
     std::unordered_set<std::string> jumps;
@@ -262,19 +276,32 @@ void Gragh::makeGraph(std::unordered_set<int> end, gragh oldG, int in,std::strin
     
     std::vector<std::unordered_set<int>> jumpVec;
     int st = 0;
-    for (auto j : jumps){
-        for (auto e : *oldG.edges){
-            if (e.express == j && end.find(e.begin) != end.end())
+    if(!jumps.empty()){
+        for (auto j : jumps){
+            jumpVec.push_back(std::unordered_set<int>());
+            for (auto e : *oldG.edges){
+                if (e.express == j && end.find(e.begin) != end.end())
+                {
+                    jumpVec[st].insert(e.end);
+                }
+            }
+            st++;
+            if (st >= jumps.size())
             {
-                jumpVec[st].insert(e.end);
+                break;
             }
         }
-        st++;
-    }
     //对所有跳转寻找一层终点
-    st = 0;
-    for (auto i : jumps){
-        makeGraph(jumpVec[st],oldG,out,i);
+
+        st = 0;
+        for (auto i : jumps){
+            makeGragh(jumpVec[st],oldG,out,i);
+            st++;
+            if (st >= jumps.size())
+            {
+                break;
+            }
+        }
     }
     //递归寻找闭包
 }
@@ -290,12 +317,14 @@ void Gragh::toDFA(){
     (this->inGragh->size)++;
     //取新节点
     std::unordered_set<int> start = {oldG->start};
-    makeGraph(start,*oldG,-1,"");
+    makeGragh(start,*oldG,-1,"");
     //虚构一个终点(实为起点),用makeGragh生成起点
     while ((*inGragh->edges)[0].begin == -1)
     {
         inGragh->edges->erase(inGragh->edges->begin());
+        inGragh->size--;
     }
+    
     //删除不应该存在的边
     inGragh->start = 0;
     //添加图起点
@@ -328,12 +357,15 @@ void Gragh::compressDFA(){
         auto pos = std::find(jumps.begin(),jumps.end(),e.express);
         if(pos == jumps.end()){
             jumps.push_back(e.express);
+            pos = std::find(jumps.begin(),jumps.end(),e.express);
             closures00.push_back(new std::unordered_set<int>());
+            closures01.push_back(new std::unordered_set<int>());
+            closures10.push_back(new std::unordered_set<int>());
             closures11.push_back(new std::unordered_set<int>());
         }//新出现的跳转就添加进跳转集
-        if (inGragh->finalNodes.find(e.end) == inGragh->finalNodes.end() /*边的终点是终止状态*/)
+        if (inGragh->finalNodes.find(e.end) != inGragh->finalNodes.end() /*边的终点是终止状态*/)
         {
-            if (inGragh->finalNodes.find(e.begin) == inGragh->finalNodes.end())
+            if (inGragh->finalNodes.find(e.begin) != inGragh->finalNodes.end())
             {
                 closures11[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是终止状态*/
             }else{
@@ -341,7 +373,7 @@ void Gragh::compressDFA(){
             }
         }else/*边的终点是非终止状态*/
         {
-            if (inGragh->finalNodes.find(e.begin) != inGragh->finalNodes.end() ){
+            if (inGragh->finalNodes.find(e.begin) == inGragh->finalNodes.end() ){
                 closures00[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是非终止状态*/
             }else{
                 closures10[std::distance(jumps.begin(), pos)]->insert(e.begin);/*边的起点是终止状态*/
@@ -352,17 +384,19 @@ void Gragh::compressDFA(){
     std::vector<std::pair<int,std::string>> *nodes = new std::vector<std::pair<int,std::string>>(inGragh->size);
     for (int nPos = 0; nPos < inGragh->size; nPos++)
     {
+        (*nodes)[nPos].first = nPos;
         for (int jPos = 0; jPos < jumps.size(); jPos++)
         {
-            if (inGragh->finalNodes.find(jPos)!= inGragh->finalNodes.end())//是终止状态
+            if (inGragh->finalNodes.find(jPos)!= inGragh->finalNodes.end())//节点是终止状态
             {
+
                 if (closures11[jPos]->find(nPos) != closures11[jPos]->end())
                 {
                     (*nodes)[nPos].second += "1";
                 }else{
                     (*nodes)[nPos].second += "0";
                 }
-                if (closures11[jPos]->find(nPos) != closures10[jPos]->end())
+                if (closures10[jPos]->find(nPos) != closures10[jPos]->end())
                 {
                     (*nodes)[nPos].second += "1";
                 }else{
@@ -370,14 +404,14 @@ void Gragh::compressDFA(){
                 }
                 
                 //在closure11和closure10中搜索是否在其中,结果加入二进制串
-            }else{//非终止状态
-                if (closures11[jPos]->find(nPos) != closures01[jPos]->end())
+            }else{//节点是非终止状态
+                if (closures01[jPos]->find(nPos) != closures01[jPos]->end())
                 {
                     (*nodes)[nPos].second += "1";
                 }else{
                     (*nodes)[nPos].second += "0";
                 }
-                if (closures11[jPos]->find(nPos) != closures00[jPos]->end())
+                if (closures00[jPos]->find(nPos) != closures00[jPos]->end())
                 {
                     (*nodes)[nPos].second += "1";
                 }else{
@@ -459,6 +493,20 @@ void Gragh::compressDFA(){
                 break;
             }else{
                 stE++;
+            }
+            
+        }
+        for (int node: unionVec[stE]){
+            if (oldG->finalNodes.find(node)!= oldG->finalNodes.end())
+            {
+                inGragh->finalNodes.insert(stE);
+            }
+            
+        }
+        for (int node: unionVec[stB]){
+            if (oldG->start== node)
+            {
+                inGragh->start = stB;
             }
             
         }

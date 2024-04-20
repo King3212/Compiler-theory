@@ -28,6 +28,7 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 
     for (std::string line : lines)
     {
+        bool once = true;
         oneData = new scanData(); 
         int pos = 0;
         startPos = 0;
@@ -37,7 +38,8 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
             if (line[pos] == ' ' || line[pos] == '\t')
             {
                 pos++;
-            }else if(startPos == 0){
+            }else if(startPos == 0 && once){
+                once = false;
                 startPos = pos;
                 if (line[pos] == '_')
                 {
@@ -47,6 +49,8 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
             }else if(line[pos] == '='){
                 oneData->name = line.substr(startPos,pos-startPos);
                 oneData->re = line.substr(pos+1);
+                pos = oneData->re.find_first_not_of(" \t");
+                oneData->re = oneData->re.substr(pos);
                 break;
             }else{
                 pos++;
@@ -142,9 +146,10 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
     std::string replaceStr = "";
     for (finalData* data : *reExpresses)//取出数据
     {
+        pos = 0;
+        
         while (pos < data->reExpress.size())//处理每一行
         {
-            pos = 0;
             end = 0;
             replaceStr = "(";
             if (data->reExpress[pos] == '[' && (pos == 0 || data->reExpress[pos-1] != '\\'))//搜索到"["
@@ -178,7 +183,7 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
         }
         
     }
-    
+    return reExpresses;
 }
 
 

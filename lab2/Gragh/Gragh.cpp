@@ -48,8 +48,13 @@ void Gragh::toNFA(std::string re){
         }
         if (!turn && isSign(re[pos]))//正常符号识别
         {
-            lastOneIsSign = true;
             sign thisSign = dealSign(re[pos]);
+            if (lastOneIsSign == false && thisSign == LQ)
+            {
+                signs.push(AND);
+            }
+            lastOneIsSign = true;
+            
             //得到目前情况
             if (thisSign == RQ || (thisSign == OR && signs.top() == AND))
             {
@@ -268,7 +273,7 @@ std::unordered_set<int> strJump(gragh G, std::string str, std::unordered_set<int
     return end;
 }
 
-bool search(std:: vector<std::unordered_set<int>> &nodeVec, std::unordered_set<int> state){
+int search(std:: vector<std::unordered_set<int>> &nodeVec, std::unordered_set<int> state){
     for (int i = 0; i < nodeVec.size(); i++)
     {
         if (nodeVec[i] == state)
@@ -289,7 +294,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
         int Ns = search(nodeVec,start);
         
 
-        if(Ne  != -1 && result.find(edge()) == result.end())//这既没有新节点也没有新边
+        if(Ne  != -1 && result.find(edge(Ns,Ne,true,j)) != result.end())//这既没有新节点也没有新边
         {
             continue;
         }else{
@@ -299,7 +304,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
 
             }//结束点是新的，取点
             result.insert(edge(Ns,Ne,true,j));
-            if (start.find(G.end) != start.end())
+            if (finalstate.find(G.end) != start.end())
             {
                 inGragh->finalNodes.insert(Ne);
             }
@@ -325,6 +330,7 @@ void Gragh::toDFA(){
     {
         inGragh->edges->push_back(e);
     }
+    inGragh->start = 0;
     inGragh->size = nodeVec.size();
     delete oldG;
 }

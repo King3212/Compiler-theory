@@ -164,9 +164,10 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
                 {
                     if (data->reExpress[i] == '-' &&  (pos == 0 || data->reExpress[pos-1] != '\\'))
                     {
-                        for (char i = data->reExpress[i-1]; i < data->reExpress[i+1]; i++)
+                        for (char j = data->reExpress[i-1]; j <= data->reExpress[i+1]; j++)
                         {
-                            replaceStr += std::string(i,1) + "|";
+                            replaceStr.push_back(j);
+                            replaceStr.push_back('|');
                         }
                         
                     }
@@ -176,7 +177,7 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
                 replaceStr.pop_back();
                 replaceStr+=")";
                 //替换
-                data->reExpress.replace(pos,end-pos,replaceStr);
+                data->reExpress.replace(pos,end-pos+1,replaceStr);
                 pos += replaceStr.size();
             }else pos++;
             

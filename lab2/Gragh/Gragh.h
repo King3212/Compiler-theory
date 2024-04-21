@@ -95,8 +95,7 @@ private:
     void compressDFA();
 
     void aNewEdge(std::string x);
-    void makeGragh(std::unordered_set<int> start,gragh &oldG,int lastNode, std::string jump);
-
+    void makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec);
     void andConnet();
     void orConnet();
     void closure();

@@ -214,9 +214,7 @@ void Gragh::positive_closure()
 }
 
 /**
- * 这个函数从starts出发,寻找所有的str闭包
- * 将str闭包添加到starts中
- * 返回所有可能从starts跳转条件
+ * 这个函数从starts出发,寻找所有的e闭包
 */
 std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &G){
     std::unordered_set<std::string> jump;
@@ -250,66 +248,66 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
     return jump;
     
 }
-
 /**
- * 这个函数从扫描给定终点的所有e闭包
- * 与给定起点结合生成边写入图
- * 再扫描从终点开始的所有转移条件
- * 对所有转移条件进行递归调用
- * 
- * 
- * 终止条件是：如果已经遍历了所有节点的所有边
- * 在递归调用前检查这条边是否已经被遍历过,和对应的起始集合
+ * 这个函数返回转换状态的终点闭包
 */
-void Gragh::makeGragh(std::unordered_set<int> end, gragh &oldG, int in,std::string jump)
-{
-
-    int out = this->inGragh->size -1;
-    (this->inGragh->size)++;
-    //取新节点
-    std::unordered_set<std::string> jumps;
-    jumps = eclosure(end,oldG);
-    //获得e闭包,所有跳转
-    inGragh->edges->push_back(edge(in,out,true,jump));
-    //对e闭包进行写入图
-    
-    if (end.find(oldG.end) != end.end())
+std::unordered_set<int> strJump(gragh G, std::string str, std::unordered_set<int> start){
+    std::unordered_set<int> end;
+    for (auto i : start)
     {
-        inGragh->finalNodes.insert(out);
-    }
-    //检查此节点是否为结束节点
-    
-    
-    std::vector<std::unordered_set<int>> jumpVec;
-    int st = 0;
-    if(!jumps.empty()){
-        for (auto j : jumps){
-            jumpVec.push_back(std::unordered_set<int>());
-            for (int i  = 0; i < oldG.edges->size(); i++){
-                if ((*oldG.edges)[i].express == j && end.find((*oldG.edges)[i].begin) != end.end()&& (*oldG.edges)[i].calEx)
-                {
-                    jumpVec[st].insert((*oldG.edges)[i].end);
-                }
-            }
-            st++;
-            if (st >= jumps.size())
+        for (auto e : *G.edges)
+        {
+            if (e.begin == i && str == e.express)
             {
-                break;
+                end.insert(e.end);
             }
+            
         }
-    //对所有跳转寻找一层终点
+        
+    }
+    return end;
+}
 
-        st = 0;
-        for (auto i : jumps){
-            makeGragh(jumpVec[st],oldG,out,i);
-            st++;
-            if (st >= jumps.size())
+bool search(std:: vector<std::unordered_set<int>> &nodeVec, std::unordered_set<int> state){
+    for (int i = 0; i < nodeVec.size(); i++)
+    {
+        if (nodeVec[i] == state)
+        {
+            return i;
+        }
+        
+    }
+    return -1;
+}
+
+void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec){
+    std::unordered_set<std::string> nextjumps;
+    for (auto j : jumps){
+        std::unordered_set<int> finalstate = strJump(G,j,start);
+        nextjumps = eclosure(finalstate,G);
+        int Ne = search(nodeVec,finalstate);
+        int Ns = search(nodeVec,start);
+        
+
+        if(Ne  != -1 && result.find(edge()) == result.end())//这既没有新节点也没有新边
+        {
+            continue;
+        }else{
+            if(Ne == -1){
+                Ne = nodeVec.size();
+                nodeVec.push_back(finalstate);
+
+            }//结束点是新的，取点
+            result.insert(edge(Ns,Ne,true,j));
+            if (start.find(G.end) != start.end())
             {
-                break;
+                inGragh->finalNodes.insert(Ne);
             }
+            
+            makeG(finalstate,nextjumps,G,result,nodeVec);
         }
     }
-    //递归寻找闭包
+    
 }
 
 /**
@@ -318,22 +316,17 @@ void Gragh::makeGragh(std::unordered_set<int> end, gragh &oldG, int in,std::stri
 void Gragh::toDFA(){
     gragh *oldG = this->inGragh;
     this->inGragh = new gragh();
-    //修改全局图
-    int out = this->inGragh->size;
-    (this->inGragh->size)++;
-    //取新节点
     std::unordered_set<int> start = {oldG->start};
-    makeGragh(start,*oldG,-1,"");
-    //虚构一个终点(实为起点),用makeGragh生成起点
-    while ((*inGragh->edges)[0].begin == -1)
+    std::unordered_set<std::string>jumps = eclosure(start,*oldG);
+    std::unordered_set<edge> result;
+    std:: vector<std::unordered_set<int>> nodeVec = {start};
+    makeG(start,jumps,*oldG,result,nodeVec);
+    for (auto e : result)
     {
-        inGragh->edges->erase(inGragh->edges->begin());
-        inGragh->size--;
+        inGragh->edges->push_back(e);
     }
-    
-    //删除不应该存在的边
-    inGragh->start = 0;
-    //添加图起点
+    inGragh->size = nodeVec.size();
+    delete oldG;
 }
 
 

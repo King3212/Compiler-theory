@@ -77,6 +77,7 @@ struct gragh
     }
 };
 
+
 /**
  * 这个类储存着图
  * 提供处理图的函数
@@ -94,7 +95,7 @@ private:
     void compressDFA();
 
     void aNewEdge(std::string x);
-    void makeGragh(std::unordered_set<int> start,gragh oldG,int lastNode, std::string jump);
+    void makeGragh(std::unordered_set<int> start,gragh &oldG,int lastNode, std::string jump);
 
     void andConnet();
     void orConnet();

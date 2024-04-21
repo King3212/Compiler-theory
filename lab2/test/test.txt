@@ -1,1 +1,1 @@
-_simpleA = a
+_simpleA = a*

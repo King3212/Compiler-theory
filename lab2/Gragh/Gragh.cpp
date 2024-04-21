@@ -139,9 +139,9 @@ void Gragh::aNewEdge(std::string x)
 void Gragh::andConnet()
 {
     edge first,second;
-    first = this->subG.top();
+    second = this->subG.top();
     this->subG.pop();
-    second = subG.top();
+    first = subG.top();
     this->subG.pop();
     //取出栈中前两个元素
     this->inGragh->edges->push_back(edge(first.end,second.begin));
@@ -222,7 +222,7 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
     std::unordered_set<std::string> jump;
     std::unordered_set<int> add;
     for(int start : starts){
-        for(edge e: *(G.edges)){
+        for(edge &e: *(G.edges)){
             if (e.begin == start && e.calEx == true)
             {
                 if (e.express == "")
@@ -252,12 +252,18 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
 }
 
 /**
- * 这个函数从起点开始调用eclosure函数
- * 开出一个jump大的vector数组jumps
- * 遍历图,得到满足jump
+ * 这个函数从扫描给定终点的所有e闭包
+ * 与给定起点结合生成边写入图
+ * 再扫描从终点开始的所有转移条件
+ * 对所有转移条件进行递归调用
+ * 
+ * 
+ * 终止条件是：如果已经遍历了所有节点的所有边
+ * 在递归调用前检查这条边是否已经被遍历过,和对应的起始集合
 */
-void Gragh::makeGragh(std::unordered_set<int> end, gragh oldG, int in,std::string jump)
+void Gragh::makeGragh(std::unordered_set<int> end, gragh &oldG, int in,std::string jump)
 {
+
     int out = this->inGragh->size -1;
     (this->inGragh->size)++;
     //取新节点
@@ -279,10 +285,10 @@ void Gragh::makeGragh(std::unordered_set<int> end, gragh oldG, int in,std::strin
     if(!jumps.empty()){
         for (auto j : jumps){
             jumpVec.push_back(std::unordered_set<int>());
-            for (auto e : *oldG.edges){
-                if (e.express == j && end.find(e.begin) != end.end())
+            for (int i  = 0; i < oldG.edges->size(); i++){
+                if ((*oldG.edges)[i].express == j && end.find((*oldG.edges)[i].begin) != end.end()&& (*oldG.edges)[i].calEx)
                 {
-                    jumpVec[st].insert(e.end);
+                    jumpVec[st].insert((*oldG.edges)[i].end);
                 }
             }
             st++;

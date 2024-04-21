@@ -7,8 +7,9 @@ void run(string path = "./test/test.txt"){
     for (int i = 0; i < data->size(); i++)
     {
         g.process((*data)[i]->reExpress);
-        cout << string('*',3) << string('-',20) << string('*',3) << endl;
-        cout << string('*',3) <<"\tGragh "<< i << "\t"<< string('*',3) << endl;
+        cout <<"***----------------------------------------------***"<< endl;
+        cout <<"***-------\"+\"代表出口----------\"-\"代表入口-------***" << endl;
+        cout << "***    " <<"Gragh "<< (*data)[i]->name << ": "<< (*data)[i]->reExpress << "    ***" << endl;
         for(auto i : g.toString()){
             cout << i << endl;
         }

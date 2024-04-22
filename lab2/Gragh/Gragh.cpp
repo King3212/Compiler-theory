@@ -4,7 +4,7 @@
 
 
 bool isSign(char x){
-    for (auto i : "*+()|")
+    for (auto i : "*+()|?")
     {
         if(i == x) return true;
     }
@@ -23,6 +23,8 @@ sign dealSign(char sign)
         return RQ;
     }else if(sign == '|'){
         return OR;
+    }else if(sign == '?'){
+        return QM;
     }
 }
 
@@ -90,6 +92,8 @@ void Gragh::toNFA(std::string re){
                 positive_closure();
             }else if(thisSign == LQ || thisSign == OR){
                 signs.push(thisSign);
+            }else if(thisSign == QM){
+                qmConnet();
             }
             //检查出栈情况
 
@@ -193,6 +197,25 @@ void Gragh::closure()
     this->inGragh->edges->push_back(edge(start,ele.begin));
     this->inGragh->edges->push_back(edge(start,end));
     this->inGragh->edges->push_back(edge(ele.end,ele.begin));
+    this->inGragh->edges->push_back(edge(ele.end,end));
+    //添加空边
+    subG.push(edge(start,end,false));
+    //压栈
+}
+
+void Gragh::qmConnet()
+{
+    edge ele;
+    ele = this->subG.top();
+    this->subG.pop();
+    //取出栈中一个元素
+    int start = this->inGragh->size;
+    (this->inGragh->size)++;
+    int end = this->inGragh->size;
+    (this->inGragh->size)++;
+    //取新节点
+    this->inGragh->edges->push_back(edge(start,ele.begin));
+    this->inGragh->edges->push_back(edge(start,end));
     this->inGragh->edges->push_back(edge(ele.end,end));
     //添加空边
     subG.push(edge(start,end,false));
@@ -323,6 +346,9 @@ void Gragh::toDFA(){
     this->inGragh = new gragh();
     std::unordered_set<int> start = {oldG->start};
     std::unordered_set<std::string>jumps = eclosure(start,*oldG);
+    if(start.find(oldG->end) != start.end()){
+        inGragh->finalNodes.insert(0);
+    }
     std::unordered_set<edge> result;
     std:: vector<std::unordered_set<int>> nodeVec = {start};
     makeG(start,jumps,*oldG,result,nodeVec);
@@ -517,6 +543,9 @@ void Gragh::compressDFA(){
         }
 
         edgeSet->insert(edge(stB,stE,true,e.express));
+    }
+    if(oldG->finalNodes.find(oldG->start) != oldG->finalNodes.end()){
+        inGragh->finalNodes.insert(inGragh->start);
     }
     //遍历边,添加到边集中
     delete oldG;

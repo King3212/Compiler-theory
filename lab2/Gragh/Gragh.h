@@ -14,6 +14,7 @@ enum sign{
     PCL,
     LQ,
     RQ,
+    QM
 };
 
 /**edge
@@ -91,13 +92,12 @@ private:
     
 private:
     void toNFA(std::string re);
-    void toDFA();
-    void compressDFA();
 
     void aNewEdge(std::string x);
     void makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec);
     void andConnet();
     void orConnet();
+    void qmConnet();
     void closure();
     void positive_closure();
 
@@ -107,17 +107,17 @@ public:
     void process(std::string reExpress){
         inGragh = new gragh();
         toNFA(reExpress);
-        toDFA();
-        compressDFA();
     }
+    void toDFA();
+    void compressDFA();
     gragh getGragh(){
         return *inGragh;
     }
     ~Gragh(){
         delete inGragh;
     }
-    std::vector<std::string> toString(){
-        std::vector<std::string> result;
+    std::string toString(){
+        std::string result;
         for (auto e : *inGragh->edges){
             std::string str = "";
             if(inGragh->start == e.begin){
@@ -152,7 +152,8 @@ public:
                 str += "  ";
             }//检查是否为出口
             //检查终点
-            result.push_back(str);
+            result += str;
+            result.push_back('\n');
         }
         return result;
     }

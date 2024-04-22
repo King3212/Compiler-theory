@@ -47,7 +47,7 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
                 }
                 pos++;
             }else if(line[pos] == '='){
-                oneData->name = line.substr(startPos,pos-startPos);
+                oneData->name = line.substr(startPos,pos-startPos-1);
                 oneData->re = line.substr(pos+1);
                 pos = oneData->re.find_first_not_of(" \t");
                 oneData->re = oneData->re.substr(pos);
@@ -81,7 +81,7 @@ std::vector<finalData*>* replaceRe(std::vector<scanData*> *reExpresses) {
     
     // 遍历扫描到的正则表达式，将其标识符及定义存储到映射中
     for (scanData* scanDataPtr : *reExpresses) {
-        definitions[scanDataPtr->name] = scanDataPtr->re;
+        if(!scanDataPtr->needToScan) definitions[scanDataPtr->name] = scanDataPtr->re;
     }
 
     // 替换每个正则表达式中的标识符

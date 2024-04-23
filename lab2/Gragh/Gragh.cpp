@@ -1,3 +1,5 @@
+﻿#pragma execution_character_set("utf-8")
+
 #include"Gragh.h"
 #include<stack>
 
@@ -327,7 +329,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
 
             }//结束点是新的，取点
             result.insert(edge(Ns,Ne,true,j));
-            if (finalstate.find(G.end) != start.end())
+            if (finalstate.find(G.end) != finalstate.end())
             {
                 inGragh->finalNodes.insert(Ne);
             }
@@ -472,7 +474,9 @@ void Gragh::compressDFA(){
             {
                 inGragh->size = unionVec.size();
             }
-            unionVec.push_back((std::vector<int>){(*nodes)[nPos].first});
+            std::vector<int> temp;
+            temp.push_back((*nodes)[nPos].first);
+            unionVec.push_back(temp);
             
             
         }else{

@@ -1,8 +1,0 @@
-// I have a apple
-/**
- * apple yeah!
- * apple yeah!
-*/
-/*I like apple*/
-
-

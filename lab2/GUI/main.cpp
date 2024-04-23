@@ -1,3 +1,5 @@
+﻿#pragma execution_character_set("utf-8")
+
 #include <QApplication>
 #include <QWidget>
 #include <QGridLayout>
@@ -22,45 +24,27 @@ public:
         setWindowTitle("Qt应用程序");
 
         // 创建文本框
-        textEdit1 = new QTextEdit(this);
-        textEdit2 = new QTextEdit(this);
-        textEdit3 = new QTextEdit(this);
-        textEdit4 = new QTextEdit(this);
-
-        // 设置文本框宽度
-        textEdit1->setFixedWidth(200); // 至少25个字符的宽度
-        textEdit2->setFixedWidth(200);
-        textEdit3->setFixedWidth(200);
-        textEdit4->setFixedWidth(200);
-
-        // 设置文本框高度
-        textEdit1->setFixedHeight(200); // 至少15行的高度
-        textEdit2->setFixedHeight(200);
-        textEdit3->setFixedHeight(200);
-        textEdit4->setFixedHeight(200);
-
-        // 启用自动换行
-        textEdit1->setWordWrapMode(QTextOption::WordWrap);
-        textEdit2->setWordWrapMode(QTextOption::WordWrap);
-        textEdit3->setWordWrapMode(QTextOption::WordWrap);
-        textEdit4->setWordWrapMode(QTextOption::WordWrap);
+        textEdit1 = new QTextEdit;
+        textEdit2 = new QTextEdit;
+        textEdit3 = new QTextEdit;
+        textEdit4 = new QTextEdit;
 
         // 创建标签
-        QLabel *label1 = new QLabel("正则表达式", this);
-        QLabel *label2 = new QLabel("NFA", this);
-        QLabel *label3 = new QLabel("DFA", this);
-        QLabel *label4 = new QLabel("最小化的DFA", this);
+        QLabel *label1 = new QLabel("正则表达式");
+        QLabel *label2 = new QLabel("NFA");
+        QLabel *label3 = new QLabel("DFA");
+        QLabel *label4 = new QLabel("最小化的DFA");
 
         // 创建按钮
-        button1 = new QPushButton("打开文件", this);
-        button2 = new QPushButton("保存文件", this);
-        button3 = new QPushButton("生成图", this); // 新增的按钮
+        button1 = new QPushButton("打开文件");
+        button2 = new QPushButton("保存文件");
+        button3 = new QPushButton("生成图"); // 新增的按钮
 
         // 创建滚动区域
-        QScrollArea *scrollArea1 = new QScrollArea(this);
-        QScrollArea *scrollArea2 = new QScrollArea(this);
-        QScrollArea *scrollArea3 = new QScrollArea(this);
-        QScrollArea *scrollArea4 = new QScrollArea(this);
+        QScrollArea *scrollArea1 = new QScrollArea;
+        QScrollArea *scrollArea2 = new QScrollArea;
+        QScrollArea *scrollArea3 = new QScrollArea;
+        QScrollArea *scrollArea4 = new QScrollArea;
 
         // 将文本框和标签放置在垂直布局中
         QVBoxLayout *layout1 = new QVBoxLayout;
@@ -88,6 +72,11 @@ public:
         widget3->setLayout(layout3);
         widget4->setLayout(layout4);
 
+        scrollArea1->setWidgetResizable(true);
+        scrollArea2->setWidgetResizable(true);
+        scrollArea3->setWidgetResizable(true);
+        scrollArea4->setWidgetResizable(true);
+
         scrollArea1->setWidget(widget1);
         scrollArea2->setWidget(widget2);
         scrollArea3->setWidget(widget3);
@@ -110,6 +99,7 @@ public:
         connect(button2, &QPushButton::clicked, this, &MainWindow::saveFile);
         connect(button1, &QPushButton::clicked, this, &MainWindow::openFile); // 连接新的按钮
     }
+
 
 private slots:
 

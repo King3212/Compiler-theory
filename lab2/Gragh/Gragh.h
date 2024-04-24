@@ -11,11 +11,11 @@
 enum sign{
     OR,
     AND,
-    CL,
-    PCL,
-    LQ,
-    RQ,
-    QM
+    CL,//闭包
+    PCL,//正闭包
+    LQ,//左括号
+    RQ,//右括号
+    QM//选择
 };
 
 /**edge

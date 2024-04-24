@@ -30,6 +30,7 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 
     for (std::string line : lines)
     {
+        if(line == "") continue;
         bool once = true;
         oneData = new scanData(); 
         int pos = 0;
@@ -51,6 +52,11 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
             }else if(line[pos] == '='){
                 oneData->name = line.substr(startPos,pos-startPos);
                 oneData->re = line.substr(pos+1);
+
+
+                pos = oneData->name.find_first_of(" \t");
+                oneData->name = oneData->name.substr(0,pos);
+
                 pos = oneData->re.find_first_not_of(" \t");
                 oneData->re = oneData->re.substr(pos);
                 break;

@@ -127,15 +127,17 @@ private slots:
             QString temp = "\n\n\n***-------------------***\n正则表达式:" + QString::fromStdString((*data)[i]->reExpress) + "\n名称:" + QString::fromStdString((*data)[i]->name) + "\n\n";
             g.process((*data)[i]->reExpress);
             newText1 += temp + QString::fromStdString(g.toString());
+            textEdit2->setPlainText(newText1);
             g.toDFA();
             newText2 += temp + QString::fromStdString(g.toString());
+            textEdit3->setPlainText(newText2);
             g.compressDFA();
             newText3 += temp + QString::fromStdString(g.toString());
 
 
         }
-        textEdit2->setPlainText(newText1);
-        textEdit3->setPlainText(newText2);
+
+
         textEdit4->setPlainText(newText3);
     }
 

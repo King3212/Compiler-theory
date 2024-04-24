@@ -63,7 +63,7 @@ void Gragh::toNFA(std::string re){
                 lastOneIsSign = false;
             
             //得到目前情况
-            if (thisSign == RQ || (thisSign == OR && signs.top() == AND))
+            if (thisSign == RQ || (thisSign == OR && (signs.empty()||signs.top() == AND)))
             {
                 sign one;
                 while (!signs.empty())

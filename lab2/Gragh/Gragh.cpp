@@ -53,11 +53,14 @@ void Gragh::toNFA(std::string re){
         if (!turn && isSign(re[pos]))//正常符号识别
         {
             sign thisSign = dealSign(re[pos]);
-            if (lastOneIsSign == false && thisSign == LQ)
+            if ((lastOneIsSign == false && thisSign == LQ))
             {
                 signs.push(AND);
             }
-            lastOneIsSign = true;
+            if (thisSign != RQ && thisSign != CL && thisSign != PCL && thisSign != QM)
+                lastOneIsSign = true;
+            else
+                lastOneIsSign = false;
             
             //得到目前情况
             if (thisSign == RQ || (thisSign == OR && signs.top() == AND))
@@ -249,7 +252,7 @@ void Gragh::positive_closure()
 std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &G){
     std::unordered_set<std::string> jump;
     std::unordered_set<int> add;
-    for(int start : starts){
+    for(int start : starts){//遍历当前所有起点
         for(edge &e: *(G.edges)){
             if (e.begin == start && e.calEx == true)
             {

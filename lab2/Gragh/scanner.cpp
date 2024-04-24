@@ -49,7 +49,7 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
                 }
                 pos++;
             }else if(line[pos] == '='){
-                oneData->name = line.substr(startPos,pos-startPos-1);
+                oneData->name = line.substr(startPos,pos-startPos);
                 oneData->re = line.substr(pos+1);
                 pos = oneData->re.find_first_not_of(" \t");
                 oneData->re = oneData->re.substr(pos);

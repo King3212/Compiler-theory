@@ -37,7 +37,7 @@ struct edge
         this->express = express;
     }
     std::string toString(){
-        return std::to_string(begin) + "---" + express + "-->" + std::to_string(end);
+        return std::to_string(begin) + "--- \'" + express + "\' -->" + std::to_string(end);
     }
     // 定义相等运算符
     bool operator==(const edge& other) const {

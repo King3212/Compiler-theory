@@ -21,7 +21,7 @@
 class MainWindow : public QWidget {
 public:
     MainWindow(QWidget *parent = nullptr) : QWidget(parent) {
-        setWindowTitle("Qt应用程序");
+        setWindowTitle("正则表达式转DFA程序");
 
         // 创建文本框
         textEdit1 = new QTextEdit;

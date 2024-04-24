@@ -66,7 +66,6 @@ void Gragh::toNFA(std::string re){
             if (thisSign == RQ || (thisSign == OR && signs.top() == AND))
             {
                 sign one;
-                bool thisLQ = thisSign == RQ;
                 while (!signs.empty())
                 {
                     one = signs.top();
@@ -74,11 +73,7 @@ void Gragh::toNFA(std::string re){
                     
                     if (one == LQ)
                     {
-                        if (thisLQ)
-                        {
-                            thisLQ = false;
-                            continue;
-                        }else break;
+                        break;
                     }else if (one == OR)
                     {
                         orConnet();

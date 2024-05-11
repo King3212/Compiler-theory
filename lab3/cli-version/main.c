@@ -45,6 +45,8 @@ int TraceCode = FALSE;
 
 int Error = FALSE;
 
+//todo:修改main函数为其他函数，使其接收参数，生成分析树
+
 int main( int argc, char * argv[] )
 { TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
@@ -65,10 +67,13 @@ int main( int argc, char * argv[] )
 #if NO_PARSE
   while (getToken()!=ENDFILE);
 #else
-  syntaxTree = parse();
+  syntaxTree = parse(); /*这里进行分析，得到分析树*/
   if (TraceParse) {
     fprintf(listing,"\nSyntax tree:\n");
-    printTree(syntaxTree);
+    printTree(syntaxTree);/*这里打印树*/
+    
+    //Todo: 从这里返回语法分析树
+
   }
 #if !NO_ANALYZE
   if (! Error)
@@ -78,7 +83,7 @@ int main( int argc, char * argv[] )
     typeCheck(syntaxTree);
     if (TraceAnalyze) fprintf(listing,"\nType Checking Finished\n");
   }
-#if !NO_CODE
+#if !NO_CODE 
   if (! Error)
   { char * codefile;
     int fnlen = strcspn(pgm,".");

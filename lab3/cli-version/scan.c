@@ -76,7 +76,7 @@ static TokenType reservedLookup (char * s)
 /* function getToken returns the 
  * next token in source file
  */
-TokenType getToken(void)
+TokenType getToken(void)//获取token
 {  /* index for storing into tokenString */
    int tokenStringIndex = 0;
    /* holds current token to be returned */

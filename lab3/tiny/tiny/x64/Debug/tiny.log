@@ -1,0 +1,3 @@
+﻿  MAIN.C
+C:\Users\King3212\Desktop\Compiler-theory\lab3\tiny\MAIN.C(84,17): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  tiny.vcxproj -> C:\Users\King3212\Desktop\Compiler-theory\lab3\tiny\x64\Debug\tiny.exe

@@ -117,8 +117,17 @@ TreeNode *if_stmt(void) /*if语句*/
   /**todo: 重写if_stmt
    * if_stmt-->if(exp) stmt-sequence else stmt-sequence | if(exp) stmt-sequence
    * 用括号来标识exp的范围
+   *
+   * finish?
    */
-
+  match(LPAREN);
+  if (t != NULL) t->child[0] = exp();
+  match(RPAREN);
+  if (t != NULL) t->child[1] = stmt_sequence();
+  if (token == ELSE) {
+    match(ELSE);
+    if (t != NULL) t->child[2] = stmt_sequence();
+  }
   return t;
 }
 

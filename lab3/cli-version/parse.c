@@ -215,7 +215,8 @@ TreeNode *simple_exp(void)
 
 TreeNode *term(void)
 {
-  TreeNode *t = factor();
+  /*todo: insert % operation here*/
+  TreeNode *t = newTerm();
   while ((token == TIMES) || (token == OVER))
   {
     TreeNode *p = newExpNode(OpK);
@@ -231,6 +232,25 @@ TreeNode *term(void)
   return t;
 }
 
+  /*todo: insert ++,--,^ operation*/
+TreeNode *newTerm(void)
+{
+  TreeNode *t = factor();
+  while ((token == INCRESE) || (token == DECREASE) || (token == POWER))
+  {
+    TreeNode *p = newExpNode(OpK);
+    if (p != NULL)
+    {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      p->child[1] = factor();
+    }
+  }
+  return t;
+}
+}
 TreeNode *factor(void)
 {
   TreeNode *t = NULL;

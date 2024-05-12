@@ -24,7 +24,13 @@ static TreeNode *exp(void);
 static TreeNode *simple_exp(void);
 static TreeNode *term(void);
 static TreeNode *factor(void);
-
+static TreeNode *for_stmt(void);
+static TreeNode *while_stmt(void);
+static TreeNode *re_exp(void);
+static TreeNode *simple_re_exp(void);
+static TreeNode *closure(void);
+static TreeNode *re_factor(void);
+static TreeNode *power_exp(void);
 static void syntaxError(char *message)
 {
   fprintf(listing, "\n>>> ");
@@ -90,6 +96,12 @@ TreeNode *statement(void) /*指令类型*/
   case WRITE:
     t = write_stmt();
     break;
+  case WHILE:
+    t = while_stmt();
+    break;
+  case FOR:
+    t = for_stmt();
+    break;
   default:
     syntaxError("unexpected token -> ");
     printToken(token, tokenString);
@@ -120,6 +132,7 @@ TreeNode *if_stmt(void) /*if语句*/
    *
    * finish?
    */
+  match(IF);
   match(LPAREN);
   if (t != NULL) t->child[0] = exp();
   match(RPAREN);
@@ -128,6 +141,31 @@ TreeNode *if_stmt(void) /*if语句*/
     match(ELSE);
     if (t != NULL) t->child[2] = stmt_sequence();
   }
+  return t;
+}
+
+TreeNode *for_stmt(void) /*while语句*/
+{
+  TreeNode *t = newStmtNode(WhileK);
+  match(WhileK);
+  match(LPAREN);
+  if (t != NULL) t->child[0] = assign_stmt();
+  if (t != NULL) t->child[1] = exp();
+  if (t != NULL) t->child[2] = exp();
+  match(RPAREN);
+  if (t != NULL) t->child[3] = stmt_sequence();
+  return t;
+}
+
+TreeNode *while_stmt(void) /*while语句*/
+{
+  TreeNode *t = newStmtNode(WhileK);
+  match(WhileK);
+  match(LPAREN);
+  if (t != NULL) t->child[0] = exp();
+  match(RPAREN);
+  if (t != NULL) t->child[3] = stmt_sequence();
+  match(ENDWHILE);
   return t;
 }
 
@@ -151,9 +189,20 @@ TreeNode *assign_stmt(void)
   if ((t != NULL) && (token == ID))
     t->attr.name = copyString(tokenString);
   match(ID);
-  match(ASSIGN);
-  if (t != NULL)
-    t->child[0] = exp();
+  if (token == ASSIGN){
+    printf("here!\n");
+    t->attr.op = ASSIGN;
+    match(ASSIGN);
+    if (t != NULL)
+      t->child[0] = exp();
+  }else if(token == REASSIGN){
+    printf("here RE!\n");
+    t->attr.op = REASSIGN;
+    match(REASSIGN);
+    if (t != NULL)
+      t->child[0] = re_exp();
+  }
+  
   return t;
 }
 
@@ -176,10 +225,80 @@ TreeNode *write_stmt(void)
   return t;
 }
 
+TreeNode *re_exp(void){
+  TreeNode *t = simple_re_exp();
+  while (token == OR)
+  {
+    TreeNode *p = newExpNode(OpK);
+    if (p != NULL)
+    {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      t->child[1] = simple_re_exp();
+    }
+  }
+}
+
+TreeNode *simple_re_exp(void){
+  TreeNode *t = closure();
+  while (token == CONNECT)
+  {
+    TreeNode *p = newExpNode(OpK);
+    if (p != NULL)
+    {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      t->child[1] = closure();
+    }
+  }
+}
+
+TreeNode *closure(void){
+  TreeNode* t = re_factor();
+  while (token == CLOSURE || token == CHOOSE)
+  {
+    TreeNode *p = newExpNode(OpK);
+    p->attr.op = token;
+    p->child[0] = t;
+    t = p;
+  }
+  return t;
+}
+
+TreeNode *re_factor(void)
+{
+  TreeNode *t = NULL;
+  switch (token)
+  {
+  case LPAREN:
+    match(LPAREN);
+    t = re_exp();
+    match(RPAREN);
+    break;
+  case NUM:
+  case ID:
+    t = newExpNode(ConstK);
+    if (t != NULL)
+      t->attr.val = copyString(tokenString);
+    match(token);
+    break;
+  default:
+    syntaxError("unexpected token -> ");
+    printToken(token, tokenString);
+    token = getToken();
+    break;
+  }
+  return t;
+}
+
 TreeNode *exp(void)
 {
   TreeNode *t = simple_exp();
-  if ((token == LT) || (token == EQ))
+  if ((token == LT) || (token == EQ) || (token == RT) || (token == LTEQ) || (token == RTEQ) || (token == NEQ))
   {
     TreeNode *p = newExpNode(OpK);
     if (p != NULL)
@@ -213,11 +332,30 @@ TreeNode *simple_exp(void)
   return t;
 }
 
+
 TreeNode *term(void)
 {
   /*todo: insert % operation here*/
-  TreeNode *t = newTerm();
-  while ((token == TIMES) || (token == OVER))
+  TreeNode *t = power_exp();
+  while ((token == TIMES) || (token == OVER) || (token == MOD))
+  {
+    TreeNode *p = newExpNode(OpK);
+    if (p != NULL)
+    {
+      p->child[0] = t;
+      p->attr.op = token;
+      t = p;
+      match(token);
+      p->child[1] = power_exp();
+    }
+  }
+  return t;
+}
+
+    /*todo: add ^operation*/
+TreeNode *power_exp(void){
+  TreeNode *t = factor();
+  while ((token == POWER))
   {
     TreeNode *p = newExpNode(OpK);
     if (p != NULL)
@@ -232,25 +370,6 @@ TreeNode *term(void)
   return t;
 }
 
-  /*todo: insert ++,--,^ operation*/
-TreeNode *newTerm(void)
-{
-  TreeNode *t = factor();
-  while ((token == INCRESE) || (token == DECREASE) || (token == POWER))
-  {
-    TreeNode *p = newExpNode(OpK);
-    if (p != NULL)
-    {
-      p->child[0] = t;
-      p->attr.op = token;
-      t = p;
-      match(token);
-      p->child[1] = factor();
-    }
-  }
-  return t;
-}
-}
 TreeNode *factor(void)
 {
   TreeNode *t = NULL;
@@ -272,6 +391,16 @@ TreeNode *factor(void)
     match(LPAREN);
     t = exp();
     match(RPAREN);
+    break;
+  case INCREASE:
+  case DECREASE:
+    TreeNode *p = newExpNode(OpK);
+    if (p != NULL)
+    {
+      p->attr.op = token;
+      match(token);
+      p->child[1] = factor();
+    }
     break;
   default:
     syntaxError("unexpected token -> ");

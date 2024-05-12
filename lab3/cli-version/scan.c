@@ -11,7 +11,7 @@
 
 /* states in scanner DFA */
 typedef enum
-   { START,INASSIGN,INCOMMENT,INNUM,INID,DONE }
+   { START,INASSIGN,INCOMMENT,INNUM,INID,DONE,INC,DEC,REEQ,RTS,LTS }
    StateType;
 
 /* lexeme of identifier or reserved word */
@@ -58,7 +58,7 @@ static struct
     } reservedWords[MAXRESERVED]
    = {{"if",IF},{"then",THEN},{"else",ELSE},{"end",END},
       {"repeat",REPEAT},{"until",UNTIL},{"read",READ},
-      {"write",WRITE}};
+      {"write",WRITE},{"while",WHILE},{"endwhile",ENDWHILE},{"for",FOR}};
 
 /* lookup an identifier to see if it is a reserved word */
 /* uses linear search */
@@ -96,12 +96,22 @@ TokenType getToken(void)//获取token
            state = INID;
          else if (c == ':')
            state = INASSIGN;
-         else if ((c == ' ') || (c == '\t') || (c == '\n'))
+         else if ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r'))
            save = FALSE;
          else if (c == '{')
          { save = FALSE;
            state = INCOMMENT;
          }
+         else if (c == '+')
+           state = INC;
+         else if (c == '-')
+           state = DEC;
+         else if (c == '=')
+           state = REEQ;
+         else if (c == '<')
+           state = LTS;
+         else if (c == '>')
+           state = RTS;
          else
          { state = DONE;
            switch (c)
@@ -112,14 +122,17 @@ TokenType getToken(void)//获取token
              case '=':
                currentToken = EQ;
                break;
-             case '<':
-               currentToken = LT;
+             case '?':
+               currentToken = CHOOSE;
                break;
-             case '+':
-               currentToken = PLUS;
+             case '&':
+               currentToken = CONNECT;
                break;
-             case '-':
-               currentToken = MINUS;
+             case '|':
+               currentToken = OR;
+               break;
+             case '#':
+               currentToken = CLOSURE;
                break;
              case '*':
                currentToken = TIMES;
@@ -136,6 +149,12 @@ TokenType getToken(void)//获取token
              case ';':
                currentToken = SEMI;
                break;
+             case '%':
+               currentToken = MOD;
+               break;
+             case '^':
+               currentToken = POWER;
+               break;
              default:
                currentToken = ERROR;
                break;
@@ -148,7 +167,8 @@ TokenType getToken(void)//获取token
          { state = DONE;
            currentToken = ENDFILE;
          }
-         else if (c == '}') state = START;
+         else if (c == '}') 
+          state = START;
          break;
        case INASSIGN:
          state = DONE;
@@ -159,6 +179,41 @@ TokenType getToken(void)//获取token
            ungetNextChar();
            save = FALSE;
            currentToken = ERROR;
+         }
+         break;
+       case REEQ:
+         state = DONE;
+         if (c == '=')
+           currentToken = REASSIGN;
+         else
+         { /* backup in the input */
+           ungetNextChar();
+           save = FALSE;
+           currentToken = EQ;
+         }
+         break;
+       case LTS:
+         state = DONE;
+         if (c == '=')
+           currentToken = LTEQ;
+         else if (c == '>')
+           currentToken = NEQ;
+         else
+         { /* backup in the input */
+           ungetNextChar();
+           save = FALSE;
+           currentToken = LT;
+         }
+         break;
+       case RTS:
+         state = DONE;
+         if (c == '=')
+           currentToken = RTEQ;
+         else
+         { /* backup in the input */
+           ungetNextChar();
+           save = FALSE;
+           currentToken = RT;
          }
          break;
        case INNUM:
@@ -179,7 +234,30 @@ TokenType getToken(void)//获取token
            currentToken = ID;
          }
          break;
+       case INC:
+         state = DONE;
+         if (c == '+')
+           currentToken = INCREASE;
+         else
+         { /* backup in the input */
+           ungetNextChar();
+           save = FALSE;
+           currentToken = PLUS;
+         }
+         break;
+       case DEC:
+         state = DONE;
+         if (c == '-')
+           currentToken = DECREASE;
+         else
+         { /* backup in the input */
+           ungetNextChar();
+           save = FALSE;
+           currentToken = PLUS;
+         }
+         break;
        case DONE:
+       
        default: /* should never happen */
          fprintf(listing,"Scanner Bug: state= %d\n",state);
          state = DONE;

@@ -20,7 +20,7 @@ static TreeNode *repeat_stmt(void);
 static TreeNode *assign_stmt(void);
 static TreeNode *read_stmt(void);
 static TreeNode *write_stmt(void);
-static TreeNode *exp(void);
+static TreeNode *Exp(void);
 static TreeNode *simple_exp(void);
 static TreeNode *term(void);
 static TreeNode *factor(void);
@@ -134,7 +134,7 @@ TreeNode *if_stmt(void) /*if语句*/
    */
   match(IF);
   match(LPAREN);
-  if (t != NULL) t->child[0] = exp();
+  if (t != NULL) t->child[0] = Exp();
   match(RPAREN);
   if (t != NULL) t->child[1] = stmt_sequence();
   if (token == ELSE) {
@@ -147,11 +147,11 @@ TreeNode *if_stmt(void) /*if语句*/
 TreeNode *for_stmt(void) /*while语句*/
 {
   TreeNode *t = newStmtNode(WhileK);
-  match(WhileK);
+  match(WHILE);
   match(LPAREN);
   if (t != NULL) t->child[0] = assign_stmt();
-  if (t != NULL) t->child[1] = exp();
-  if (t != NULL) t->child[2] = exp();
+  if (t != NULL) t->child[1] = Exp();
+  if (t != NULL) t->child[2] = Exp();
   match(RPAREN);
   if (t != NULL) t->child[3] = stmt_sequence();
   return t;
@@ -160,9 +160,9 @@ TreeNode *for_stmt(void) /*while语句*/
 TreeNode *while_stmt(void) /*while语句*/
 {
   TreeNode *t = newStmtNode(WhileK);
-  match(WhileK);
+  match(WHILE);
   match(LPAREN);
-  if (t != NULL) t->child[0] = exp();
+  if (t != NULL) t->child[0] = Exp();
   match(RPAREN);
   if (t != NULL) t->child[3] = stmt_sequence();
   match(ENDWHILE);
@@ -179,7 +179,7 @@ TreeNode *repeat_stmt(void)
     t->child[0] = stmt_sequence();
   match(UNTIL);
   if (t != NULL)
-    t->child[1] = exp();
+    t->child[1] = Exp();
   return t;
 }
 
@@ -190,14 +190,10 @@ TreeNode *assign_stmt(void)
     t->attr.name = copyString(tokenString);
   match(ID);
   if (token == ASSIGN){
-    printf("here!\n");
-    t->attr.op = ASSIGN;
     match(ASSIGN);
     if (t != NULL)
-      t->child[0] = exp();
+      t->child[0] = Exp();
   }else if(token == REASSIGN){
-    printf("here RE!\n");
-    t->attr.op = REASSIGN;
     match(REASSIGN);
     if (t != NULL)
       t->child[0] = re_exp();
@@ -221,7 +217,7 @@ TreeNode *write_stmt(void)
   TreeNode *t = newStmtNode(WriteK);
   match(WRITE);
   if (t != NULL)
-    t->child[0] = exp();
+    t->child[0] = Exp();
   return t;
 }
 
@@ -283,7 +279,7 @@ TreeNode *re_factor(void)
   case ID:
     t = newExpNode(ConstK);
     if (t != NULL)
-      t->attr.val = copyString(tokenString);
+      t->attr.name = copyString(tokenString);
     match(token);
     break;
   default:
@@ -295,7 +291,7 @@ TreeNode *re_factor(void)
   return t;
 }
 
-TreeNode *exp(void)
+TreeNode *Exp(void)
 {
   TreeNode *t = simple_exp();
   if ((token == LT) || (token == EQ) || (token == RT) || (token == LTEQ) || (token == RTEQ) || (token == NEQ))
@@ -389,7 +385,7 @@ TreeNode *factor(void)
     break;
   case LPAREN:
     match(LPAREN);
-    t = exp();
+    t = Exp();
     match(RPAREN);
     break;
   case INCREASE:

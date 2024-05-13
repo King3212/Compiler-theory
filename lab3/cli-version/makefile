@@ -1,14 +1,18 @@
-CC = gcc
+CC = g++
 
 CFLAGS = -Wall -g
 
-OBJS = main.o util.o scan.o parse.o symtab.o analyze.o code.o cgen.o
+OBJS = main.o util.o scan.o parse.o getTree.o
+
 
 tiny: $(OBJS)
 	$(CC) $(CFLAGS) -o tiny $(OBJS)
 
-main.o: main.c globals.h util.h scan.h parse.h analyze.h cgen.h
-	$(CC) $(CFLAGS) -c main.c
+main.o: main.cpp globals.h util.h scan.h parse.h getTree.h
+	$(CC) $(CFLAGS) -c main.cpp
+
+getTree.o: getTree.c globals.h util.h scan.h parse.h
+	$(CC) $(CFLAGS) -c getTree.c
 
 util.o: util.c util.h globals.h
 	$(CC) $(CFLAGS) -c util.c
@@ -18,18 +22,6 @@ scan.o: scan.c scan.h util.h globals.h
 
 parse.o: parse.c parse.h scan.h globals.h util.h
 	$(CC) $(CFLAGS) -c parse.c
-
-symtab.o: symtab.c symtab.h
-	$(CC) $(CFLAGS) -c symtab.c
-
-analyze.o: analyze.c globals.h symtab.h analyze.h
-	$(CC) $(CFLAGS) -c analyze.c
-
-code.o: code.c code.h globals.h
-	$(CC) $(CFLAGS) -c code.c
-
-cgen.o: cgen.c globals.h symtab.h code.h cgen.h
-	$(CC) $(CFLAGS) -c cgen.c
 
 clean:
 	rm -f tiny $(OBJS)

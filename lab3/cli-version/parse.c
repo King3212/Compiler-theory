@@ -390,12 +390,14 @@ TreeNode *factor(void)
     break;
   case INCREASE:
   case DECREASE:
-    TreeNode *p = newExpNode(OpK);
-    if (p != NULL)
     {
-      p->attr.op = token;
-      match(token);
-      p->child[1] = factor();
+      TreeNode *p = newExpNode(OpK);
+      if (p != NULL)
+      {
+        p->attr.op = token;
+        match(token);
+        p->child[1] = factor();
+      }
     }
     break;
   default:

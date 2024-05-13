@@ -1,0 +1,9 @@
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/gui-version.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/edit_cache.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/rebuild_cache.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/list_install_components.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/install.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/install/local.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/install/strip.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/gui-version_autogen_timestamp_deps.dir
+/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/gui-version_autogen.dir

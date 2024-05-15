@@ -59,6 +59,11 @@ TreeNode *stmt_sequence(void) /*语句*/
   {
     TreeNode *q;
     match(SEMI);
+    if (token == SEMI)
+    {
+      return t;
+    }
+
     q = statement();
     if (q != NULL)
     {
@@ -146,14 +151,18 @@ TreeNode *if_stmt(void) /*if语句*/
 
 TreeNode *for_stmt(void) /*while语句*/
 {
-  TreeNode *t = newStmtNode(WhileK);
-  match(WHILE);
+  TreeNode *t = newStmtNode(ForK);
+  match(FOR);
   match(LPAREN);
-  if (t != NULL) t->child[0] = assign_stmt();
-  if (t != NULL) t->child[1] = Exp();
-  if (t != NULL) t->child[2] = Exp();
+  if (t == NULL)
+    return NULL;
+  t->child[0] = assign_stmt();
+  match(SEMI);
+  t->child[1] = Exp();
+  match(SEMI);
+  t->child[2] = Exp();
   match(RPAREN);
-  if (t != NULL) t->child[3] = stmt_sequence();
+  t->child[3] = stmt_sequence();
   return t;
 }
 
@@ -420,6 +429,7 @@ TreeNode *parse(void)
   TreeNode *t;
   token = getToken();
   t = stmt_sequence();
+  match(SEMI);
   if (token != ENDFILE)
     syntaxError("Code ends before file\n");
   return t;

@@ -1,7 +1,6 @@
 #include"getTree.h"
-
-/* allocate global variables */
 int lineno = 0;
+/* allocate global variables */
 FILE * source;
 FILE * listing;
 FILE * code;
@@ -16,7 +15,9 @@ int TraceCode = FALSE;
 int Error = FALSE;
 
 TreeNode *getSyntaxTree(char *filename)
-{ TreeNode * syntaxTree;
+{
+  lineno = 0;
+  TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
   strcpy(pgm,filename) ;
   if (strchr (pgm, '.') == NULL)
@@ -37,6 +38,5 @@ TreeNode *getSyntaxTree(char *filename)
     //Todo: 从这里返回语法分析树
 
   }
+  fclose(listing);
 }
-
-

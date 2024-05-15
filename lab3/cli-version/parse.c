@@ -144,7 +144,9 @@ TreeNode *if_stmt(void) /*if语句*/
   if (t != NULL) t->child[1] = stmt_sequence();
   if (token == ELSE) {
     match(ELSE);
-    if (t != NULL) t->child[2] = stmt_sequence();
+    TreeNode *p = newStmtNode(ElseK);
+    p->child[0] = stmt_sequence();
+    t->child[2] = p;
   }
   return t;
 }

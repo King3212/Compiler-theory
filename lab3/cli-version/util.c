@@ -189,6 +189,10 @@ void printTree( TreeNode * tree )
         case ForK:
           fprintf(listing, "For\n");
           break;
+	case ElseK:
+          fprintf(listing, "\bElse\n");
+          break;
+
         default:
           fprintf(listing,"Unknown ExpNode kind\n");
           break;

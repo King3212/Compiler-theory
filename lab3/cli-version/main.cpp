@@ -15,18 +15,18 @@ namespace fs = std::filesystem;
 
 int main()
 {
-    // std::vector<std::string> testfiles = {"SAMPLE.TNY"};
-    std::vector<std::string> testfiles;
+     std::vector<std::string> testfiles = {"test_if.tny"};
+    //std::vector<std::string> testfiles;
     std::string directory = "./testfile/"; // 目录路径
 
     // // 遍历目录，将文件名存入testfiles向量中
-    for (const auto &entry : fs::directory_iterator(directory))
-    {
-        if (fs::is_regular_file(entry.path()))
-        {
-            testfiles.push_back(entry.path().filename().string());
-        }
-    }
+    //for (const auto &entry : fs::directory_iterator(directory))
+    //{
+    //    if (fs::is_regular_file(entry.path()))
+    //    {
+    //        testfiles.push_back(entry.path().filename().string());
+    //    }
+    //}
 
     // 遍历测试文件
     for (const auto &filename : testfiles)

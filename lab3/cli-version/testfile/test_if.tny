@@ -1,7 +1,8 @@
 read x; { input an integer }
 
 if (x > 0)
-    write x;;
+    write x;
+    read y
 else
     write y;;
 if (x < 0)

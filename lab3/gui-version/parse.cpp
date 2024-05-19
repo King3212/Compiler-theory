@@ -13,28 +13,27 @@
 static TokenType token; /* holds current token */
 
 /* function prototypes for recursive calls */
-static TreeNode *stmt_sequence(void);
-static TreeNode *statement(void);
-static TreeNode *if_stmt(void);
-static TreeNode *repeat_stmt(void);
-static TreeNode *assign_stmt(void);
-static TreeNode *read_stmt(void);
-static TreeNode *write_stmt(void);
-static TreeNode *Exp(void);
-static TreeNode *simple_exp(void);
-static TreeNode *term(void);
-static TreeNode *factor(void);
-static TreeNode *for_stmt(void);
-static TreeNode *while_stmt(void);
-static TreeNode *re_exp(void);
-static TreeNode *simple_re_exp(void);
-static TreeNode *closure(void);
-static TreeNode *re_factor(void);
-static TreeNode *power_exp(void);
-static void syntaxError(char *message)
+TreeNode *stmt_sequence(void);
+TreeNode *statement(void);
+TreeNode *if_stmt(void);
+TreeNode *repeat_stmt(void);
+TreeNode *assign_stmt(void);
+TreeNode *read_stmt(void);
+TreeNode *write_stmt(void);
+TreeNode *Exp(void);
+TreeNode *simple_exp(void);
+TreeNode *term(void);
+TreeNode *factor(void);
+TreeNode *for_stmt(void);
+TreeNode *while_stmt(void);
+TreeNode *re_exp(void);
+TreeNode *simple_re_exp(void);
+TreeNode *closure(void);
+TreeNode *re_factor(void);
+TreeNode *power_exp(void);
+void syntaxError(char *message)
 {
-  fprintf(listing, "\n>>> ");
-  fprintf(listing, "Syntax error at line %d: %s", lineno, message);
+  fprintf(listing, "\n>>> Syntax error at line %d: %s", lineno, message);
   Error = TRUE;
 }
 
@@ -59,6 +58,11 @@ TreeNode *stmt_sequence(void) /*语句*/
   {
     TreeNode *q;
     match(SEMI);
+    if (token == SEMI)
+    {
+      return t;
+    }
+
     q = statement();
     if (q != NULL)
     {
@@ -139,21 +143,27 @@ TreeNode *if_stmt(void) /*if语句*/
   if (t != NULL) t->child[1] = stmt_sequence();
   if (token == ELSE) {
     match(ELSE);
-    if (t != NULL) t->child[2] = stmt_sequence();
+    TreeNode *p = newStmtNode(ElseK);
+    p->child[0] = stmt_sequence();
+    t->child[2] = p;
   }
   return t;
 }
 
 TreeNode *for_stmt(void) /*while语句*/
 {
-  TreeNode *t = newStmtNode(WhileK);
-  match(WHILE);
+  TreeNode *t = newStmtNode(ForK);
+  match(FOR);
   match(LPAREN);
-  if (t != NULL) t->child[0] = assign_stmt();
-  if (t != NULL) t->child[1] = Exp();
-  if (t != NULL) t->child[2] = Exp();
+  if (t == NULL)
+    return NULL;
+  t->child[0] = assign_stmt();
+  match(SEMI);
+  t->child[1] = Exp();
+  match(SEMI);
+  t->child[2] = Exp();
   match(RPAREN);
-  if (t != NULL) t->child[3] = stmt_sequence();
+  t->child[3] = stmt_sequence();
   return t;
 }
 
@@ -235,6 +245,7 @@ TreeNode *re_exp(void){
       t->child[1] = simple_re_exp();
     }
   }
+  return t;
 }
 
 TreeNode *simple_re_exp(void){
@@ -251,44 +262,67 @@ TreeNode *simple_re_exp(void){
       t->child[1] = closure();
     }
   }
+  return t;
 }
+
 
 TreeNode *closure(void){
   TreeNode* t = re_factor();
-  while (token == CLOSURE || token == CHOOSE)
+  if (token == CLOSURE || token == CHOOSE)
   {
     TreeNode *p = newExpNode(OpK);
     p->attr.op = token;
     p->child[0] = t;
     t = p;
+    match(token);
   }
   return t;
 }
 
 TreeNode *re_factor(void)
 {
-  TreeNode *t = NULL;
-  switch (token)
-  {
-  case LPAREN:
-    match(LPAREN);
-    t = re_exp();
-    match(RPAREN);
-    break;
-  case NUM:
-  case ID:
-    t = newExpNode(ConstK);
-    if (t != NULL)
-      t->attr.name = copyString(tokenString);
-    match(token);
-    break;
-  default:
-    syntaxError("unexpected token -> ");
-    printToken(token, tokenString);
-    token = getToken();
-    break;
-  }
-  return t;
+    TreeNode *t = NULL;
+
+    if (token == NUM || token == LPAREN || token == ID){
+      switch (token)
+      {
+      case LPAREN:
+        match(LPAREN);
+        t = re_exp();
+        match(RPAREN);
+        break;
+      case NUM:
+      case ID:
+            while(token == NUM|| token == ID){
+              if(t == NULL){
+                t = newExpNode(ReK);
+                t->attr.reBaseExp = new char[1]; // 分配一个字符用于空字符串
+                t->attr.reBaseExp[0] = '\0'; // 初始化为空字符串
+              }
+              int len1 = strlen(t->attr.reBaseExp);
+              int len2 = strlen(tokenString);
+              // 计算新字符串的长度
+              size_t newLength = len1 + len2 + 1; // +1 for null terminator
+
+              // 分配新字符串
+              char* newStr = new char[newLength];
+
+              // 初始化并连接字符串
+              strcpy(newStr, t->attr.reBaseExp);
+              strcat(newStr, "");
+              strcat(newStr, tokenString);
+
+              // 释放旧字符串
+              delete[] t->attr.reBaseExp;
+
+              // 更新指针
+              t->attr.reBaseExp = newStr;
+              match(token);
+            }
+        break;
+      }
+    }
+    return t;
 }
 
 TreeNode *Exp(void)
@@ -408,7 +442,12 @@ TreeNode *factor(void)
   }
   return t;
 }
-
+/* BUFLEN = length of the input buffer for
+   source code lines */
+char lineBuf[BUFLEN]; /* holds the current line */
+int linepos = 0; /* current position in LineBuf */
+int bufsize = 0; /* current size of buffer string */
+int EOF_flag = FALSE; /* corrects ungetNextChar behavior on EOF */
 /****************************************/
 /* the primary function of the parser   */
 /****************************************/
@@ -417,6 +456,18 @@ TreeNode *factor(void)
  */
 TreeNode *parse(void)
 {
+    lineBuf[BUFLEN]; /* holds the current line */
+    linepos = 0; /* current position in LineBuf */
+    bufsize = 0; /* current size of buffer string */
+    EOF_flag = FALSE; /* corrects ungetNextChar behavior on EOF */
+    linepos = 0;
+    bufsize = 0;
+    EOF_flag = FALSE;
+    lineno = 0;
+    Error = FALSE;
+
+    // 重新定位文件指针到开头
+    fseek(source, 0, SEEK_SET);
   TreeNode *t;
   token = getToken();
   t = stmt_sequence();

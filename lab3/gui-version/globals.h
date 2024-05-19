@@ -1,3 +1,11 @@
+/****************************************************/
+/* File: globals.h                                  */
+/* Global types and vars for TINY compiler          */
+/* must come before other include files             */
+/* Compiler Construction: Principles and Practice   */
+/* Kenneth C. Louden                                */
+/****************************************************/
+
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
@@ -17,20 +25,16 @@
 /* MAXRESERVED = the number of reserved words */
 #define MAXRESERVED 11
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef enum
-/* book-keeping tokens */
-{ENDFILE,ERROR,
-  /* reserved words */
-  IF,THEN,ELSE,END,REPEAT,UNTIL,READ,WRITE,WHILE,ENDWHILE,FOR,
-  /* multicharacter tokens */
-  ID,NUM,
-  /* special symbols */
-  ASSIGN,EQ,LT,RT,RTEQ,LTEQ,NEQ,PLUS,MINUS,TIMES,OVER,LPAREN,RPAREN,SEMI,INCREASE,DECREASE,POWER,MOD,CONNECT,OR,CLOSURE,CHOOSE,REASSIGN,
-  } TokenType;
+typedef enum 
+    /* book-keeping tokens */
+   {ENDFILE,ERROR,
+    /* reserved words */
+    IF,THEN,ELSE,END,REPEAT,UNTIL,READ,WRITE,WHILE,ENDWHILE,FOR,
+    /* multicharacter tokens */
+    ID,NUM,
+    /* special symbols */
+    ASSIGN,EQ,LT,RT,RTEQ,LTEQ,NEQ,PLUS,MINUS,TIMES,OVER,LPAREN,RPAREN,SEMI,INCREASE,DECREASE,POWER,MOD,CONNECT,OR,CLOSURE,CHOOSE,REASSIGN,
+   } TokenType;
 
 extern FILE* source; /* source code text file */
 extern FILE* listing; /* listing output text file */
@@ -43,8 +47,8 @@ extern int lineno; /* source line number for listing */
 /**************************************************/
 
 typedef enum {StmtK,ExpK} NodeKind;
-typedef enum {IfK,RepeatK,AssignK,ReadK,WriteK,WhileK,ForK,ReAssignK,} StmtKind;
-typedef enum {OpK,ConstK,IdK} ExpKind;
+typedef enum {IfK,RepeatK,AssignK,ReadK,WriteK,WhileK,ForK,ReAssignK,ElseK} StmtKind;
+typedef enum {OpK,ConstK,IdK,ReK} ExpKind;
 
 /* ExpType is used for type checking */
 typedef enum {Void,Integer,Boolean} ExpType;
@@ -52,20 +56,34 @@ typedef enum {Void,Integer,Boolean} ExpType;
 #define MAXCHILDREN 4
 
 typedef struct treeNode
-{ struct treeNode * child[MAXCHILDREN];
-    struct treeNode * sibling;
-    int lineno;
-    NodeKind nodekind;
-    union { StmtKind stmt; ExpKind exp;} kind;
-    union { TokenType op;
-        int val;
-        char * name; } attr;
-    ExpType type; /* for type checking of exps */
-} TreeNode;
+   { struct treeNode * child[MAXCHILDREN];
+     struct treeNode * sibling;
+     int lineno;
+     NodeKind nodekind;
+     union { StmtKind stmt; ExpKind exp;} kind;
+     union { TokenType op;
+             int val;
+             char * reBaseExp;
+             char * name; } attr;
+     ExpType type; /* for type checking of exps */
+   } TreeNode;
 
 /**************************************************/
 /***********   Flags for tracing       ************/
 /**************************************************/
+
+
+   /* BUFLEN = length of the input buffer for
+   source code lines */
+
+   #define BUFLEN 256
+   extern char lineBuf[]; /* holds the current line */
+   extern int linepos; /* current position in LineBuf */
+   extern int bufsize; /* current size of buffer string */
+   extern int EOF_flag; /* corrects ungetNextChar behavior on EOF */
+
+
+
 
 /* EchoSource = TRUE causes the source program to
  * be echoed to the listing file with line numbers
@@ -96,11 +114,5 @@ extern int TraceAnalyze;
 extern int TraceCode;
 
 /* Error = TRUE prevents further passes if an error occurs */
-extern int Error;
-
-#ifdef __cplusplus
-}
+extern int Error; 
 #endif
-
-
-#endif // _GLOBALS_H_

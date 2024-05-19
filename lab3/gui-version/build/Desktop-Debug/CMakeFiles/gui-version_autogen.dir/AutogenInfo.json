@@ -101,12 +101,6 @@
 	"HEADERS" : 
 	[
 		[
-			"/home/mirror/Documents/Compiler-theory/lab3/gui-version/error.h",
-			"MU",
-			"EWIEGA46WW/moc_error.cpp",
-			null
-		],
-		[
 			"/home/mirror/Documents/Compiler-theory/lab3/gui-version/getTree.h",
 			"MU",
 			"EWIEGA46WW/moc_getTree.cpp",
@@ -193,11 +187,6 @@
 	"SETTINGS_FILE" : "/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/gui-version_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[
-			"/home/mirror/Documents/Compiler-theory/lab3/gui-version/error.cpp",
-			"MU",
-			null
-		],
 		[
 			"/home/mirror/Documents/Compiler-theory/lab3/gui-version/getTree.cpp",
 			"MU",

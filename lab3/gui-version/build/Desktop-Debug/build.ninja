@@ -81,6 +81,14 @@ build CMakeFiles/gui-version.dir/getTree.cpp.o: CXX_COMPILER__gui-version_unscan
   OBJECT_DIR = CMakeFiles/gui-version.dir
   OBJECT_FILE_DIR = CMakeFiles/gui-version.dir
 
+build CMakeFiles/gui-version.dir/util.cpp.o: CXX_COMPILER__gui-version_unscanned_Debug /home/mirror/Documents/Compiler-theory/lab3/gui-version/util.cpp || cmake_object_order_depends_target_gui-version
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/gui-version.dir/util.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fcolor-diagnostics -fPIC
+  INCLUDES = -I/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/gui-version_autogen/include -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++
+  OBJECT_DIR = CMakeFiles/gui-version.dir
+  OBJECT_FILE_DIR = CMakeFiles/gui-version.dir
+
 build CMakeFiles/gui-version.dir/parse.cpp.o: CXX_COMPILER__gui-version_unscanned_Debug /home/mirror/Documents/Compiler-theory/lab3/gui-version/parse.cpp || cmake_object_order_depends_target_gui-version
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/gui-version.dir/parse.cpp.o.d
@@ -97,22 +105,6 @@ build CMakeFiles/gui-version.dir/scan.cpp.o: CXX_COMPILER__gui-version_unscanned
   OBJECT_DIR = CMakeFiles/gui-version.dir
   OBJECT_FILE_DIR = CMakeFiles/gui-version.dir
 
-build CMakeFiles/gui-version.dir/util.cpp.o: CXX_COMPILER__gui-version_unscanned_Debug /home/mirror/Documents/Compiler-theory/lab3/gui-version/util.cpp || cmake_object_order_depends_target_gui-version
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/gui-version.dir/util.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fcolor-diagnostics -fPIC
-  INCLUDES = -I/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/gui-version_autogen/include -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++
-  OBJECT_DIR = CMakeFiles/gui-version.dir
-  OBJECT_FILE_DIR = CMakeFiles/gui-version.dir
-
-build CMakeFiles/gui-version.dir/error.cpp.o: CXX_COMPILER__gui-version_unscanned_Debug /home/mirror/Documents/Compiler-theory/lab3/gui-version/error.cpp || cmake_object_order_depends_target_gui-version
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/gui-version.dir/error.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fcolor-diagnostics -fPIC
-  INCLUDES = -I/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/gui-version_autogen/include -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++
-  OBJECT_DIR = CMakeFiles/gui-version.dir
-  OBJECT_FILE_DIR = CMakeFiles/gui-version.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target gui-version
@@ -121,7 +113,7 @@ build CMakeFiles/gui-version.dir/error.cpp.o: CXX_COMPILER__gui-version_unscanne
 #############################################
 # Link the executable gui-version
 
-build gui-version: CXX_EXECUTABLE_LINKER__gui-version_Debug CMakeFiles/gui-version.dir/gui-version_autogen/mocs_compilation.cpp.o CMakeFiles/gui-version.dir/main.cpp.o CMakeFiles/gui-version.dir/mainwindow.cpp.o CMakeFiles/gui-version.dir/getTree.cpp.o CMakeFiles/gui-version.dir/parse.cpp.o CMakeFiles/gui-version.dir/scan.cpp.o CMakeFiles/gui-version.dir/util.cpp.o CMakeFiles/gui-version.dir/error.cpp.o | /usr/lib/libQt5Widgets.so.5.15.13 /usr/lib/libQt5Gui.so.5.15.13 /usr/lib/libQt5Core.so.5.15.13 || gui-version_autogen gui-version_autogen_timestamp_deps
+build gui-version: CXX_EXECUTABLE_LINKER__gui-version_Debug CMakeFiles/gui-version.dir/gui-version_autogen/mocs_compilation.cpp.o CMakeFiles/gui-version.dir/main.cpp.o CMakeFiles/gui-version.dir/mainwindow.cpp.o CMakeFiles/gui-version.dir/getTree.cpp.o CMakeFiles/gui-version.dir/util.cpp.o CMakeFiles/gui-version.dir/parse.cpp.o CMakeFiles/gui-version.dir/scan.cpp.o | /usr/lib/libQt5Widgets.so.5.15.13 /usr/lib/libQt5Gui.so.5.15.13 /usr/lib/libQt5Core.so.5.15.13 || gui-version_autogen gui-version_autogen_timestamp_deps
   FLAGS = -DQT_QML_DEBUG -g
   LINK_LIBRARIES = /usr/lib/libQt5Widgets.so.5.15.13  /usr/lib/libQt5Gui.so.5.15.13  /usr/lib/libQt5Core.so.5.15.13
   OBJECT_DIR = CMakeFiles/gui-version.dir

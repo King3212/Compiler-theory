@@ -7,4 +7,4 @@ else
     write y;;
 if (x < 0)
     write z;;
-write f;;
+write f

@@ -20,6 +20,7 @@
 #include <iostream>
 #include <fstream>
 void displaySyntaxTree(TreeNode* tree, QStandardItem* parentItem);
+QString QStringOp( TokenType token);
 
 // 声明槽函数
 void analyzeAndDisplaySyntaxTree(QTreeView *treeView, QPlainTextEdit *programTextEdit, QPlainTextEdit *vectorTextEdit);
@@ -141,7 +142,7 @@ void analyzeAndDisplaySyntaxTree(QTreeView *treeView, QPlainTextEdit *programTex
             std::vector<std::string> vec = ErrorVec();
             QString vecText;
             for(const auto& str : vec) {
-                vecText += QString::fromStdString(str) + "\n";
+                vecText += QString::fromStdString(str) + "";
             }
             vectorTextEdit->setPlainText(vecText);
         }
@@ -181,13 +182,16 @@ void displaySyntaxTree(TreeNode* tree, QStandardItem* parentItem) {
     } else if (tree->nodekind == ExpK) {
         switch (tree->kind.exp) {
         case OpK:
-            item->setText(QString("Op: %1").arg(tree->attr.op));
+            item->setText(QString("Op: %1").arg(QStringOp(tree->attr.op)));
             break;
         case ConstK:
             item->setText(QString("Const: %1").arg(tree->attr.val));
             break;
         case IdK:
             item->setText(QString("Id: %1").arg(tree->attr.name));
+            break;
+        case ReK:
+            item->setText(QString("BaseReExp: %1").arg(tree->attr.reBaseExp));
             break;
         default:
             item->setText("Unknown ExpNode kind");
@@ -201,4 +205,61 @@ void displaySyntaxTree(TreeNode* tree, QStandardItem* parentItem) {
         displaySyntaxTree(tree->child[i], item);
     }
     displaySyntaxTree(tree->sibling, parentItem);
+}
+
+
+QString QStringOp( TokenType token)
+{ switch (token)
+    {
+    case ASSIGN: return (":="); break;
+    case LT: return ("<"); break;
+    case EQ: return ("="); break;
+    case RT:
+        return ( ">");
+        break;
+    case RTEQ:
+        return ( ">=");
+        break;
+    case LTEQ:
+        return ( "<=");
+        break;
+    case NEQ:
+        return ( "<>");
+        break;
+    case LPAREN: return ("("); break;
+    case RPAREN: return (")"); break;
+    case SEMI: return (";"); break;
+    case PLUS: return ("+"); break;
+    case MINUS: return ("-"); break;
+    case TIMES: return ("*"); break;
+    case OVER: return ("/"); break;
+    case INCREASE: return ("++"); break;
+    case DECREASE:
+        return ( "--");
+        break;
+    case POWER:
+        return ( "*");
+        break;
+    case MOD:
+        return ( "\%");
+        break;
+    case CONNECT:
+        return ( "&");
+        break;
+    case OR:
+        return ( "|");
+        break;
+    case CLOSURE:
+        return ( "#");
+        break;
+    case REASSIGN:
+        return ( "==");
+        break;
+    case CHOOSE:
+        return ( "?");
+        break;
+
+    default: /* should never happen */
+        return ("Unknown Op");
+    }
 }

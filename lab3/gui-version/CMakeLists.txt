@@ -24,12 +24,12 @@ set(PROJECT_SOURCES
         globals.h
         mainwindow.cpp
         mainwindow.h
+        util.cpp
+        util.h
         parse.cpp
         parse.h
         scan.cpp
         scan.h
-        util.cpp
-        util.h
         ${TS_FILES}
 )
 
@@ -54,8 +54,6 @@ else()
     else()
         add_executable(gui-version
             ${PROJECT_SOURCES}
-            error.h error.cpp
-
         )
     endif()
 

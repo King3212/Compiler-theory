@@ -1,4 +1,5 @@
 read x; { input an integer }
+
 for( fact := 1; x>0;--x) 
       fact := fact * x;;
-write fact;;
+write fact

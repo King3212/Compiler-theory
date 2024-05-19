@@ -4,8 +4,6 @@ gui-version_autogen/timestamp: \
 	/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake \
 	/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/CMakeFiles/3.29.3/CMakeSystem.cmake \
 	/home/mirror/Documents/Compiler-theory/lab3/gui-version/build/Desktop-Debug/gui-version_autogen/moc_predefs.h \
-	/home/mirror/Documents/Compiler-theory/lab3/gui-version/error.cpp \
-	/home/mirror/Documents/Compiler-theory/lab3/gui-version/error.h \
 	/home/mirror/Documents/Compiler-theory/lab3/gui-version/getTree.cpp \
 	/home/mirror/Documents/Compiler-theory/lab3/gui-version/getTree.h \
 	/home/mirror/Documents/Compiler-theory/lab3/gui-version/globals.h \

@@ -11,7 +11,6 @@ int TraceScan = FALSE;
 int TraceParse = TRUE;
 int TraceAnalyze = FALSE;
 int TraceCode = FALSE;
-
 int Error = FALSE;
 
 TreeNode *getSyntaxTree(char *filename)
@@ -29,14 +28,14 @@ TreeNode *getSyntaxTree(char *filename)
   }
   listing = stdout; /* send listing to screen */
   fprintf(listing,"\nTINY COMPILATION: %s\n",pgm);
-
+  lineno = 0;
   syntaxTree = parse(); /*这里进行分析，得到分析树*/
   if (TraceParse) {
     fprintf(listing,"\nSyntax tree:\n");
     return syntaxTree;/*这里打印树*/
     
     //Todo: 从这里返回语法分析树
-
+  
   }
   fclose(listing);
 }

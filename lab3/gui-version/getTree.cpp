@@ -15,8 +15,17 @@ int TraceCode = FALSE;
 
 int Error = FALSE;
 
+
 TreeNode *getSyntaxTree(char *filename)
-{ TreeNode * syntaxTree;
+{
+    EchoSource = FALSE;
+    TraceScan = FALSE;
+    TraceParse = TRUE;
+    TraceAnalyze = FALSE;
+    TraceCode = FALSE;
+    lineno = 0;
+
+    TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
   strcpy(pgm,filename) ;
   if (strchr (pgm, '.') == NULL)

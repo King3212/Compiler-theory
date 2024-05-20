@@ -18,6 +18,7 @@
 #include "globals.h"
 #include "getTree.h"
 #include <iostream>
+#include <QMessageBox>
 #include <fstream>
 void displaySyntaxTree(TreeNode* tree, QStandardItem* parentItem);
 QString QStringOp( TokenType token);
@@ -31,8 +32,8 @@ int main(int argc, char *argv[]) {
     // 主窗口
     QMainWindow mainWindow;
     mainWindow.setWindowTitle("CLI Program in Qt");
-    mainWindow.setMinimumSize(800, 600); // 设置最小窗口大小
-    mainWindow.resize(1000, 800); // 设置初始窗口大小
+    mainWindow.setMinimumSize(800, 600);
+    mainWindow.resize(1000, 800);
 
     // 创建文本框和树形视图
     QPlainTextEdit *programTextEdit = new QPlainTextEdit(&mainWindow);
@@ -41,24 +42,26 @@ int main(int argc, char *argv[]) {
     vectorTextEdit->setReadOnly(true);
 
     // 创建按钮
-    QPushButton *analyzeButton = new QPushButton("Analyze", &mainWindow);
+    QPushButton *analyzeButton = new QPushButton("开始分析", &mainWindow);
+    QPushButton *openButton = new QPushButton("打开文件", &mainWindow);
+    QPushButton *saveButton = new QPushButton("保存文件", &mainWindow);
 
     // 创建可滚动区域和文本框
     QScrollArea *codeScrollArea = new QScrollArea(&mainWindow);
     QScrollArea *errorScrollArea = new QScrollArea(&mainWindow);
 
-    // 将文本框放置在可滚动区域中
     codeScrollArea->setWidget(programTextEdit);
-    codeScrollArea->setWidgetResizable(true); // 设置可滚动区域大小自适应文本框大小
+    codeScrollArea->setWidgetResizable(true);
 
     errorScrollArea->setWidget(vectorTextEdit);
-    errorScrollArea->setWidgetResizable(true); // 设置可滚动区域大小自适应文本框大小
+    errorScrollArea->setWidgetResizable(true);
     errorScrollArea->setFixedHeight(10 * vectorTextEdit->fontMetrics().lineSpacing());
-    // 设置只读文本框的高度
 
     // 创建布局
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(analyzeButton);
+    buttonLayout->addWidget(openButton);
+    buttonLayout->addWidget(saveButton);
 
     QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->addLayout(buttonLayout);
@@ -89,6 +92,36 @@ int main(int argc, char *argv[]) {
     // 连接按钮的点击事件
     QObject::connect(analyzeButton, &QPushButton::clicked, [&]() {
         analyzeAndDisplaySyntaxTree(treeView, programTextEdit, vectorTextEdit);
+    });
+
+    QObject::connect(analyzeButton, &QPushButton::clicked, [&]() {
+        analyzeAndDisplaySyntaxTree(treeView, programTextEdit, vectorTextEdit);
+    });
+
+    QObject::connect(openButton, &QPushButton::clicked, [&]() {
+        QString fileName = QFileDialog::getOpenFileName(&mainWindow, "Open File", "", "TNY Files (*.tny *.TNY);;All Files (*)");
+        if (!fileName.isEmpty()) {
+            QFile file(fileName);
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QTextStream in(&file);
+                programTextEdit->setPlainText(in.readAll());
+            } else {
+                QMessageBox::warning(&mainWindow, "Error", "Cannot open file: " + file.errorString());
+            }
+        }
+    });
+
+    QObject::connect(saveButton, &QPushButton::clicked, [&]() {
+        QString fileName = QFileDialog::getSaveFileName(&mainWindow, "Save File", "", "TNY Files (*.tny *.TNY);;All Files (*)");
+        if (!fileName.isEmpty()) {
+            QFile file(fileName);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QTextStream out(&file);
+                out << programTextEdit->toPlainText();
+            } else {
+                QMessageBox::warning(&mainWindow, "Error", "Cannot save file: " + file.errorString());
+            }
+        }
     });
 
     return app.exec();
@@ -142,7 +175,7 @@ void analyzeAndDisplaySyntaxTree(QTreeView *treeView, QPlainTextEdit *programTex
             std::vector<std::string> vec = ErrorVec();
             QString vecText;
             for(const auto& str : vec) {
-                vecText += QString::fromStdString(str) + "";
+                vecText += QString::fromStdString(str) + "\n";
             }
             vectorTextEdit->setPlainText(vecText);
         }
@@ -165,6 +198,12 @@ void displaySyntaxTree(TreeNode* tree, QStandardItem* parentItem) {
             break;
         case RepeatK:
             item->setText("Repeat");
+            break;
+        case WhileK:
+            item->setText("While");
+            break;
+        case ForK:
+            item->setText("For");
             break;
         case AssignK:
             item->setText(QString("Assign to: %1").arg(tree->attr.name));

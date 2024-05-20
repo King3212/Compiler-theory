@@ -1,0 +1,13 @@
+if (1 < 2 stmt-sequence;  {错误：缺少右括号}
+
+if (1 < 2) stmt-sequence else ; {错误：缺少else后的语句}
+
+repeat stmt-sequence until ; {错误：缺少条件表达式}
+
+read ; {错误：缺少标识符}
+
+write ; {错误：缺少表达式}
+
+while (1 < 2 stmt-sequence;  {错误：缺少右括号}
+
+for (i := 0; i < 10; i := i + 1 stmt-sequence  {错误：缺少右括号}

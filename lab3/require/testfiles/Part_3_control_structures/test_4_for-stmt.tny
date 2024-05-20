@@ -1,0 +1,5 @@
+y := 1;
+for(x := 6; x < 89; ++x)
+    write y;
+    y := y+1;;
+write x

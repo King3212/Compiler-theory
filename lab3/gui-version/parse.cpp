@@ -53,7 +53,7 @@ TreeNode *stmt_sequence(void) /*语句*/
 {
   TreeNode *t = statement();
   TreeNode *p = t;
-  while ((token != ENDFILE) && (token != END) &&
+  while ((token != ENDFILE) && (token != ENDWHILE) &&
          (token != ELSE) && (token != UNTIL))
   {
     TreeNode *q;
@@ -120,22 +120,6 @@ TreeNode *statement(void) /*指令类型*/
 TreeNode *if_stmt(void) /*if语句*/
 {
   TreeNode *t = newStmtNode(IfK);
-  // match(IF);
-  // if (t!=NULL) t->child[0] = exp();
-  // match(THEN);
-  // if (t!=NULL) t->child[1] = stmt_sequence();
-  // if (token==ELSE) {
-  //   match(ELSE);
-  //   if (t!=NULL) t->child[2] = stmt_sequence();
-  // }
-  // match(END);
-
-  /**todo: 重写if_stmt
-   * if_stmt-->if(exp) stmt-sequence else stmt-sequence | if(exp) stmt-sequence
-   * 用括号来标识exp的范围
-   *
-   * finish?
-   */
   match(IF);
   match(LPAREN);
   if (t != NULL) t->child[0] = Exp();
@@ -167,30 +151,25 @@ TreeNode *for_stmt(void) /*while语句*/
   return t;
 }
 
-TreeNode *while_stmt(void) /*while语句*/
-{
-  TreeNode *t = newStmtNode(WhileK);
-  match(WHILE);
-  match(LPAREN);
-  if (t != NULL) t->child[0] = Exp();
-  match(RPAREN);
-  if (t != NULL) t->child[3] = stmt_sequence();
-  match(ENDWHILE);
-  return t;
+TreeNode * repeat_stmt(void)
+{ TreeNode * t = newStmtNode(RepeatK);
+    match(REPEAT);
+    if (t!=NULL) t->child[0] = stmt_sequence();
+    match(UNTIL);
+    if (t!=NULL) t->child[1] = Exp();
+    return t;
 }
 
-// P394
-// lineno:991
-TreeNode *repeat_stmt(void)
+TreeNode *while_stmt(void) /*while语句*/
 {
-  TreeNode *t = newStmtNode(RepeatK);
-  match(REPEAT);
-  if (t != NULL)
-    t->child[0] = stmt_sequence();
-  match(UNTIL);
-  if (t != NULL)
-    t->child[1] = Exp();
-  return t;
+    TreeNode *t = newStmtNode(WhileK);
+    match(WHILE);
+    match(LPAREN);
+    if (t != NULL) t->child[0] = Exp();
+    match(RPAREN);
+    if (t != NULL) t->child[1] = stmt_sequence();
+    match(ENDWHILE);
+    return t;
 }
 
 TreeNode *assign_stmt(void)
@@ -425,12 +404,18 @@ TreeNode *factor(void)
   case INCREASE:
   case DECREASE:
     {
-      TreeNode *p = newExpNode(OpK);
-      if (p != NULL)
+      t = newExpNode(OpK);
+      if (t != NULL)
       {
-        p->attr.op = token;
+        t->attr.op = token;
         match(token);
-        p->child[1] = factor();
+        if(token == ID){
+            t->child[0] = factor();
+        }else{
+            syntaxError("expected ID, but got: ");
+            printToken(token, tokenString);
+            token = getToken();
+        }
       }
     }
     break;

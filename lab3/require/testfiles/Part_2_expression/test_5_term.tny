@@ -1,0 +1,3 @@
+exp := a * c ^ 15;
+exp := a % c;
+exp := a / c

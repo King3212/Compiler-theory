@@ -1,0 +1,116 @@
+
+
+{Part four: regular expression error}
+
+{test 1: re-assign}
+re == 1234&  {错误：& 操作符不能单独存在}
+
+{test 2: re-ele}
+re == ;       {错误：空的正则表达式}
+
+re == 12*45;  {错误：* 操作符未定义}
+
+re == abc..;  {错误：. 操作符未定义}
+
+re == 123ab@; {错误：@ 操作符未定义}
+
+re == (abcde {错误：未闭合的括号}
+
+{test 3: re-fector}
+re == ((123abc)); {错误：嵌套的括号未闭合}
+
+re == 123ab#c   {错误：非法字符在 # 操作符后}
+
+{test 4: closure}
+re == 123abc#?  {错误：连续的操作符}
+
+{test 5: re-exp}
+re == 123&abc|ffff| {错误：| 操作符后缺少表达式}
+
+
+{Part five: expression error}
+
+{test 1: normal-assign}
+exp :=   {错误：空表达式}
+
+{test 2: factor}
+exp := (1;  {错误：未闭合的括号}
+
+exp := 1);  {错误：未匹配的括号}
+
+exp := num$ber; {错误：非法字符 $}
+
+exp := 123abc;  {错误：数字和字母的混合变量名}
+
+exp := 1 + ;    {错误：操作符后缺少操作数}
+
+exp := *2       {错误：操作符前缺少操作数}
+
+
+{test 3: statement}
+if (1 < 2 stmt-sequence;  {错误：缺少右括号}
+
+if (1 < 2) stmt-sequence else ; {错误：缺少else后的语句}
+
+repeat stmt-sequence until ; {错误：缺少条件表达式}
+
+read ; {错误：缺少标识符}
+
+write ; {错误：缺少表达式}
+
+while (1 < 2 stmt-sequence;  {错误：缺少右括号}
+
+for (i := 0; i < 10; i := i + 1 stmt-sequence  {错误：缺少右括号}
+
+
+{test 4: complex expression}
+
+exp := 1 + (2 * 3;  {错误：未闭合的括号}
+
+exp := (1 + 2) * 3);  {错误：多余的右括号}
+
+exp := 1 ++ 2;  {错误：非法的自增操作符位置}
+
+exp := 1 -- 2  {错误：非法的自减操作符位置}
+
+
+{Part six: control structures error}
+
+{test 1: if-stmt}
+if (1 < 2 stmt-sequence;  {错误：缺少右括号}
+
+if (1 < 2) stmt-sequence else ; {错误：缺少else后的语句}
+
+if 1 < 2) stmt-sequence;  {错误：缺少左括号}
+
+if (1 < 2) stmt-sequence else stmt-sequence  {错误：缺少结束分号}
+
+if (1 < 2)  {错误：缺少stmt-sequence}
+
+
+
+{test 2: for-stmt}
+for (i := 0; i < 10; i := i + 1 stmt-sequence;  {错误：缺少右括号}
+
+for i := 0; i < 10; i := i + 1) stmt-sequence;  {错误：缺少左括号}
+
+for (i := 0; i < 10; i := i + 1) stmt-sequence  {错误：缺少结束分号}
+
+for (i := 0; i < 10; i := i + 1);  {错误：缺少stmt-sequence}
+
+for (i := 0 i < 10; i := i + 1) stmt-sequence;  {错误：缺少第一段分号}
+
+for (i := 0; i < 10 i := i + 1) stmt-sequence  {错误：缺少第二段分号}
+
+
+{test 3: while-stmt}
+
+while (1 < 2 stmt-sequence;  {错误：缺少右括号}
+
+while 1 < 2) stmt-sequence;  {错误：缺少左括号}
+
+while (1 < 2) stmt-sequence;  {错误：缺少结束endwhile}
+
+while (1 < 2) endwhile; {错误：缺少stmt-sequence}
+
+while (1 < 2) stmt-sequence endwhile {错误：endwhile后缺少分号，在最后一句可以缺少，stmt语法的一部分}

@@ -1,0 +1,6 @@
+x := 6;
+while(x < 10)
+    write x;
+    x := x +1
+    endwhile;
+write x

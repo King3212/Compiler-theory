@@ -1,0 +1,104 @@
+{Part one: regular expression}
+
+{test 1: re-assign}
+re == abcde
+
+{test 2: re-ele}
+re == 12345;
+re == abcde;
+re == 123abc;
+re == abc123;
+re == 123abc123;
+re == abc123abc
+
+{test 3: re-fector}
+re == (123abc);
+re == 123abc
+
+{test 4: closure}
+re == 123abc?;
+re == 123abc#
+
+{test 5: simple-re-exp}
+re == 123&abc
+
+{test 6: re-exp}
+re == 123&abc|ffff
+
+
+{Part two: expression}
+
+{test 1: normal-assign}
+exp := 1
+
+{test 2: factor}
+exp := (1);
+exp := number
+
+{test 3: factor with increase-op}
+exp := ++number;
+exp := --number
+
+{test 4: power-exp}
+exp :=  12 ^ --exp
+
+{test 5: term}
+exp := a * c ^ 15;
+exp := a % c;
+exp := a / c
+
+{test 6: simple-exp}
+exp := a*c + d*12;
+exp := 123-789
+
+{test 7: comparison-op}
+exp := 12 + 2 > ab;
+exp := 12 >= 13;
+exp := 11 < 9;
+exp := 6 <= 5;
+exp := 1 <> 1;
+exp := 1 = 1
+
+{Part three: control structures}
+
+{test 1: for-stmt-simple}
+y := 1;
+for(x := 6; x < 89; ++x)
+    write y;;
+write x
+
+{test 2: if-stmt-simple}
+y := 1;
+if(x < 89)
+    write y;;
+write x
+
+{test 3: while-stmt-simple}
+x := 6;
+while(x < 10)
+    write x
+    endwhile;
+write x
+
+{test 4: for-stmt}
+y := 1;
+for(x := 6; x < 89; ++x)
+    write y;
+    y := y+1;;
+write x
+
+{test 5: if-stmt}
+y := 1;
+if(x < 89)
+    write y;
+    y := y+1;;
+write x
+
+{test 6: while-stmt}
+x := 6;
+while(x < 10)
+    write x;
+    x := x +1
+    endwhile;
+write x
+

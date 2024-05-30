@@ -83,6 +83,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "UTIL.C": "cpp"
+        "UTIL.C": "cpp",
+        "filesystem": "cpp"
     }
 }

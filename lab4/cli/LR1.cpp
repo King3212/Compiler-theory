@@ -3,7 +3,8 @@
 #include<stack>
 #include<string>
 #include<iostream>
-#include"globle.h"
+#include<IndexedSet.hh>
+#include"globle.hh"
 using namespace std;
 
 enum _op{
@@ -16,15 +17,14 @@ struct operation
     int n;
 };
 
-struct item{
+struct Item{
     int grammer;
     int dot;
-    string sign_forward;
 };
 
-struct statu
+struct Statu
 {
-    unordered_set<item> items;
+    IndexedSet<Item> items;
 };
 
 
@@ -35,16 +35,61 @@ class LR1
 private:
     int SetsSize;
     int SignSize;
-    stack<statu> notRead;
-    vector<statu> status;
+    stack<int> notRead;
+    IndexedSet<Statu> status;
     vector<vector<operation>> *map;
-    vector<string> signs;
-    vector<vector<string>>grammers; //文法
+    vector<string> *NTsigns;
+    IndexedSet<Grammer> grammers; // 文法
+
 public:
-    LR1(vector<vector<string>>grammers){
-        map = new vector<vector<operation>>();
+    void inputGrammers(IndexedSet<Grammer> grammers)
+    {
         this->grammers = grammers;
+        delete NTsigns;
+        delete map;
+        NTsigns = new vector<string>();
+        for (auto grammer : grammers)
+        {
+            NTsigns->push_back(grammer.sign);
+        }
     }
-    void closure();
+private:
+    /*closure function*/
+    vector<Item> getNewItems(string sign){
+        vector<Item> result;
+        Item one;
+        for (int i = 0; i < NTsigns->size(); i++)
+        {
+            if (sign == (*NTsigns)[i])
+            {
+                one.dot = 0;
+                one.grammer = i;
+                result.push_back(one);
+            }
+        }
+        return result;
+    }
+    void closure(Statu &statu)
+    {
+        bool conti = true;
+        Grammer grammer;
+        while (conti)
+        {
+            conti = false;
+            for (auto item : statu.items)
+            {
+                grammer = grammers.getElement(item.grammer);
+                for(auto i : getNewItems(grammer.grammer[item.dot])){
+                    if(!statu.items.contains(i)){
+                        statu.items.insert(i);
+                        conti = true;
+                    }
+                }
+            }
+        }
+    }
+private:
+    /*make gragh function*/
+    vector
 };
 

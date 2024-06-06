@@ -73,6 +73,17 @@ public:
         throw std::invalid_argument("Element not found");
     }
 
+    // Push element to back
+    void push_back(const T &element)
+    {
+        insert(element);
+    }
+
+    // Get size
+    size_t size(){
+        return elements.size()
+    }
+
     // Check if an element exists
     bool contains(const T &element) const
     {

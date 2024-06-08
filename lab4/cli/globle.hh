@@ -1,12 +1,15 @@
-#include<vector>
-#include<string>
-
-
+#include <string>
+#include <vector>
 
 struct Grammer
 {
-    string sign;
-    vector<string> grammer;
-    string sign_forward;
-};
+    std::string sign;
+    std::vector<std::string> grammer;
+    std::string sign_forward;
 
+    // 重载 == 运算符
+    bool operator==(const Grammer &other) const
+    {
+        return sign == other.sign && grammer == other.grammer && sign_forward == other.sign_forward;
+    }
+};

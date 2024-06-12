@@ -7,7 +7,7 @@
 #include "IndexedSet.h"
 #include "globle.h"
 #include <fstream>
-
+#pragma once
 using namespace std;
 
 enum _op
@@ -117,18 +117,47 @@ public:
     }
 
 private:
+
+    void getPreSign(){
+        for (auto &gram : grammers){
+            string finalSign = gram.grammer[gram.grammer.size()];
+            for (auto &grammer : grammers)
+            {
+                if (finalSign == grammer.sign)
+                {
+                    
+                }
+                
+            }
+            
+        }
+    }
+
+
+
     vector<Item> getNewItems(string sign)
     {
         vector<Item> result;
         Item one;
-        for (int i = 0; i < NTsigns->size(); i++)
-        {
-            if (sign == (*NTsigns).getElement(i))
+        
+        // for (int i = 0; i < NTsigns->size(); i++)
+        // {
+        //     if (sign == (*NTsigns).getElement(i))
+        //     {
+        //         one.dot = 0;
+        //         one.grammer = i;
+        //         result.push_back(one);
+        //     }
+        // }
+        for (int i = 0;i < grammers.size();i++){
+            if (sign == grammers.getElement(i).sign)
             {
+                one = Item();
                 one.dot = 0;
                 one.grammer = i;
                 result.push_back(one);
             }
+            
         }
         return result;
     }
@@ -136,37 +165,33 @@ private:
     void closure(Statu &statu)
     {
         bool have_change = true;
-        Grammer grammer;
         while (have_change)
         {
             have_change = false;
-            for (auto item : statu.items)
+            for (const auto &item : statu.items)
             {
-                grammer = grammers.getElement(item.grammer);
+                const Grammer &grammer = grammers.getElement(item.grammer);
                 if (item.dot == grammer.grammer.size())
                 {
                     continue;
                 }
 
-                string sign = grammer.grammer[item.dot];
+                const string &sign = grammer.grammer[item.dot];
                 if (NTsigns->contains(sign))
                 {
-                    for (auto i : getNewItems(sign))
+                    for (const auto &new_item : getNewItems(sign))
                     {
-                        if (!statu.items.contains(i))
+                        if (!statu.items.contains(new_item))
                         {
-                            statu.items.insert(i);
+                            statu.items.insert(new_item);
                             have_change = true;
                         }
                     }
                 }
-                else
-                {
-                    continue;
-                }
             }
         }
     }
+
 public:
     void work()
     {
@@ -263,7 +288,9 @@ public:
         }
 
         file << "digraph DFA {" << endl;
-        file << "    rankdir=LR;" << endl; // 从左到右的方向
+        file << "    rankdir=TB;" << endl; // 从上到下的方向
+        file << "    node [shape=box, style=filled, \
+         fillcolor=white, fontname=\"Arial\", fontsize=12];" << endl;
 
         // 绘制状态节点
         for (int i = 0; i < status.size(); i++)
@@ -289,13 +316,13 @@ public:
             }
 
             // 添加规约操作信息到到达文法末端的状态节点中
-            bool is_end_state = true;
+            bool is_end_state = false;
             for (const auto &item : status.getElement(i).items)
             {
                 const Grammer &grammer = grammers.getElement(item.grammer);
-                if (item.dot != grammer.grammer.size())
+                if (item.dot == grammer.grammer.size())
                 {
-                    is_end_state = false;
+                    is_end_state = true;
                     break;
                 }
             }
@@ -365,7 +392,7 @@ int main()
     grammers.insert({"S", {"A", "+", "S"}});
     grammers.insert({"S", {"A"}});
     grammers.insert({"A", {"number", "*", "A"}});
-    grammers.insert({"A", {"B"}});
+    grammers.insert({"A", {"number"}});
 
     // 输入文法
     parser.inputGrammers(grammers);

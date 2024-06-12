@@ -2,13 +2,14 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
-
+#include "IndexedSet.h"
+#pragma once
 // 定义 Grammer 结构体
 struct Grammer
 {
     std::string sign;
     std::vector<std::string> grammer;
-    std::string sign_forward;
+    IndexedSet<std::string> sign_forward;
 
     // 重载 == 运算符
     bool operator==(const Grammer &other) const
@@ -26,7 +27,7 @@ namespace std
         size_t operator()(const Grammer &g) const
         {
             size_t h1 = hash<string>()(g.sign);
-            size_t h2 = hash<string>()(g.sign_forward);
+            size_t h2 = hash<IndexedSet<string>>()(g.sign_forward);
             size_t h3 = 0;
             for (const auto &s : g.grammer)
             {

@@ -128,6 +128,10 @@ public:
         return elements.end();
     }
 
+    bool empty(){
+        return this->elements.empty();
+    }
+
     // 重载 == 运算符
     bool operator==(const IndexedSet &other) const
     {

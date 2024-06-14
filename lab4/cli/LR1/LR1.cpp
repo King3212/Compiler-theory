@@ -7,7 +7,7 @@
 #include "IndexedSet.h"
 #include "globle.h"
 #include <fstream>
-#pragma once
+#include "../FF/First_Follow.h"
 using namespace std;
 
 enum _op
@@ -21,7 +21,7 @@ struct operation
 {
     _op op;
     int n;
-    string next_sign;
+    IndexedSet<string> next_sign;
 };
 
 struct Item
@@ -36,6 +36,8 @@ struct Item
     {
         return grammer == other.grammer && dot == other.dot;
     }
+
+    IndexedSet<string> next_sign;
 };
 
 namespace std
@@ -60,6 +62,7 @@ struct Statu
     }
 
     Statu() : items(IndexedSet<Item>()) {}
+
 };
 
 namespace std
@@ -98,6 +101,7 @@ private:
     IndexedSet<string> *NTsigns;                                                  // 非终结符集合
     IndexedSet<Grammer> grammers;                                                 // 文法
     IndexedSet<string> *signs;                                                    // 符号集合
+    map<string,vector<string>> FirstSet;                                          // First集合
 
 public:
     void inputGrammers(IndexedSet<Grammer> grammers)
@@ -118,37 +122,10 @@ public:
 
 private:
 
-    void getPreSign(){
-        for (auto &gram : grammers){
-            string finalSign = gram.grammer[gram.grammer.size()];
-            for (auto &grammer : grammers)
-            {
-                if (finalSign == grammer.sign)
-                {
-                    
-                }
-                
-            }
-            
-        }
-    }
-
-
-
     vector<Item> getNewItems(string sign)
     {
         vector<Item> result;
         Item one;
-        
-        // for (int i = 0; i < NTsigns->size(); i++)
-        // {
-        //     if (sign == (*NTsigns).getElement(i))
-        //     {
-        //         one.dot = 0;
-        //         one.grammer = i;
-        //         result.push_back(one);
-        //     }
-        // }
         for (int i = 0;i < grammers.size();i++){
             if (sign == grammers.getElement(i).sign)
             {
@@ -168,6 +145,7 @@ private:
         while (have_change)
         {
             have_change = false;
+            unordered_set<Item> new_items;
             for (const auto &item : statu.items)
             {
                 const Grammer &grammer = grammers.getElement(item.grammer);
@@ -179,15 +157,25 @@ private:
                 const string &sign = grammer.grammer[item.dot];
                 if (NTsigns->contains(sign))
                 {
-                    for (const auto &new_item : getNewItems(sign))
+                    vector<Item> items_to_add = getNewItems(sign);
+                    for (auto &new_item : items_to_add)
                     {
+                        // 传递超前查看符号
+                        for (const auto &next_sign : item.next_sign)
+                        {
+                            new_item.next_sign.insert(next_sign);
+                        }
                         if (!statu.items.contains(new_item))
                         {
-                            statu.items.insert(new_item);
+                            new_items.insert(new_item);
                             have_change = true;
                         }
                     }
                 }
+            }
+            for (const auto &new_item : new_items)
+            {
+                statu.items.insert(new_item);
             }
         }
     }
@@ -195,70 +183,77 @@ private:
 public:
     void work()
     {
-        stack<int> notRead;    // 栈，用于存储尚未处理的状态
-        Statu startStatu;      // 起始状态
-        Item startItem;        // 起始项目
-        startItem.grammer = 0; // S'->.S
+        stack<int> notRead;
+        Statu startStatu;
+        Item startItem;
+        Grammer virtualGram;
+        virtualGram.grammer.push_back(grammers.getElement(0).sign);
+        virtualGram.sign = "S'";
+        while (NTsigns->contains(virtualGram.sign))
+        {
+            virtualGram.sign += "'";
+        }
+        NTsigns->push_back(virtualGram.sign);
+        signs->push_back(virtualGram.sign);
+        startItem.grammer = grammers.insert(virtualGram);
         startItem.dot = 0;
-        startStatu.items.insert(startItem); // 将起始项目插入到起始状态中
-        closure(startStatu);                // 对起始状态进行闭包运算
-
-        int startId = status.insert(startStatu); // 将起始状态插入到状态集合中，返回起始状态的ID
-        notRead.push(startId);                   // 将起始状态ID压入栈中
+        startItem.next_sign.insert("$");
+        startStatu.items.insert(startItem);
+        closure(startStatu);
+        calNextSign(startStatu);
+        int startId = status.insert(startStatu);
+        notRead.push(startId);
 
         while (!notRead.empty())
         {
-            int top_one = notRead.top();                   // 获取栈顶状态ID
-            notRead.pop();                                 // 弹出栈顶状态ID
-            Statu this_statu = status.getElement(top_one); // 获取对应的状态
+            int top_one = notRead.top();
+            notRead.pop();
+            Statu this_statu = status.getElement(top_one);
 
-            unordered_map<string, Statu> gotoMap; // GOTO映射，用于存储从当前状态通过某符号到达的新状态
+            unordered_map<string, Statu> gotoMap;
 
-            // 遍历当前状态中的每个项目
             for (auto item : this_statu.items)
             {
-                Grammer this_grammer = grammers.getElement(item.grammer); // 获取项目对应的文法规则
+                Grammer this_grammer = grammers.getElement(item.grammer);
                 if (this_grammer.grammer.size() == item.dot)
-                { // 如果点号在文法规则的末尾
+                {
                     operation op;
-                    op.op = g;                                                          // 归约操作
-                    op.n = item.grammer;                                                // 归约的文法规则ID
-                    table[{top_one, (*NTsigns).find(this_grammer.sign)}].push_back(op); // 将归约操作添加到表中
+                    op.op = g;
+                    op.n = item.grammer;
+                    table[{top_one, (*NTsigns).find(this_grammer.sign)}].push_back(op);
                 }
                 else
-                {                                                     // 点号不在文法规则的末尾
-                    string nextSign = this_grammer.grammer[item.dot]; // 点号后的符号
-                    Item nextItem = {item.grammer, item.dot + 1};     // 移动点号后的新项目
+                {
+                    string nextSign = this_grammer.grammer[item.dot];
+                    Item nextItem = {item.grammer, item.dot + 1};
+                    nextItem.next_sign = item.next_sign;
                     if (gotoMap.find(nextSign) == gotoMap.end())
-                    { // 如果GOTO映射中不存在该符号
+                    {
                         Statu newStatu;
-                        gotoMap[nextSign] = newStatu; // 创建新的状态
+                        gotoMap[nextSign] = newStatu;
                     }
-                    gotoMap[nextSign].items.insert(nextItem); // 将新项目插入到新状态中
+                    gotoMap[nextSign].items.insert(nextItem);
                 }
             }
 
-            // 遍历GOTO映射，处理每个符号对应的新状态
             for (auto &entry : gotoMap)
             {
-                closure(entry.second);                   // 对新状态进行闭包运算
-                int newId = status.insert(entry.second); // 将新状态插入到状态集合中，返回新状态的ID
+                closure(entry.second);
+                int newId = status.insert(entry.second);
                 if (newId == status.size() - 1)
-                {                        // 如果新状态是新插入的状态
-                    notRead.push(newId); // 将新状态ID压入栈中
+                {
+                    notRead.push(newId);
                 }
 
                 operation op;
-                op.op = s;                                                  // 移入操作
-                op.n = newId;                                               // 移入的新状态ID
+                op.op = s;
+                op.n = newId;
                 vector<operation> temp;
-                
+
                 auto it = table.find({top_one, (*signs).find(entry.first)});
                 if (it != table.end())
                 {
-                    // 键存在，可以安全地访问对应的值
                     it->second.push_back(op);
-                    // 进行进一步的操作
                 }
                 else
                 {
@@ -266,8 +261,67 @@ public:
                     table[{top_one, (*signs).find(entry.first)}] = temp;
                     table[{top_one, (*signs).find(entry.first)}].push_back(op);
                 }
-                        }
+            }
         }
+    }
+    
+    void calNextSign(Statu &one)
+    {
+        Statu oldOne;
+        do{
+            oldOne = one;
+            for (auto &item : one.items)
+            {
+                
+                string thisword = grammers.getElement(item.grammer).sign;
+                for (auto &findItem : one.items)
+                {
+                    Grammer tempGram = grammers.getElement(findItem.grammer);
+                    for (int i = 0; i < tempGram.grammer.size(); ++i)
+                    {
+                        if (i == tempGram.grammer.size() - 1)
+                        {
+                            // 从最后一个元素是这个元素的项中继承超前查看符号
+                            if (tempGram.grammer[i] == thisword)
+                            {
+                                for (auto &nextSign : findItem.next_sign)
+                                {
+                                    item.next_sign.insert(nextSign);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 在项中的位置
+                            if (tempGram.grammer[i] == thisword)
+                            {
+                                // 对first集合求并集
+                                for (auto &First : FirstSet[tempGram.grammer[i + 1]])
+                                {
+                                    item.next_sign.insert(First);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+
+        }while(!(oldOne == one));
+        
+    }
+
+    void setFirst(map<string,set<string>> firstSet){
+        for (auto &i : firstSet)
+        {
+            vector<string> temp = vector<string>();
+            for (auto & first: i.second)
+            {
+                temp.push_back(first);
+            }
+            FirstSet[i.first] = temp;
+        }
+         
     }
 
 public:
@@ -278,6 +332,8 @@ public:
         NTsigns = new IndexedSet<std::string>();
         signs = new IndexedSet<std::string>();
     }
+
+
     void generateDFA(const string &filename)
     {
         ofstream file(filename);
@@ -312,7 +368,17 @@ public:
                 }
                 if (item.dot == grammer.grammer.size())
                     file << ".";
+                file << "  {";
+                for (auto it = item.next_sign.begin(); it != item.next_sign.end(); ++it)
+                {
+                    file << *it;
+                    if (std::next(it) != item.next_sign.end()) {
+                        file << ", ";
+                    }
+                }
+                file << "}";
                 file << "\\n";
+
             }
 
             // 添加规约操作信息到到达文法末端的状态节点中
@@ -385,17 +451,25 @@ public:
 int main()
 {
     LR1 parser;
-
+    First_Follow FF;
+    vector<string> Grammers = {
+        "S->A + S | A",
+        "A->number * A | number",
+    };
+    FF.init(Grammers);
     // 定义文法规则
     IndexedSet<Grammer> grammers;
-    grammers.insert({"S'", {"S"}});
-    grammers.insert({"S", {"A", "+", "S"}});
-    grammers.insert({"S", {"A"}});
-    grammers.insert({"A", {"number", "*", "A"}});
-    grammers.insert({"A", {"number"}});
-
+    for (auto &gram : FF.getGrammer())
+    {
+        Grammer one = Grammer();
+        one.sign = gram[0];
+        one.grammer = vector<string>(gram.begin()+1,gram.end());
+        grammers.insert(one);
+    }
+    parser.setFirst(FF.getFirst());
     // 输入文法
     parser.inputGrammers(grammers);
+    
     parser.work();
     // 执行解析器生成
     parser.generateDFA("DFA.gv");

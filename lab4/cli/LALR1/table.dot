@@ -1,0 +1,16 @@
+digraph StateTable {
+    node [shape=plaintext]
+    tbl [label=<
+    <table border='1' cellborder='1' cellspacing='0'>
+        <tr><td>Status</td><td>S</td><td>A</td><td>+</td><td>number</td><td>*</td><td>S'</td></tr>
+        <tr><td>0</td><td></td><td port='0_1' align='left'>g2</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>1</td><td port='1_0' align='left'>g0</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>2</td><td></td><td port='2_1' align='left'>s0</td><td></td><td port='2_3' align='left'>s6</td><td></td><td></td></tr>
+        <tr><td>3</td><td port='3_0' align='left'>s1</td><td port='3_1' align='left'>s5</td><td></td><td port='3_3' align='left'>s6</td><td></td><td></td></tr>
+        <tr><td>4</td><td></td><td></td><td port='4_2' align='left'>g4</td><td></td><td></td><td></td></tr>
+        <tr><td>5</td><td port='5_0' align='left'>g1</td><td></td><td port='5_2' align='left'>s3</td><td></td><td></td><td></td></tr>
+        <tr><td>6</td><td></td><td port='6_1' align='left'>g3</td><td></td><td></td><td port='6_4' align='left'>s2</td><td></td></tr>
+        <tr><td>7</td><td port='7_0' align='left'>s4</td><td port='7_1' align='left'>s5</td><td></td><td port='7_3' align='left'>s6</td><td></td><td></td></tr>
+    </table>
+    >];
+}

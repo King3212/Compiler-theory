@@ -1,15 +1,4 @@
-#include <unordered_map>
-#include <vector>
-#include <unordered_set>
-#include <stack>
-#include <string>
-#include <iostream>
-#include "IndexedSet.h"
-#include "globle.h"
-#include <fstream>
-#include "../FF/First_Follow.h"
-#include "LR1.h"
-using namespace std;
+#include "LALR1/LALR1.h"
 
 int main()
 {
@@ -26,16 +15,21 @@ int main()
     {
         Grammer one = Grammer();
         one.sign = gram[0];
-        one.grammer = vector<string>(gram.begin()+1,gram.end());
+        one.grammer = vector<string>(gram.begin() + 1, gram.end());
         grammers.insert(one);
     }
-    parser.setFirst(FF.getFirst());
+
     // 输入文法
     parser.inputGrammers(grammers);
-    
+    parser.setFirst(FF.getFirst());
     parser.work();
-    // 执行解析器生成
     parser.generateDFA("DFA.gv");
-
+    // 执行解析器生成
+    LALR1 newparser;
+    newparser.inputGrammers(grammers);
+    newparser.setFirst(FF.getFirst());
+    newparser.work();
+    newparser.generateDFA("NewDFA.gv");
+    newparser.printStateTable("table.dot");
     return 0;
 }

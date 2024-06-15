@@ -160,19 +160,3 @@ private :
 };
 
 
-namespace std
-{
-    template <>
-    struct hash<IndexedSet<string>>
-    {
-        size_t operator()(const IndexedSet<string> &iset) const
-        {
-            size_t hash_value = 0;
-            for (const auto &elem : iset.elements)
-            {
-                hash_value ^= hash<string>()(elem) + 0x9e3779b9 + (hash_value << 6) + (hash_value >> 2);
-            }
-            return hash_value;
-        }
-    };
-}

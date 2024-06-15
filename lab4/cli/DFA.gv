@@ -1,0 +1,28 @@
+digraph DFA {
+    rankdir=TB;
+    node [shape=box, style=filled,          fillcolor=white, fontname="Arial", fontsize=12];
+    state0 [label="S0\nS' -> .S   {$}\nS -> .A   {$}\nS -> .A + S   {$}\nA -> .number   {$, +}\nA -> .number * A   {$, +}\n"];
+    state1 [label="S1\nA -> number .  {$, +}\nA -> number .* A   {$, +}\n\n规约操作 :\n用文法： A -> number 规约\n"];
+    state2 [label="S2\nS -> A .  {$}\nS -> A .+ S   {$}\n\n规约操作 :\n用文法： S -> A 规约\n"];
+    state3 [label="S3\nS' -> S .  {$}\n\n规约操作 :\n用文法： S' -> S 规约\n"];
+    state4 [label="S4\nS -> A + .S   {$}\nS -> .A   {$}\nS -> .A + S   {$}\nA -> .number   {$}\nA -> .number * A   {$}\n"];
+    state5 [label="S5\nA -> number .  {$}\nA -> number .* A   {$}\n\n规约操作 :\n用文法： A -> number 规约\n"];
+    state6 [label="S6\nS -> A + S .  {$}\n\n规约操作 :\n用文法： S -> A + S 规约\n"];
+    state7 [label="S7\nA -> number * .A   {$}\nA -> .number   {$}\nA -> .number * A   {$}\n"];
+    state8 [label="S8\nA -> number * A .  {$}\n\n规约操作 :\n用文法： A -> number * A 规约\n"];
+    state9 [label="S9\nA -> number * .A   {$, +}\nA -> .number   {$, +}\nA -> .number * A   {$, +}\n"];
+    state10 [label="S10\nA -> number * A .  {$, +}\n\n规约操作 :\n用文法： A -> number * A 规约\n"];
+    state9 -> state10 [label="A"];
+    state9 -> state1 [label="number"];
+    state1 -> state9 [label="*"];
+    state7 -> state8 [label="A"];
+    state0 -> state1 [label="number"];
+    state2 -> state4 [label="+"];
+    state4 -> state2 [label="A"];
+    state0 -> state2 [label="A"];
+    state4 -> state5 [label="number"];
+    state0 -> state3 [label="S"];
+    state5 -> state7 [label="*"];
+    state4 -> state6 [label="S"];
+    state7 -> state5 [label="number"];
+}

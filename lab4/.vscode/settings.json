@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "charconv": "cpp",
+        "random": "cpp",
+        "text_encoding": "cpp",
+        "*.tcc": "cpp",
+        "variant": "cpp",
+        "*.inc": "cpp"
+    }
+}

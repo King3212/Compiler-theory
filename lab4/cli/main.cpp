@@ -9,6 +9,7 @@ int main()
         "A->number * A | number",
     };
     FF.init(Grammers);
+    FF.outputToFile("FFTable.gv");
     // 定义文法规则
     IndexedSet<Grammer> grammers;
     for (auto &gram : FF.getGrammer())

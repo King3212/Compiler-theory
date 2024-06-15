@@ -5,6 +5,7 @@
 #include <set>
 #include <sstream>
 #include <algorithm>
+#include <fstream>
 #include "../LR1/IndexedSet.h"
 #pragma once
 using namespace std;
@@ -179,5 +180,44 @@ public:
     }
     vector<vector<string>> getGrammer(){
         return this->grammars;
+    }
+    
+    void outputToFile(const string &filename) {
+        ofstream outFile(filename);
+        if (!outFile.is_open()) {
+            cerr << "Error opening file: " << filename << endl;
+            return;
+        }
+
+        outFile << "digraph G {" << endl;
+        outFile << "node [shape=plaintext]" << endl;
+        outFile << "FirstFollowTable [label=<" << endl;
+        outFile << "<table border='1' cellborder='1' cellspacing='0'>" << endl;
+        outFile << "<tr><td>Symbol</td><td>First</td><td>Follow</td><td>Nullable</td></tr>" << endl;
+
+        for (const auto &symbol : NESigns) {
+            outFile << "<tr>";
+            outFile << "<td>" << symbol << "</td>";
+
+            outFile << "<td>{";
+            for (const auto &f : First[symbol]) {
+                outFile << f << " ";
+            }
+            outFile << "}</td>";
+
+            outFile << "<td>{";
+            for (const auto &f : Follow[symbol]) {
+                outFile << f << " ";
+            }
+            outFile << "}</td>";
+
+            outFile << "<td>" << (nullable[symbol] ? "true" : "false") << "</td>";
+            outFile << "</tr>" << endl;
+        }
+
+        outFile << "</table>>]" << endl;
+        outFile << "}" << endl;
+
+        outFile.close();
     }
 };

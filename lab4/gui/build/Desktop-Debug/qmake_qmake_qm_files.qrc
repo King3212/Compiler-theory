@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="i18n">
+<file alias="gui_zh_CN.qm">/home/mirror/Documents/Compiler-theory/lab4/gui/build/Desktop-Debug/.qm/gui_zh_CN.qm</file>
+</qresource>
+</RCC>

@@ -10,30 +10,47 @@
 #include <QMessageBox>
 #include <QLabel>
 #include "LALR1.h"
-#include <cstdlib>
 #include <cstdlib> // 包含 system 函数所需的头文件
-#include <iostream> // 用于输出信息
+#include <vector>
+#include <string>
 
-#ifdef _WIN32
-#include <direct.h> // 用于 Windows 平台的 mkdir 函数
-#define mkdir _mkdir
-#else
-#include <sys/stat.h> // 用于 Linux 和 macOS 的 mkdir 函数
-#endif
+#include <QWidget>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QPixmap>
+#include <QScrollArea>
 
-bool createDirectory(const char* path) {
-    // 使用 mkdir 函数创建目录
-    int result = mkdir(path);
+class MessageWindow : public QWidget
+{
+public:
+    MessageWindow(const QString &title, const QString &imagePath, QWidget *parent = nullptr)
+        : QWidget(parent)
+    {
+        setWindowTitle(title);
 
-    // 检查 mkdir 调用结果
-    if (result == 0) {
-        std::cout << "创建目录成功：" << path << std::endl;
-        return true;
-    } else {
-        std::cerr << "创建目录失败：" << path << std::endl;
-        return false;
+        QVBoxLayout *layout = new QVBoxLayout(this);
+
+        // 加载图片
+        QPixmap pixmap(imagePath);
+
+        // 设置最大宽度，并调整图片大小以保持比例
+        int maxWidth = 600; // 限制宽度为600像素
+        QPixmap scaledPixmap = pixmap.scaledToWidth(maxWidth, Qt::SmoothTransformation);
+
+        QLabel *label = new QLabel(this);
+        label->setPixmap(scaledPixmap);
+
+        // 添加滚动条以保持图片比例
+        QScrollArea *scrollArea = new QScrollArea(this);
+        scrollArea->setWidget(label);
+        scrollArea->setWidgetResizable(true);
+
+        layout->addWidget(scrollArea);
+        setLayout(layout);
     }
-}
+};
+
+
 
 class MainWindow : public QWidget
 {
@@ -44,14 +61,15 @@ public:
         button1(new QPushButton("打开文法文件")),
         button2(new QPushButton("保存文法文件")),
         button3(new QPushButton("查看LR(1)DFA")),
-        button4(new QPushButton("查看LR(1)DFA")),
+        button4(new QPushButton("查看LALR(1)状态表")),
         button5(new QPushButton("查看FIRST FOLLOW集合")),
-        button6(new QPushButton("查看LALR状态表")),
+        button6(new QPushButton("查看LALR()状态表")),
         button7(new QPushButton("生成"))
     {
         setWindowTitle("Qt 界面示例");
         setupUi();
     }
+
 private:
     bool isTextChanged() const
     {
@@ -59,6 +77,7 @@ private:
         // 实际应用中可以根据需求进一步扩展
         return textEdit->document()->isModified();
     }
+
 private slots:
     void openGrammarFile()
     {
@@ -107,113 +126,31 @@ private slots:
 
     void viewLR1DFA()
     {
-        // 实现查看LR(1)DFA的槽函数
-        // 加载图片文件
-        QString imagePath = "./tempFile/LR1DFA.png";
-        QPixmap pixmap(imagePath);
-
-        // 设置最大宽度，并调整图片大小以保持比例
-        int maxWidth = 600; // 限制宽度为600像素
-        QPixmap scaledPixmap = pixmap.scaledToWidth(maxWidth, Qt::SmoothTransformation);
-
-        // 创建 QMessageBox
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("查看LR(1)DFA");
-        msgBox.setIconPixmap(scaledPixmap);
-        msgBox.setText("LR(1)DFA 图片");
-
-        // 添加滚动条以保持图片比例
-        if (pixmap.width() > maxWidth) {
-            QScrollArea *scrollArea = new QScrollArea(&msgBox);
-            scrollArea->setWidgetResizable(true);
-            scrollArea->setWidget(new QLabel(msgBox.text(), &msgBox));
-            msgBox.layout()->addWidget(scrollArea);
-        }
-
-        msgBox.exec();
+        // 创建并显示自定义消息窗口
+        MessageWindow *window = new MessageWindow("查看LR(1)DFA", "./LR1DFA.png");
+        window->show();
     }
 
     void viewFirstFollow()
     {
-        // 加载图片文件
-        QString imagePath = "./tempFile/FFTable.png";
-        QPixmap pixmap(imagePath);
-
-        // 设置最大宽度，并调整图片大小以保持比例
-        int maxWidth = 600; // 限制宽度为600像素
-        QPixmap scaledPixmap = pixmap.scaledToWidth(maxWidth, Qt::SmoothTransformation);
-
-        // 创建 QMessageBox
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("查看FIRST FOLLOW集合");
-        msgBox.setIconPixmap(scaledPixmap);
-        msgBox.setText("FIRST FOLLOW集合 图片");
-
-        // 添加滚动条以保持图片比例
-        if (pixmap.width() > maxWidth) {
-            QScrollArea *scrollArea = new QScrollArea(&msgBox);
-            scrollArea->setWidgetResizable(true);
-            scrollArea->setWidget(new QLabel(msgBox.text(), &msgBox));
-            msgBox.layout()->addWidget(scrollArea);
-        }
-
-        msgBox.exec();
+        // 创建并显示自定义消息窗口
+        MessageWindow *window = new MessageWindow("查看FIRST FOLLOW集合", "./FFTable.png");
+        window->show();
     }
 
     void viewLALRTable()
     {
-        // 加载图片文件
-        QString imagePath = "./tempFile/LALRTable.png";
-        QPixmap pixmap(imagePath);
-
-        // 设置最大宽度，并调整图片大小以保持比例
-        int maxWidth = 600; // 限制宽度为600像素
-        QPixmap scaledPixmap = pixmap.scaledToWidth(maxWidth, Qt::SmoothTransformation);
-
-        // 创建 QMessageBox
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("查看LALR状态表");
-        msgBox.setIconPixmap(scaledPixmap);
-        msgBox.setText("LALR状态表 图片");
-
-        // 添加滚动条以保持图片比例
-        if (pixmap.width() > maxWidth) {
-            QScrollArea *scrollArea = new QScrollArea(&msgBox);
-            scrollArea->setWidgetResizable(true);
-            scrollArea->setWidget(new QLabel(msgBox.text(), &msgBox));
-            msgBox.layout()->addWidget(scrollArea);
-        }
-
-        msgBox.exec();
+        // 创建并显示自定义消息窗口
+        MessageWindow *window = new MessageWindow("查看LALR状态表", "./LALR1Table.png");
+        window->show();
     }
 
     void viewLALR1DFA()
     {
-        // 加载图片文件
-        QString imagePath = "./tempFile/LALRDFA.png";
-        QPixmap pixmap(imagePath);
-
-        // 设置最大宽度，并调整图片大小以保持比例
-        int maxWidth = 600; // 限制宽度为600像素
-        QPixmap scaledPixmap = pixmap.scaledToWidth(maxWidth, Qt::SmoothTransformation);
-
-        // 创建 QMessageBox
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("查看LALR状态表");
-        msgBox.setIconPixmap(scaledPixmap);
-        msgBox.setText("LALR状态表 图片");
-
-        // 添加滚动条以保持图片比例
-        if (pixmap.width() > maxWidth) {
-            QScrollArea *scrollArea = new QScrollArea(&msgBox);
-            scrollArea->setWidgetResizable(true);
-            scrollArea->setWidget(new QLabel(msgBox.text(), &msgBox));
-            msgBox.layout()->addWidget(scrollArea);
-        }
-
-        msgBox.exec();
+        // 创建并显示自定义消息窗口
+        MessageWindow *window = new MessageWindow("查看LALR状态表", "./LALRDFA.png");
+        window->show();
     }
-
 
     void generate()
     {
@@ -238,12 +175,10 @@ private slots:
     {
         LR1 parser;
         First_Follow FF;
-        vector<string> Grammers = {
-            "S->A + S | A",
-            "A->number * A | number",
-        };
+        vector<string> Grammers = textVector;
         FF.init(Grammers);
         FF.outputToFile("FFTable.gv");
+
         // 定义文法规则
         IndexedSet<Grammer> grammers;
         for (auto &gram : FF.getGrammer())
@@ -258,23 +193,42 @@ private slots:
         parser.inputGrammers(grammers);
         parser.setFirst(FF.getFirst());
         parser.work();
-        parser.generateDFA("DFA.gv");
+        parser.generateDFA("LR1DFA.gv");
+
         // 执行解析器生成
         LALR1 newparser;
         newparser.inputGrammers(grammers);
         newparser.setFirst(FF.getFirst());
         newparser.work();
-        newparser.generateDFA("NewDFA.gv");
-        newparser.printStateTable("table.dot");
+        newparser.generateDFA("LALRDFA.gv");
+        newparser.printStateTable("LALR1Table.gv");
 
-        int result = system("");
+        // 执行第一条命令
+        system("dot -Tpng LR1DFA.gv -o ./LR1DFA.png -Gdpi=600");
 
-        // 检查命令执行结果
-        if (result == 0) {
-            // 成功执行
-        } else {
-            // 执行失败
-        }
+        // 执行第二条命令
+        system("dot -Tpng LALRDFA.gv -o ./LALRDFA.png -Gdpi=600");
+
+        // 执行第三条命令
+        system("dot -Tpng LALR1Table.gv -o ./LALR1Table.png -Gdpi=600");
+
+        // 执行第四条命令
+        system("dot -Tpng FFTable.gv -o ./FFTable.png -Gdpi=600");
+
+        // 启用按钮3到按钮6
+        button3->setEnabled(true);
+        button4->setEnabled(true);
+        button5->setEnabled(true);
+        button6->setEnabled(true);
+    }
+
+    void onTextChanged()
+    {
+        // 禁用按钮3到按钮6
+        button3->setEnabled(false);
+        button4->setEnabled(false);
+        button5->setEnabled(false);
+        button6->setEnabled(false);
     }
 
 private:
@@ -324,6 +278,9 @@ private:
         connect(button6, &QPushButton::clicked, this, &MainWindow::viewLALRTable);
         connect(button7, &QPushButton::clicked, this, &MainWindow::generate);
 
+        // Connect the text edit change signal to the slot
+        connect(textEdit, &QTextEdit::textChanged, this, &MainWindow::onTextChanged);
+
         // Set initial button states
         button3->setEnabled(false);
         button4->setEnabled(false);
@@ -341,4 +298,3 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
-

@@ -196,6 +196,5 @@ public:
         outFile << "}" << std::endl;
 
         outFile.close();
-        std::cout << "State table DOT file has been printed to: " << filename << std::endl;
     }
 };

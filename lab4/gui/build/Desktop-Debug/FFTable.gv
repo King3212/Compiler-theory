@@ -1,0 +1,9 @@
+digraph G {
+node [shape=plaintext]
+FirstFollowTable [label=<
+<table border='1' cellborder='1' cellspacing='0'>
+<tr><td>Symbol</td><td>First</td><td>Follow</td><td>Nullable</td></tr>
+<tr><td>A</td><td>{number }</td><td>{+ }</td><td>false</td></tr>
+<tr><td>S</td><td>{number }</td><td>{}</td><td>false</td></tr>
+</table>>]
+}

@@ -66,7 +66,7 @@ public:
         button6(new QPushButton("查看LALR()状态表")),
         button7(new QPushButton("生成"))
     {
-        setWindowTitle("Qt 界面示例");
+        setWindowTitle("文法分析器");
         setupUi();
     }
 
@@ -203,16 +203,16 @@ private slots:
         newparser.generateDFA("LALRDFA.gv");
         newparser.printStateTable("LALR1Table.gv");
 
-        // 执行第一条命令
+        // 执行第一条命令,生成LR1DFA
         system("dot -Tpng LR1DFA.gv -o ./LR1DFA.png -Gdpi=600");
 
-        // 执行第二条命令
+        // 执行第二条命令,生成LALR1DFA
         system("dot -Tpng LALRDFA.gv -o ./LALRDFA.png -Gdpi=600");
 
-        // 执行第三条命令
+        // 执行第三条命令,生成LALR1状态表
         system("dot -Tpng LALR1Table.gv -o ./LALR1Table.png -Gdpi=600");
 
-        // 执行第四条命令
+        // 执行第四条命令,生成FIRST和FOLLOW表
         system("dot -Tpng FFTable.gv -o ./FFTable.png -Gdpi=600");
 
         // 启用按钮3到按钮6

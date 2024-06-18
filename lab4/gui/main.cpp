@@ -1,3 +1,4 @@
+﻿#pragma execution_character_set("utf-8")
 #include <QApplication>
 #include <QWidget>
 #include <QPushButton>
@@ -13,7 +14,6 @@
 #include <cstdlib> // 包含 system 函数所需的头文件
 #include <vector>
 #include <string>
-
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -158,7 +158,7 @@ private slots:
         QString text = textEdit->toPlainText();
 
         // 将文本按换行符分割成字符串列表
-        QStringList lines = text.split("\n", Qt::SkipEmptyParts);
+        QStringList lines = text.split("\n", QString::SkipEmptyParts);
 
         // 转换为 std::vector<std::string>
         std::vector<std::string> textVector;

@@ -1,3 +1,4 @@
+﻿#pragma execution_character_set("utf-8")
 #include <unordered_map>
 #include <vector>
 #include <unordered_set>
@@ -463,7 +464,6 @@ public:
                 for (const auto &from : table)
                 {
                     int from_state = from.first.first;
-                    int sign_id = from.first.second;
                     if (from_state == i)
                     {
                         for (const auto &op : from.second)

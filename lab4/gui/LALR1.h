@@ -1,3 +1,4 @@
+﻿#pragma execution_character_set("utf-8")
 #include "LR1.h"
 
 class LALR1 : public LR1

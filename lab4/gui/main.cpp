@@ -18,7 +18,49 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QPixmap>
-#include <QScrollArea>
+#include <QGraphicsView>
+#include <QMouseEvent>
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QDialog>
+#define ppi 300
+class ImageViewer : public QGraphicsView
+{
+public:
+    ImageViewer(const QPixmap &pixmap, QWidget *parent = nullptr)
+        : QGraphicsView(parent), pixmapItem(nullptr)
+    {
+        scene = new QGraphicsScene(this);
+        pixmapItem = new QGraphicsPixmapItem(pixmap);
+        scene->addItem(pixmapItem);
+        setScene(scene);
+
+        setRenderHint(QPainter::Antialiasing);
+        setRenderHint(QPainter::SmoothPixmapTransform);
+
+        setDragMode(QGraphicsView::ScrollHandDrag);
+        setOptimizationFlags(QGraphicsView::DontSavePainterState);
+        setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+        setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    }
+
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *event) override
+    {
+        if (event->button() == Qt::LeftButton) {
+            // 放大当前视图
+            scale(1.5, 1.5);
+        }
+        else if (event->button() == Qt::RightButton) {
+            // 缩小当前视图
+            scale(0.75, 0.75);
+        }
+    }
+
+private:
+    QGraphicsScene *scene;
+    QGraphicsPixmapItem *pixmapItem;
+};
 
 class MessageWindow : public QWidget
 {
@@ -26,31 +68,21 @@ public:
     MessageWindow(const QString &title, const QString &imagePath, QWidget *parent = nullptr)
         : QWidget(parent)
     {
-        setWindowTitle(title);
+        setWindowTitle(title+"   ->(双击查看原图，左键双击放大，右键双击缩小)<-");
 
         QVBoxLayout *layout = new QVBoxLayout(this);
 
-        // 加载图片
         QPixmap pixmap(imagePath);
+        ImageViewer *imageView = new ImageViewer(pixmap, this);
 
-        // 设置最大宽度，并调整图片大小以保持比例
-        int maxWidth = 600; // 限制宽度为600像素
-        QPixmap scaledPixmap = pixmap.scaledToWidth(maxWidth, Qt::SmoothTransformation);
-
-        QLabel *label = new QLabel(this);
-        label->setPixmap(scaledPixmap);
-
-        // 添加滚动条以保持图片比例
         QScrollArea *scrollArea = new QScrollArea(this);
-        scrollArea->setWidget(label);
+        scrollArea->setWidget(imageView);
         scrollArea->setWidgetResizable(true);
 
         layout->addWidget(scrollArea);
         setLayout(layout);
     }
 };
-
-
 
 class MainWindow : public QWidget
 {
@@ -204,10 +236,10 @@ private slots:
         newparser.printStateTable("LALR1Table.gv");
 
         // 执行第一条命令,生成LR1DFA
-        system("dot -Tpng LR1DFA.gv -o ./LR1DFA.png -Gdpi=600");
+        system("dot -Tpng LR1DFA.gv -o ./LR1DFA.png -Gdpi=400");
 
         // 执行第二条命令,生成LALR1DFA
-        system("dot -Tpng LALRDFA.gv -o ./LALRDFA.png -Gdpi=600");
+        system("dot -Tpng LALRDFA.gv -o ./LALRDFA.png -Gdpi=400");
 
         // 执行第三条命令,生成LALR1状态表
         system("dot -Tpng LALR1Table.gv -o ./LALR1Table.png -Gdpi=600");

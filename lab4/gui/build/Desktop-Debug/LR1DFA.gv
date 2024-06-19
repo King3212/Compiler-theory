@@ -1,0 +1,36 @@
+digraph DFA {
+    rankdir=TB;
+    node [shape=box, style=filled,          fillcolor=white, fontname="Arial", fontsize=12];
+    state0 [label="S0\nS' -> .S   {$}\nS -> .R   {$}\nS -> .L = R   {$}\nL -> .id   {$, =}\nL -> .* R   {$, =}\nR -> .L   {$, =}\n"];
+    state1 [label="S1\nL -> * .R   {$, =}\nR -> .L   {$, =}\nL -> .id   {$, =}\nL -> .* R   {$, =}\n"];
+    state2 [label="S2\nL -> id .  {$, =}\n\n规约操作 :\n用文法： L -> id 规约\n"];
+    state3 [label="S3\nS -> L .= R   {$}\nR -> L .  {$, =}\n\n规约操作 :\n用文法： R -> L 规约\n"];
+    state4 [label="S4\nS -> R .  {$}\n\n规约操作 :\n用文法： S -> R 规约\n"];
+    state5 [label="S5\nS' -> S .  {$}\n\n规约操作 :\n用文法： S' -> S 规约\n"];
+    state6 [label="S6\nS -> L = .R   {$}\nR -> .L   {$}\nL -> .id   {$}\nL -> .* R   {$}\n"];
+    state7 [label="S7\nL -> * .R   {$}\nR -> .L   {$}\nL -> .id   {$}\nL -> .* R   {$}\n"];
+    state8 [label="S8\nL -> id .  {$}\n\n规约操作 :\n用文法： L -> id 规约\n"];
+    state9 [label="S9\nR -> L .  {$}\n\n规约操作 :\n用文法： R -> L 规约\n"];
+    state10 [label="S10\nS -> L = R .  {$}\n\n规约操作 :\n用文法： S -> L = R 规约\n"];
+    state11 [label="S11\nL -> * R .  {$}\n\n规约操作 :\n用文法： L -> * R 规约\n"];
+    state12 [label="S12\nR -> L .  {$, =}\n\n规约操作 :\n用文法： R -> L 规约\n"];
+    state13 [label="S13\nL -> * R .  {$, =}\n\n规约操作 :\n用文法： L -> * R 规约\n"];
+    state1 -> state2 [label="id"];
+    state1 -> state1 [label="*"];
+    state7 -> state11 [label="R"];
+    state7 -> state9 [label="L"];
+    state7 -> state7 [label="*"];
+    state7 -> state8 [label="id"];
+    state0 -> state1 [label="*"];
+    state0 -> state2 [label="id"];
+    state0 -> state3 [label="L"];
+    state0 -> state4 [label="R"];
+    state0 -> state5 [label="S"];
+    state6 -> state10 [label="R"];
+    state1 -> state12 [label="L"];
+    state6 -> state9 [label="L"];
+    state1 -> state13 [label="R"];
+    state3 -> state6 [label="="];
+    state6 -> state7 [label="*"];
+    state6 -> state8 [label="id"];
+}

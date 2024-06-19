@@ -68,7 +68,7 @@ public:
     MessageWindow(const QString &title, const QString &imagePath, QWidget *parent = nullptr)
         : QWidget(parent)
     {
-        setWindowTitle(title+"   ->(双击查看原图，左键双击放大，右键双击缩小)<-");
+        setWindowTitle(title+"   ->(左键双击放大，右键双击缩小)<-");
 
         QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -93,9 +93,9 @@ public:
         button1(new QPushButton("打开文法文件")),
         button2(new QPushButton("保存文法文件")),
         button3(new QPushButton("查看LR(1)DFA")),
-        button4(new QPushButton("查看LALR(1)状态表")),
+        button4(new QPushButton("查看LALR(1)DFA")),
         button5(new QPushButton("查看FIRST FOLLOW集合")),
-        button6(new QPushButton("查看LALR()状态表")),
+        button6(new QPushButton("查看LALR(1)状态表")),
         button7(new QPushButton("生成"))
     {
         setWindowTitle("文法分析器");
@@ -180,7 +180,7 @@ private slots:
     void viewLALR1DFA()
     {
         // 创建并显示自定义消息窗口
-        MessageWindow *window = new MessageWindow("查看LALR状态表", "./LALRDFA.png");
+        MessageWindow *window = new MessageWindow("查看LALR(1)DFA", "./LALRDFA.png");
         window->show();
     }
 
@@ -188,6 +188,10 @@ private slots:
     {
         // 获取文本框中的文本
         QString text = textEdit->toPlainText();
+        if(text.isEmpty()){
+            QMessageBox::warning(this, "输入错误", "文本不能为空，请输入内容。");
+        }
+
 
         // 将文本按换行符分割成字符串列表
         QStringList lines = text.split("\n", QString::SkipEmptyParts);
@@ -304,9 +308,9 @@ private:
         // Connect signals and slots
         connect(button1, &QPushButton::clicked, this, &MainWindow::openGrammarFile);
         connect(button2, &QPushButton::clicked, this, &MainWindow::saveGrammarFile);
-        connect(button3, &QPushButton::clicked, this, &MainWindow::viewLR1DFA);
-        connect(button4, &QPushButton::clicked, this, &MainWindow::viewLALR1DFA);
-        connect(button5, &QPushButton::clicked, this, &MainWindow::viewFirstFollow);
+        connect(button4, &QPushButton::clicked, this, &MainWindow::viewLR1DFA);
+        connect(button5, &QPushButton::clicked, this, &MainWindow::viewLALR1DFA);
+        connect(button3, &QPushButton::clicked, this, &MainWindow::viewFirstFollow);
         connect(button6, &QPushButton::clicked, this, &MainWindow::viewLALRTable);
         connect(button7, &QPushButton::clicked, this, &MainWindow::generate);
 

@@ -1,2 +1,5 @@
 # Compiler-theory
- SCNU-2024-编译原理
+ SCNU-2022级-编译原理
+非实验
+
+供参考

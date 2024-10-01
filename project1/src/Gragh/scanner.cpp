@@ -59,6 +59,10 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 
                 pos = oneData->re.find_first_not_of(" \t");
                 oneData->re = oneData->re.substr(pos);
+                if (!oneData->re.empty() && oneData->re.back() == '\r')
+                {
+                    oneData->re.erase(oneData->re.size() - 1);
+                }
                 break;
             }else{
                 pos++;

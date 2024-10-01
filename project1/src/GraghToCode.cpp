@@ -16,11 +16,10 @@ std::vector<gragh *>* textsToGraghs(std::vector<std::string> reLines)
         P_G->toDFA();
         P_G->compressDFA();
 
-        printf("%s\n\n\n", P_G->toString());
-
         gragh *g = new gragh();
         *g = P_G->getGragh();
         g->name = (*reData)[i]->name;
+        
         Gs->push_back(g);
     }
     return Gs;
@@ -64,13 +63,13 @@ void buildFunction(gragh *g)
             }
         }
 
-        printf("                    default: return false;\n");
+        printf("                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();\n");
         printf("                }\n");
         printf("                break;\n");
     }
 
     // 结束状态判断，是否在终止节点
-    printf("            default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();\n");
+    printf("            default: break;\n");
     printf("        }\n");
     printf("    }\n");
     printf("    return false;\n");
@@ -82,6 +81,7 @@ void buildHead(){
     printf("#include <iostream> \n");
     printf("#include <vector> \n");
     printf("#include <string> \n");
+    printf("#include <algorithm>\n");
     printf("using namespace std; \n");
     printf("\n\n\n");
 }
@@ -95,7 +95,7 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("    while(!input->getInput().empty()){ \n"); // 如果输入不为空
     printf("        int tokenSize = tokens.size();\n");
     printf("        input->goBackOneChar(); \n");
-    printf("        std::string c = input->getInput(); \n");
+    printf("        char c = (input->getInput())[0]; \n");
     printf("        if(c == ' ' || c == '\\n') continue; \n");
     printf("        input->goBackOneChar();\n");
     printf("        int pos = input->getPos();\n");
@@ -119,19 +119,28 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("}\n");
 }
 
-
 void buildMain(std::string path)
 {
     std::vector<std::string> reLines = readFile(path);
     std::vector<std::string> tokens;
-    // buildHead();
+
+    buildHead();
+
     std::vector<gragh *> *Gs = textsToGraghs(reLines);
 
-    // for (auto g : *Gs)
-    // {
-    //     buildFunction(g);
-    // }
-    // buildtoken(Gs);
+    for (auto g : *Gs)
+    {
+        buildFunction(g);
+    }
+
+    buildtoken(Gs);
+
+    printf("int main(){\n");
+    printf("    for(auto t : token()){\n");
+    printf("        cout << t << \" \";\n");
+    printf("    }\n");
+    printf("    cout << endl;\n");
+    printf("}\n");
 }
 
 int main(){

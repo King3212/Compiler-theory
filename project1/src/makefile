@@ -22,8 +22,9 @@ OBJECTS=$(SOURCES:.cpp=.o)
 # 编译目标
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES)
+	./Test > ../build/code.cpp
 	
 
 # 清理目标
 clean:
-	rm -f $(TARGET) $(OBJECTS) ./build/output.cpp
+	rm -f $(TARGET) $(OBJECTS) ../build/code.cpp

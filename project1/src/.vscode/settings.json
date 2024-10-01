@@ -1,0 +1,9 @@
+{
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/mirror/Documents/Compiler-theory/project1/src",
+      "binaryPath": "/home/mirror/Documents/Compiler-theory/project1/src/Test",
+      "binaryArgs": []
+    }
+  ]
+}

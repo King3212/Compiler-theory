@@ -1,0 +1,522 @@
+
+>>> Syntax error at line 1: unexpected token -> ERROR: _
+
+>>> Syntax error at line 1: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 1: unexpected token -> NUM, val= 0
+      
+>>> Syntax error at line 1: unexpected token -> NUM, val= 0
+
+>>> Syntax error at line 1: unexpected token -> =
+      
+>>> Syntax error at line 1: unexpected token -> =
+
+>>> Syntax error at line 1: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 2: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 2: unexpected token -> ERROR: _
+
+>>> Syntax error at line 2: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 2: unexpected token -> NUM, val= 1
+      
+>>> Syntax error at line 2: unexpected token -> NUM, val= 1
+
+>>> Syntax error at line 2: unexpected token -> =
+      
+>>> Syntax error at line 2: unexpected token -> =
+
+>>> Syntax error at line 2: unexpected token -> ID, name= ab
+      
+>>> Syntax error at line 3: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 3: unexpected token -> ERROR: _
+
+>>> Syntax error at line 3: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 3: unexpected token -> NUM, val= 2
+      
+>>> Syntax error at line 3: unexpected token -> NUM, val= 2
+
+>>> Syntax error at line 3: unexpected token -> =
+      
+>>> Syntax error at line 3: unexpected token -> =
+
+>>> Syntax error at line 3: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 3: unexpected token -> |
+      
+>>> Syntax error at line 3: unexpected token -> |
+
+>>> Syntax error at line 3: unexpected token -> ID, name= b
+      
+>>> Syntax error at line 4: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 4: unexpected token -> ERROR: _
+
+>>> Syntax error at line 4: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 4: unexpected token -> NUM, val= 3
+      
+>>> Syntax error at line 4: unexpected token -> NUM, val= 3
+
+>>> Syntax error at line 4: unexpected token -> =
+      
+>>> Syntax error at line 4: unexpected token -> =
+
+>>> Syntax error at line 4: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 4: unexpected token -> *
+      
+>>> Syntax error at line 4: unexpected token -> *
+
+>>> Syntax error at line 5: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 5: unexpected token -> ERROR: _
+
+>>> Syntax error at line 5: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 5: unexpected token -> NUM, val= 4
+      
+>>> Syntax error at line 5: unexpected token -> NUM, val= 4
+
+>>> Syntax error at line 5: unexpected token -> =
+      
+>>> Syntax error at line 5: unexpected token -> =
+
+>>> Syntax error at line 5: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 5: unexpected token -> +
+      
+>>> Syntax error at line 5: unexpected token -> +
+
+>>> Syntax error at line 6: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 6: unexpected token -> ERROR: _
+
+>>> Syntax error at line 6: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 6: unexpected token -> NUM, val= 5
+      
+>>> Syntax error at line 6: unexpected token -> NUM, val= 5
+
+>>> Syntax error at line 6: unexpected token -> =
+      
+>>> Syntax error at line 6: unexpected token -> =
+
+>>> Syntax error at line 6: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 6: unexpected token -> ?
+      
+>>> Syntax error at line 6: unexpected token -> ?
+
+>>> Syntax error at line 7: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 7: unexpected token -> ERROR: _
+
+>>> Syntax error at line 7: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 7: unexpected token -> NUM, val= 6
+      
+>>> Syntax error at line 7: unexpected token -> NUM, val= 6
+
+>>> Syntax error at line 7: unexpected token -> =
+      
+>>> Syntax error at line 7: unexpected token -> =
+
+>>> Syntax error at line 7: unexpected token -> ID, name= ab
+      
+>>> Syntax error at line 7: unexpected token -> |
+      
+>>> Syntax error at line 7: unexpected token -> |
+
+>>> Syntax error at line 7: unexpected token -> ID, name= c
+      
+>>> Syntax error at line 8: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 8: unexpected token -> ERROR: _
+
+>>> Syntax error at line 8: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 8: unexpected token -> NUM, val= 7
+      
+>>> Syntax error at line 8: unexpected token -> NUM, val= 7
+
+>>> Syntax error at line 8: unexpected token -> =
+      
+>>> Syntax error at line 8: unexpected token -> =
+
+>>> Syntax error at line 8: unexpected token -> (
+      
+>>> Syntax error at line 8: unexpected token -> (
+
+>>> Syntax error at line 8: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 8: unexpected token -> |
+      
+>>> Syntax error at line 8: unexpected token -> |
+
+>>> Syntax error at line 8: unexpected token -> ID, name= b
+      
+>>> Syntax error at line 8: unexpected token -> )
+      
+>>> Syntax error at line 8: unexpected token -> )
+
+>>> Syntax error at line 8: unexpected token -> ID, name= c
+      
+>>> Syntax error at line 9: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 9: unexpected token -> ERROR: _
+
+>>> Syntax error at line 9: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 9: unexpected token -> NUM, val= 8
+      
+>>> Syntax error at line 9: unexpected token -> NUM, val= 8
+
+>>> Syntax error at line 9: unexpected token -> =
+      
+>>> Syntax error at line 9: unexpected token -> =
+
+>>> Syntax error at line 9: unexpected token -> ID, name= c
+      
+>>> Syntax error at line 9: unexpected token -> (
+      
+>>> Syntax error at line 9: unexpected token -> (
+
+>>> Syntax error at line 9: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 9: unexpected token -> |
+      
+>>> Syntax error at line 9: unexpected token -> |
+
+>>> Syntax error at line 9: unexpected token -> ID, name= b
+      
+>>> Syntax error at line 9: unexpected token -> )
+      
+>>> Syntax error at line 9: unexpected token -> )
+
+>>> Syntax error at line 10: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 10: unexpected token -> ERROR: _
+
+>>> Syntax error at line 10: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 10: unexpected token -> NUM, val= 9
+      
+>>> Syntax error at line 10: unexpected token -> NUM, val= 9
+
+>>> Syntax error at line 10: unexpected token -> =
+      
+>>> Syntax error at line 10: unexpected token -> =
+
+>>> Syntax error at line 10: unexpected token -> ID, name= b
+      
+>>> Syntax error at line 10: unexpected token -> (
+      
+>>> Syntax error at line 10: unexpected token -> (
+
+>>> Syntax error at line 10: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 10: unexpected token -> *
+      
+>>> Syntax error at line 10: unexpected token -> *
+
+>>> Syntax error at line 10: unexpected token -> )
+      
+>>> Syntax error at line 10: unexpected token -> )
+
+>>> Syntax error at line 11: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 11: unexpected token -> ERROR: _
+
+>>> Syntax error at line 11: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 11: unexpected token -> NUM, val= 10
+      
+>>> Syntax error at line 11: unexpected token -> NUM, val= 10
+
+>>> Syntax error at line 11: unexpected token -> =
+      
+>>> Syntax error at line 11: unexpected token -> =
+
+>>> Syntax error at line 11: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 11: unexpected token -> ERROR: \
+      
+>>> Syntax error at line 11: unexpected token -> ERROR: \
+
+>>> Syntax error at line 11: unexpected token -> +
+      
+>>> Syntax error at line 11: unexpected token -> +
+
+>>> Syntax error at line 11: unexpected token -> ?
+      
+>>> Syntax error at line 11: unexpected token -> ?
+
+>>> Syntax error at line 12: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 12: unexpected token -> ERROR: _
+
+>>> Syntax error at line 12: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 12: unexpected token -> NUM, val= 11
+      
+>>> Syntax error at line 12: unexpected token -> NUM, val= 11
+
+>>> Syntax error at line 12: unexpected token -> =
+      
+>>> Syntax error at line 12: unexpected token -> =
+
+>>> Syntax error at line 12: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 12: unexpected token -> *
+      
+>>> Syntax error at line 12: unexpected token -> *
+
+>>> Syntax error at line 12: unexpected token -> (
+      
+>>> Syntax error at line 12: unexpected token -> (
+
+>>> Syntax error at line 12: unexpected token -> ID, name= b
+      
+>>> Syntax error at line 12: unexpected token -> )
+      
+>>> Syntax error at line 12: unexpected token -> )
+
+>>> Syntax error at line 13: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 13: unexpected token -> ERROR: _
+
+>>> Syntax error at line 13: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 13: unexpected token -> NUM, val= 12
+      
+>>> Syntax error at line 13: unexpected token -> NUM, val= 12
+
+>>> Syntax error at line 13: unexpected token -> =
+      
+>>> Syntax error at line 13: unexpected token -> =
+
+>>> Syntax error at line 13: unexpected token -> ERROR: [
+      
+>>> Syntax error at line 13: unexpected token -> ERROR: [
+
+>>> Syntax error at line 13: unexpected token -> NUM, val= 1
+      
+>>> Syntax error at line 13: unexpected token -> NUM, val= 1
+
+>>> Syntax error at line 13: unexpected token -> +
+      
+>>> Syntax error at line 13: unexpected token -> +
+
+>>> Syntax error at line 13: unexpected token -> NUM, val= 5
+      
+>>> Syntax error at line 13: unexpected token -> NUM, val= 5
+
+>>> Syntax error at line 13: unexpected token -> ERROR: ]
+      
+>>> Syntax error at line 13: unexpected token -> ERROR: ]
+
+>>> Syntax error at line 14: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 14: unexpected token -> ERROR: _
+
+>>> Syntax error at line 14: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 14: unexpected token -> NUM, val= 13
+      
+>>> Syntax error at line 14: unexpected token -> NUM, val= 13
+
+>>> Syntax error at line 14: unexpected token -> =
+      
+>>> Syntax error at line 14: unexpected token -> =
+
+>>> Syntax error at line 14: unexpected token -> ERROR: [
+      
+>>> Syntax error at line 14: unexpected token -> ERROR: [
+
+>>> Syntax error at line 14: unexpected token -> NUM, val= 1
+      
+>>> Syntax error at line 14: unexpected token -> NUM, val= 1
+
+>>> Syntax error at line 14: unexpected token -> +
+      
+>>> Syntax error at line 14: unexpected token -> +
+
+>>> Syntax error at line 14: unexpected token -> NUM, val= 2
+      
+>>> Syntax error at line 14: unexpected token -> NUM, val= 2
+
+>>> Syntax error at line 14: unexpected token -> ERROR: ]
+      
+>>> Syntax error at line 14: unexpected token -> ERROR: ]
+
+>>> Syntax error at line 14: unexpected token -> ID, name= c
+      
+>>> Syntax error at line 15: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 15: unexpected token -> ERROR: _
+
+>>> Syntax error at line 15: unexpected token -> ID, name= test
+      
+>>> Syntax error at line 15: unexpected token -> NUM, val= 14
+      
+>>> Syntax error at line 15: unexpected token -> NUM, val= 14
+
+>>> Syntax error at line 15: unexpected token -> =
+      
+>>> Syntax error at line 15: unexpected token -> =
+
+>>> Syntax error at line 15: unexpected token -> ERROR: [
+      
+>>> Syntax error at line 15: unexpected token -> ERROR: [
+
+>>> Syntax error at line 15: unexpected token -> NUM, val= 1
+      
+>>> Syntax error at line 15: unexpected token -> NUM, val= 1
+
+>>> Syntax error at line 15: unexpected token -> +
+      
+>>> Syntax error at line 15: unexpected token -> +
+
+>>> Syntax error at line 15: unexpected token -> NUM, val= 2
+      
+>>> Syntax error at line 15: unexpected token -> NUM, val= 2
+
+>>> Syntax error at line 15: unexpected token -> ERROR: ]
+      
+>>> Syntax error at line 15: unexpected token -> ERROR: ]
+
+>>> Syntax error at line 15: unexpected token -> |
+      
+>>> Syntax error at line 15: unexpected token -> |
+
+>>> Syntax error at line 15: unexpected token -> ID, name= c
+      
+>>> Syntax error at line 16: unexpected token -> ID, name= digit
+      
+>>> Syntax error at line 16: unexpected token -> =
+      
+>>> Syntax error at line 16: unexpected token -> =
+
+>>> Syntax error at line 16: unexpected token -> ERROR: [
+      
+>>> Syntax error at line 16: unexpected token -> ERROR: [
+
+>>> Syntax error at line 16: unexpected token -> NUM, val= 0
+      
+>>> Syntax error at line 16: unexpected token -> NUM, val= 0
+
+>>> Syntax error at line 16: unexpected token -> +
+      
+>>> Syntax error at line 16: unexpected token -> +
+
+>>> Syntax error at line 16: unexpected token -> NUM, val= 5
+      
+>>> Syntax error at line 16: unexpected token -> NUM, val= 5
+
+>>> Syntax error at line 16: unexpected token -> ERROR: ]
+      
+>>> Syntax error at line 16: unexpected token -> ERROR: ]
+
+>>> Syntax error at line 17: unexpected token -> ID, name= letter
+      
+>>> Syntax error at line 17: unexpected token -> =
+      
+>>> Syntax error at line 17: unexpected token -> =
+
+>>> Syntax error at line 17: unexpected token -> ERROR: [
+      
+>>> Syntax error at line 17: unexpected token -> ERROR: [
+
+>>> Syntax error at line 17: unexpected token -> ID, name= a
+      
+>>> Syntax error at line 17: unexpected token -> +
+      
+>>> Syntax error at line 17: unexpected token -> +
+
+>>> Syntax error at line 17: unexpected token -> ID, name= c
+      
+>>> Syntax error at line 17: unexpected token -> ERROR: ]
+      
+>>> Syntax error at line 17: unexpected token -> ERROR: ]
+
+>>> Syntax error at line 18: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 18: unexpected token -> ERROR: _
+
+>>> Syntax error at line 18: unexpected token -> ID, name= ID
+      
+>>> Syntax error at line 18: unexpected token -> =
+      
+>>> Syntax error at line 18: unexpected token -> =
+
+>>> Syntax error at line 18: unexpected token -> ID, name= letter
+      
+>>> Syntax error at line 18: unexpected token -> (
+      
+>>> Syntax error at line 18: unexpected token -> (
+
+>>> Syntax error at line 18: unexpected token -> ID, name= letter
+      
+>>> Syntax error at line 18: unexpected token -> |
+      
+>>> Syntax error at line 18: unexpected token -> |
+
+>>> Syntax error at line 18: unexpected token -> ID, name= digit
+      
+>>> Syntax error at line 18: unexpected token -> )
+      
+>>> Syntax error at line 18: unexpected token -> )
+
+>>> Syntax error at line 18: unexpected token -> *
+      
+>>> Syntax error at line 18: unexpected token -> *
+
+>>> Syntax error at line 19: unexpected token -> ERROR: _
+      
+>>> Syntax error at line 19: unexpected token -> ERROR: _
+
+>>> Syntax error at line 19: unexpected token -> ID, name= Exp
+      
+>>> Syntax error at line 19: unexpected token -> =
+      
+>>> Syntax error at line 19: unexpected token -> =
+
+>>> Syntax error at line 19: unexpected token -> ID, name= digit
+      
+>>> Syntax error at line 19: unexpected token -> +
+      
+>>> Syntax error at line 19: unexpected token -> +
+
+>>> Syntax error at line 19: unexpected token -> (
+      
+>>> Syntax error at line 19: unexpected token -> (
+
+>>> Syntax error at line 19: unexpected token -> ERROR: \
+      
+>>> Syntax error at line 19: unexpected token -> ERROR: \
+
+>>> Syntax error at line 19: unexpected token -> +
+      
+>>> Syntax error at line 19: unexpected token -> +
+
+>>> Syntax error at line 19: unexpected token -> |
+      
+>>> Syntax error at line 19: unexpected token -> |
+
+>>> Syntax error at line 19: unexpected token -> +
+      
+>>> Syntax error at line 19: unexpected token -> +
+
+>>> Syntax error at line 19: unexpected token -> )
+      
+>>> Syntax error at line 19: unexpected token -> )
+
+>>> Syntax error at line 19: unexpected token -> ID, name= digit
+      
+>>> Syntax error at line 20: unexpected token -> +
+      
+>>> Syntax error at line 20: unexpected token -> +

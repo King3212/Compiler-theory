@@ -11,9 +11,13 @@ std::vector<gragh *>* textsToGraghs(std::vector<std::string> reLines)
     for (int i = 0; i < reData->size(); i++)
     {
         P_G = new Gragh();
+
         P_G->process((*reData)[i]->reExpress);
         P_G->toDFA();
         P_G->compressDFA();
+
+        printf("%s\n\n\n", P_G->toString());
+
         gragh *g = new gragh();
         *g = P_G->getGragh();
         g->name = (*reData)[i]->name;
@@ -120,13 +124,14 @@ void buildMain(std::string path)
 {
     std::vector<std::string> reLines = readFile(path);
     std::vector<std::string> tokens;
-    buildHead();
+    // buildHead();
     std::vector<gragh *> *Gs = textsToGraghs(reLines);
-    for (auto g : *Gs)
-    {
-        buildFunction(g);
-    }
-    buildtoken(Gs);
+
+    // for (auto g : *Gs)
+    // {
+    //     buildFunction(g);
+    // }
+    // buildtoken(Gs);
 }
 
 int main(){

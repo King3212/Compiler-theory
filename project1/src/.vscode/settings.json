@@ -5,5 +5,8 @@
       "binaryPath": "/home/mirror/Documents/Compiler-theory/project1/src/Test",
       "binaryArgs": []
     }
-  ]
+  ],
+  "files.associations": {
+    "iostream": "cpp"
+  }
 }

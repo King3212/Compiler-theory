@@ -93,10 +93,30 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("    Input *input = new Input(\"./temp.txt\"); \n");
     printf("    std::vector<std::string> tokens;  \n");
     printf("    while(!input->getInput().empty()){ \n"); // 如果输入不为空
+    // 处理多行注释
+    printf("        if (!tokens.empty() && tokens.back() == \"_open_comment\")\n");
+    printf("        { \n");
+    printf("            if (!_close_comment(input)){input->goBackOneChar(); continue;} \n");
+    printf("            else{tokens.push_back(\"_comment\"); tokens.push_back(\"_close_commnet\"); input->goBackOneChar(); continue;}\n");
+    printf("        }\n");
+
+    //获取字符
     printf("        int tokenSize = tokens.size();\n");
     printf("        input->goBackOneChar(); \n");
     printf("        char c = (input->getInput())[0]; \n");
-    printf("        if(c == ' ' || c == '\\n') continue; \n");
+
+    // 处理单行注释
+    printf("         if(!tokens.empty() && tokens.back() == \"_oneLine_comment_open\")\n");
+    printf("         { \n");
+    printf("             if (c != '\\n'){ continue;} \n");
+    printf("             else{tokens.push_back(\"_comment\");continue;}\n");
+    printf("         }\n");
+
+    // 处理空格 回车 制表符
+    printf("        if(c == ' ') {tokens.push_back(\"_space\"); continue;} \n");
+    printf("        else if(c == '\\t') {tokens.push_back(\"_tab\"); continue;} \n");
+    printf("        else if(c == '\\n') {tokens.push_back(\"_enter\"); continue;} \n");
+
     printf("        input->goBackOneChar();\n");
     printf("        int pos = input->getPos();\n");
 

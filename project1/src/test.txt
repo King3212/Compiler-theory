@@ -20,9 +20,9 @@ _greater = >
 _equal = =
 _open_comment = \{
 _close_comment = \}
-_semicolon = ；
+_semicolon = ;
 _assign = :=
 letter = [a-zA-Z]
 digit = [0-9]
-_identifier = letter (letter | digit)*
+_identifier = letter(letter|digit)*
 _number = digit+

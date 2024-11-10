@@ -1,10 +1,27 @@
 ﻿#pragma execution_character_set("utf-8")
-
+/**
+ * @file Gragh.cpp
+ * @brief 图处理模块的实现文件
+ * 
+ * @version 1.0
+ * @date 2023-10-05
+ * @auther 20222131044
+ * 
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2023-10-05 | 20222131044 | 初始版本
+ */
 #include"Gragh.h"
 #include<stack>
 
 
-
+/**
+ * @brief 判断字符是否为正则表达式的符号
+ * 
+ * @param x 待判断字符
+ * @return bool 是否为符号
+ */
 bool isSign(char x){
     for (auto i : "*+()|?")
     {
@@ -13,6 +30,12 @@ bool isSign(char x){
     return false;
 }
 
+/**
+ * @brief 处理符号
+ * 
+ * @param x 待判断符号
+ * @return 宏定义的符号
+ */
 sign dealSign(char sign)
 {
     if (sign == '*'){
@@ -31,10 +54,12 @@ sign dealSign(char sign)
 }
 
 
-
 /**
- * 这个函数输入一个正则表达式，返回一个NFA图
-*/
+ * @brief 正则表达式转NFA图
+ * 
+ * @param re 正则表达式
+ * @return Gragh NFA图
+ */
 void Gragh::toNFA(std::string re){
     
     std::vector<edge>*edges = this->inGragh->edges;
@@ -130,6 +155,11 @@ void Gragh::toNFA(std::string re){
     //检查边栈栈顶
 }
 
+/**
+ * @brief 添加新边
+ * 
+ * @param x 新边的字符
+ */
 void Gragh::aNewEdge(std::string x)
 {
     int start = this->inGragh->size;
@@ -144,7 +174,9 @@ void Gragh::aNewEdge(std::string x)
 
 
 
-
+/**
+ * @brief 与连接
+ */
 void Gragh::andConnet()
 {
     edge first,second;
@@ -159,6 +191,9 @@ void Gragh::andConnet()
     //压栈
 }
 
+/**
+ * @brief 或连接
+ */
 void Gragh::orConnet()
 {
     edge first,second;
@@ -183,6 +218,9 @@ void Gragh::orConnet()
     
 }
 
+/**
+ * @brief 闭包
+ */
 void Gragh::closure()
 {
     edge ele;
@@ -203,6 +241,9 @@ void Gragh::closure()
     //压栈
 }
 
+/**
+ * @brief 问号可选
+ */
 void Gragh::qmConnet()
 {
     edge ele;
@@ -222,6 +263,9 @@ void Gragh::qmConnet()
     //压栈
 }
 
+/**
+ * @brief 正闭包
+ */
 void Gragh::positive_closure()
 {
     edge ele;
@@ -241,9 +285,14 @@ void Gragh::positive_closure()
     //压栈
 }
 
+
 /**
- * 这个函数从starts出发,寻找所有的e闭包
-*/
+ * @brief 从start开始寻找所有的e闭包
+ * 
+ * @param starts 起点集合 
+ * @param G NFA图
+ * @return epsilon闭包集合
+ */
 std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &G){
     std::unordered_set<std::string> jump;
     std::unordered_set<int> add;
@@ -279,6 +328,14 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
 /**
  * 这个函数返回转换状态的终点闭包
 */
+/**
+ * @brief 寻找某个状态的跳转闭包
+ * 
+ * @param G NFA图
+ * @param str 跳转条件
+ * @param start 起点集合
+ * @return 目标跳转闭包集合
+ */
 std::unordered_set<int> strJump(gragh G, std::string str, std::unordered_set<int> start){
     std::unordered_set<int> end;
     for (auto i : start)
@@ -296,6 +353,13 @@ std::unordered_set<int> strJump(gragh G, std::string str, std::unordered_set<int
     return end;
 }
 
+/**
+ * @brief 在闭包集合中寻找是否有相同的闭包
+ * 
+ * @param nodeVec 闭包集合
+ * @param state 待寻找闭包
+ * @return 闭包的位置
+ */
 int search(std:: vector<std::unordered_set<int>> &nodeVec, std::unordered_set<int> state){
     for (int i = 0; i < nodeVec.size(); i++)
     {
@@ -308,6 +372,15 @@ int search(std:: vector<std::unordered_set<int>> &nodeVec, std::unordered_set<in
     return -1;
 }
 
+/**
+ * @brief 生成DFA图
+ * 
+ * @param start 起点集合
+ * @param jumps 跳转集合
+ * @param G NFA图
+ * @param result 结果集合
+ * @param nodeVec 闭包集合
+ */
 void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec){
     std::unordered_set<std::string> nextjumps;
     for (auto j : jumps){
@@ -338,9 +411,12 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
     
 }
 
+
 /**
- * 这个函数读入NFA图，得到一个DFA图
-*/
+ * @brief 初始化DFA图转换
+ * 
+ * @note 该函数将NFA图转换为DFA图，初始化完成后调用makeG函数,并将结果添加到DFA图中
+ */
 void Gragh::toDFA(){
     gragh *oldG = this->inGragh;
     this->inGragh = new gragh();
@@ -361,16 +437,20 @@ void Gragh::toDFA(){
     delete oldG;
 }
 
-
+/**
+ * @brief 比较两个pair的string
+ * 
+ * @param pair1 pair1
+ * @param pair2 pair2
+ * @return 是否pair1的string小于pair2的string
+ */
 bool cmpStr(const std::pair<int, std::string>& pair1, const std::pair<int, std::string>& pair2) {
     return pair1.second < pair2.second;
 }
 
-std::vector<std::vector<char>> GraghIntoMatrix();
-
 /**
- * 这个函数输入一个DFA图，返回一个最小化的DFA图
-*/
+ * @brief 压缩DFA图
+ */
 void Gragh::compressDFA(){
     std::vector<std::string> jumps; 
     //跳转集

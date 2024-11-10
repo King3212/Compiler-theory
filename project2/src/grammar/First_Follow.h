@@ -1,3 +1,4 @@
+﻿#pragma execution_character_set("utf-8")
 #include <iostream>
 #include <vector>
 #include <string>
@@ -6,7 +7,7 @@
 #include <sstream>
 #include <algorithm>
 #include <fstream>
-#include "../LR1/IndexedSet.h"
+#include "IndexedSet.h"
 #pragma once
 using namespace std;
 
@@ -25,7 +26,7 @@ private:
     map<string,set<string>> First;
     map<string,set<string>> Follow;
     vector<vector<string>> grammars;
-    set<string> NESigns;//非终结符
+    set<string> NESigns;
     map<string, bool> nullable;
     /*处理文法，得到全为递归模式的文法*/
     void scan(){

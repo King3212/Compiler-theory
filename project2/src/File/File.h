@@ -14,6 +14,7 @@
 
 #pragma execution_character_set("utf-8") // 设置执行字符集为UTF-8
 #include "../Error/error.h" // 包含错误处理模块的头文件
+#include "../grammar/LALR1.h"
 #pragma once // 防止头文件重复包含
 
 /**
@@ -25,3 +26,8 @@
  * @note 如果文件无法打开，将调用Error函数并返回空向量
  */
 std::vector<std::string> readFile(std::string path);
+
+
+std::vector<std::vector<edge>> readEdgesFromFile(const std::string &filename);
+
+void writeEdgesToFile(const std::string &filename, const std::vector<std::vector<edge>> &edges);

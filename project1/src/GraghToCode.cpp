@@ -1,6 +1,25 @@
+/**
+ * @file GrahpToCode.cpp
+ * @brief 将正则表达式转换为词法分析器的代码
+ * 
+ * @version 1.0
+ * @date 2024-10-02
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-10-02 | 20222131044 | 初始版本
+ */
 #include "Gragh/Gragh.h"
 #include "File/File.h"
 #include <iostream>
+/**
+ * @brief 将正则表达式转换为图
+ * 
+ * @param reLines 正则表达式
+ * @return std::vector<gragh*> 图
+ */
 std::vector<gragh *>* textsToGraghs(std::vector<std::string> reLines)
 {
     std::vector<gragh *> *Gs = new std::vector<gragh *>();
@@ -24,7 +43,11 @@ std::vector<gragh *>* textsToGraghs(std::vector<std::string> reLines)
     }
     return Gs;
 }
-
+/**
+ * @brief 将图转换为代码
+ * 
+ * @param g 图
+ */
 void buildFunction(gragh *g)
 {
     // 打印函数头
@@ -154,15 +177,12 @@ void buildMain(std::string path)
     }
 
     buildtoken(Gs);
-
-    printf("int main(){\n");
-    printf("    for(auto t : token()){\n");
-    printf("        cout << t << \" \";\n");
-    printf("    }\n");
-    printf("    cout << endl;\n");
-    printf("}\n");
 }
 
-int main(){
-    buildMain("./test.txt");
+int main(int argc, char *argv[]){
+    if(argc != 2){
+        std::cerr << "Usage: " << argv[0] << " <path>" << std::endl;
+        return 1;
+    }
+    buildMain(argv[1]);
 }

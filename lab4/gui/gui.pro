@@ -21,7 +21,6 @@ HEADERS += \
 FORMS +=
 
 TRANSLATIONS += \
-    gui_zh_CN.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 

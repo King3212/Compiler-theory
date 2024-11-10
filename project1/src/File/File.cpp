@@ -1,8 +1,30 @@
+/**
+ * @file File.cpp
+ * @brief 实现文件读取功能
+ * 
+ * @version 1.0
+ * @date 2023-10-05
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2023-10-05 | 初始版本
+ */
+
 #include <fstream>
 #include <vector>
 #include <string>
 #include "File.h"
 
+/**
+ * @brief 读取指定路径的文件内容
+ * 
+ * @param path 文件路径
+ * @return std::vector<std::string> 包含文件每一行内容的向量
+ * 
+ * @note 如果文件无法打开，将调用Error函数并返回空向量
+ */
 std::vector<std::string> readFile(std::string path) {
     std::vector<std::string> lines; // 创建一个存储字符串的向量
 

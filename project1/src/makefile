@@ -27,4 +27,4 @@ $(TARGET): $(OBJECTS)
 
 # 清理目标
 clean:
-	rm -f $(TARGET) $(OBJECTS) ../build/code.cpp
+	rm -f $(TARGET) $(OBJECTS) ../build/code.h

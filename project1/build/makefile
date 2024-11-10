@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++11 -g
 
 # 定义目标可执行文件名
-TARGET = test
+TARGET = getTokens
 # 定义源文件和头文件
 SRCS = code.cpp
 HEADERS = getInput.h

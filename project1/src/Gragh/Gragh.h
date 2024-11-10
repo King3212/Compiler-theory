@@ -1,4 +1,19 @@
-﻿#pragma execution_character_set("utf-8")
+﻿/**
+ * @file Gragh.h
+ * @brief 定义了图的数据结构和处理图的类
+ * 
+ * @version 1.0
+ * @date 2024-10-05
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2024-10-05 | 初始版本
+ */
+
+
+#pragma execution_character_set("utf-8")
 #include<string>
 #include<vector>
 #include<stack>
@@ -18,12 +33,15 @@ enum sign{
     QM//选择
 };
 
-/**edge
- * 这个数据结构记录着这条跳转边的起始点和跳转条件
- * express == "" 代表无条件边
- * calEx == false 代表不是计算边，用作子图的记录
- * 默认是空边
-*/
+
+/**
+ * @brief 边
+ * 
+ * @param begin 起始点
+ * @param end 终点
+ * @param calEx 是否为判定条件
+ * @param express 跳转条件
+ */
 struct edge
 {
     int begin;
@@ -62,10 +80,16 @@ namespace std {
     };
 }
 
-/**gragh
- * 这个数据结构储存着一个图的起始点以及规模
- * 还储存着这个图的所有边
-*/
+/**
+ * @brief 图
+ * 
+ * @param start 起始点
+ * @param end 终点
+ * @param size 节点数
+ * @param finalNodes 终点集合
+ * @param edges 边集
+ * @param name 图名
+ */
 struct gragh
 {
     int start;
@@ -82,9 +106,8 @@ struct gragh
 
 
 /**
- * 这个类储存着图
- * 提供处理图的函数
-*/
+ * @brief 图处理类
+ */
 class Gragh
 {
 private:
@@ -94,7 +117,6 @@ private:
     
 private:
     void toNFA(std::string re);
-
     void aNewEdge(std::string x);
     void makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec);
     void andConnet();
@@ -106,18 +128,36 @@ private:
 public:
     std::string reExpress;
 public:
+    /**
+     * @brief 处理正则表达式
+     * 
+     * @param reExpress 正则表达式
+     */
     void process(std::string reExpress){
         inGragh = new gragh();
         toNFA(reExpress);
     }
     void toDFA();
     void compressDFA();
+
+    /**
+     * @brief 获取图
+     */
     gragh getGragh(){
         return *inGragh;
     }
+    /**
+     * @brief 获取图
+     */
     ~Gragh(){
         delete inGragh;
     }
+
+    /**
+     * @brief 转换为字符串
+     * 
+     * @return std::string 字符串
+     */
     std::string toString(){
         std::string result;
         for (auto e : *inGragh->edges){

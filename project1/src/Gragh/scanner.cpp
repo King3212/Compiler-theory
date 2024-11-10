@@ -1,18 +1,30 @@
 ﻿#pragma execution_character_set("utf-8")
-
+/**
+ * @file scanner.cpp
+ * @brief 扫描器模块的实现文件
+ * 
+ * @version 1.0
+ * @date 2023-10-05
+ * @auther 20222131044
+ * 
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2023-10-05 | 20222131044 | 初始版本
+ */
 #include<vector>
 #include<string>
 #include"scanner.h"
 #include<map>
 
+
 /**
- * 这里扫描所有的句子
+ * @brief 扫描所有的句子
  * 
- * 将等号前面与等号后面的部分做扫描
- * 获取标识符以及一一对应的正则表达式
- *
- *  例如:
+ * @param lines 文件内容
+ * @return std::vector<scanData*> 扫描数据
  * 
+ * @example 
  * input:
  * >>> number = [0-9]
  * output:
@@ -21,7 +33,7 @@
  *     needToScan = true
  *     re = "[0-9]"
  * }
-*/
+ */
 std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 
     std::vector<scanData*> *result = new std::vector<scanData*>();
@@ -59,7 +71,7 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 
                 pos = oneData->re.find_first_not_of(" \t");
                 oneData->re = oneData->re.substr(pos);
-                if (!oneData->re.empty() && oneData->re.back() == '\r')
+                if (!oneData->re.empty() && (oneData->re.back() == '\r'|| oneData->re.back() == '\n'))
                 {
                     oneData->re.erase(oneData->re.size() - 1);
                 }
@@ -75,18 +87,24 @@ std::vector<scanData*> *scanAll(std::vector<std::string> lines){
 }
 
 /**
- * 此函数进行替换扫描
- * 从第一行开始往后搜索所含字符串是否被定义
- * 如果被定义就进行替换修改为相应的正则表达式
+ * @brief 替换正则表达式中的标识符
  * 
- * 例如：
+ * @param reExpresses 扫描数据
+ * @return std::vector<finalData*> 最终数据
  * 
+ * @example 
  * input:
- * >>> number = [0-9]
- * >>> _numbers = number*
+ * >>> result:{
+ *     name = "number"
+ *     needToScan = true
+ *     re = "[0-9]"
+ * }
  * output:
- * >>> _numbers = ([0-9])*
-*/
+ * >>> result:{
+ *     name = "number"
+ *     reExpress = "((0|1|2|3|4|5|6|7|8|9))"
+ * }
+ */
 std::vector<finalData*>* replaceRe(std::vector<scanData*> *reExpresses) {
     // 创建一个映射，将标识符与其对应的正则表达式关联起来
     std::map<std::string, std::string> definitions;
@@ -141,17 +159,23 @@ std::vector<finalData*>* replaceRe(std::vector<scanData*> *reExpresses) {
 
 
 /**
- * 此函数进行基础化替换
- * 除去[]运算
- * 只含有"*" "+" "|" "(" ")" "\"符号（以及省略的连接符）
+ * @brief 基础替换
  * 
- * 例如：
+ * @param reExpresses 最终数据
+ * @return std::vector<finalData*> 最终数据
  * 
+ * @example 
  * input:
- * >>> _numbers = ([0-9])*
+ * >>> result:{
+ *     name = "number"
+ *     reExpress = "[0-9]"
+ * }
  * output:
- * >>> _numbers = ((0|1|2|3|4|5|6|7|8|9))*
-*/
+ * >>> result:{
+ *     name = "number"
+ *     reExpress = "((0|1|2|3|4|5|6|7|8|9))"
+ * }
+ */
 std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
     int pos = 0;
     int end = 0;
@@ -199,7 +223,12 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
     return reExpresses;
 }
 
-
+/**
+ * @brief 扫描器
+ * 
+ * @param lines 文件内容
+ * @return std::vector<finalData*> 最终数据
+ */
 std::vector<finalData*>* scanner(std::vector<std::string> lines){
     if (lines.size() == 0)
     {

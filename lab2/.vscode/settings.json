@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.embeddedhtml": "html",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -75,6 +76,8 @@
         "thread": "cpp",
         "cfenv": "cpp",
         "cinttypes": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "any": "cpp",
+        "text_encoding": "cpp"
     }
 }

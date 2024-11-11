@@ -16,6 +16,8 @@ public:
     void goBack(int pos);        // 回退到指定位置
     int getPos();                // 获取当前位置
     void goBackOneChar();        // 回退一个字符
+    std::string getTokenWord(int pos);// 获取一个单词
+    
 };
 
 // 构造函数，打开文件
@@ -78,4 +80,23 @@ void Input::goBackOneChar()
 
     // 清除错误标志，确保文件状态正常
     file.clear();
+}
+
+inline std::string Input::getTokenWord(int pos)
+{
+    // 获取当前文件的位置
+    int currentPos = file.tellg();
+    
+    // 单词字符串
+    std::string word = "";
+    
+    // 回退到指定位置
+    file.seekg(pos);
+
+    // 读取单词
+    while (file.tellg() < currentPos)
+    {
+        word += getInput();
+    }
+    return word;
 }

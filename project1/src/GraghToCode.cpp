@@ -106,21 +106,26 @@ void buildHead(){
     printf("#include <string> \n");
     printf("#include <algorithm>\n");
     printf("using namespace std; \n");
+    printf("#include <map> \n");
+    printf("struct token{ \n");
+    printf("    string name; \n");
+    printf("    string value; \n");
+    printf("}; \n");
     printf("\n\n\n");
 }
 
 void buildtoken(std::vector<gragh *> *Gs)
 {
     // 函数头
-    printf("std::vector<std::string> token(){ \n");
+    printf("std::vector<token> tokens(){ \n");
     printf("    Input *input = new Input(\"./temp.txt\"); \n");
     printf("    std::vector<std::string> tokens;  \n");
     printf("    while(!input->getInput().empty()){ \n"); // 如果输入不为空
     // 处理多行注释
-    printf("        if (!tokens.empty() && tokens.back() == \"_open_comment\")\n");
+    printf("        if (!tokens.empty() && tokens.back().name == \"_open_comment\")\n");
     printf("        { \n");
     printf("            if (!_close_comment(input)){input->goBackOneChar(); continue;} \n");
-    printf("            else{tokens.push_back(\"_comment\"); tokens.push_back(\"_close_commnet\"); input->goBackOneChar(); continue;}\n");
+    printf("            else{token newtoken;newtoken.name = \"_comment\"; tokens.push_back(newtoken);newtoken.name = \"_close_commnet\"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}\n");
     printf("        }\n");
 
     //获取字符
@@ -129,7 +134,7 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("        char c = (input->getInput())[0]; \n");
 
     // 处理单行注释
-    printf("         if(!tokens.empty() && tokens.back() == \"_oneLine_comment_open\")\n");
+    printf("         if(!tokens.empty() && tokens.back().name == \"_oneLine_comment_open\")\n");
     printf("         { \n");
     printf("             if (c != '\\n'){ continue;} \n");
     printf("             else{tokens.push_back(\"_comment\");continue;}\n");
@@ -146,7 +151,7 @@ void buildtoken(std::vector<gragh *> *Gs)
     // 为每个 gragh 对象生成相应的词法分析调用
     for (auto g : *Gs)
     {
-        printf("        if(%s(input)) { tokens.push_back(\"%s\"); input->goBackOneChar(); continue; }  \n", g->name.c_str(), g->name.c_str());
+        printf("        if(%s(input)) { \ntoken = tokens.push_back(\"%s\"); input->goBackOneChar(); input->getTokenWord() continue; }  \n", g->name.c_str(), g->name.c_str());
         printf("        else input->goBack(pos);\n");
     }
 

@@ -4,7 +4,18 @@
 #include <iostream>
 #include "../File/File.h"
 #include "../grammar/LALR1.h"
+#pragma once
+
 using namespace std;
+
+enum _action{
+    shift,
+    reduce,
+    accept,
+    error
+};
+
+vector<vector<edge>> readTables(string path);
 
 struct tree
 {
@@ -12,11 +23,12 @@ struct tree
     vector<tree *> children;
 };
 
+
+
 class analyzer
 {
 private:
     Tokens *tokens;
-    vector<edge> *edges;
     tree* syntaxTree;
     stack<int> stateStack;
     stack<string> signStack;
@@ -30,35 +42,71 @@ public:
 private:
     void getEdges(string path);
     tree *analyzeSyntax();
-    int fromGotoTableFindState(int state, string sign);
-    int fromActionTableFindState(int state, string sign);
-
+    edge fromGotoTableFindEdge(int state, string sign);
+    edge fromActionTableFindEdge(int state, string sign);
+    _action analyze();
 };
 
 analyzer::analyzer(string path)
 {
     tokens = new Tokens(path);
-    
+    vector<vector<edge>> tables = readTables("tables.txt");
+    actionTable = tables[0];
+    gotoTable = tables[1];
 }
 
 analyzer::~analyzer()
 {
     delete tokens;
-    delete edges;
     delete syntaxTree;
 }
 
-inline void analyzer::getEdges(string path)
+
+
+_action analyzer::analyze()
 {
-    vector<vector<edge>> a = readEdgesFromFile(path);
-    gotoTable = a[1];
-    actionTable = a[0];
-}
-
-
-
-inline tree *analyzer::analyzeSyntax()
-{
-    
+    if(tokens->getToken() == "$" && stateStack.top() == 0 && signStack.size() == 1)
+    {
+        return accept;
+    }
+    int state = 0;
+    state = stateStack.top();
+    string sign = tokens->getToken();
+    edge action = fromActionTableFindEdge(state, sign);
+    if(action.action == "s") //移进,将当前token移入分析栈
+    {
+        stateStack.push(action.end);
+        signStack.push(sign);
+        tree *node = new tree();
+        node->sign = sign;
+        treeStack.push(node);
+        tokens->advanceToken();
+        printf("移进:%s\n", sign.c_str());
+        return shift;
+    }
+    if (action.action == "r")//规约
+    {
+        Grammer grammer = action.grammer;
+        vector<string> followTokens = action.followTokens;
+        vector<tree *> children;
+        for (int i = 0; i < grammer.grammer.size(); i++)
+        {
+            stateStack.pop();
+            signStack.pop();
+            tree *node = treeStack.top();
+            treeStack.pop();
+            children.push_back(node);
+        }
+        tree *node = new tree();
+        node->sign = grammer.sign;
+        node->children = children;
+        treeStack.push(node);
+        state = stateStack.top();
+        edge gotoEdge = fromGotoTableFindEdge(state, grammer.sign);
+        stateStack.push(gotoEdge.end);
+        signStack.push(grammer.sign);
+        printf("规约:%s\n", grammer.sign.c_str());
+        return reduce;
+    }
     
 }

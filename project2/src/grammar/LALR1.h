@@ -1,14 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "LR1.h"
 
-struct edge
-{
-    int start;
-    int end;
-    string sign;
-    string action;
-    vector<string> followTokens;
-};
+
 
 
 
@@ -257,10 +250,20 @@ public:
                     e.sign = grammer.sign;
                     e.action = "r";
                     e.followTokens = vector<string>(item.next_sign.begin(),item.next_sign.end());
+                    e.grammer = grammer;
                     actionTable.push_back(e);
                 }
             }
         }
+
+        edge e;
+        e.start = 0;
+        e.end = -1;
+        e.sign = "$";
+        e.action = "a";
+        e.grammer = virtualGram;
+        actionTable.push_back(e);
+
 
         return {actionTable, gotoTable};
     }

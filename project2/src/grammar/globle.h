@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <functional>
 #include "IndexedSet.h"
-#pragma once
+
 // 定义 Grammer 结构体
 struct Grammer
 {
@@ -15,6 +15,10 @@ struct Grammer
     bool operator==(const Grammer &other) const
     {
         return sign == other.sign && grammer == other.grammer;
+    }
+    Grammer() {
+        sign = "";
+        grammer = std::vector<std::string>();
     }
 };
 
@@ -36,7 +40,7 @@ namespace std
         }
     };
 }
-
+using namespace std;
 struct edge
 {
     int start; // 起始状态
@@ -70,3 +74,5 @@ struct edge
 
     }
 };
+
+#pragma once

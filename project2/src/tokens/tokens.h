@@ -7,17 +7,23 @@
 using namespace std;
 #pragma once
 
+struct token
+{
+    string type;
+    string value;
+};
+
 
 class Tokens
 {
 private:
-    vector<vector<string> *> *tokens;
+    vector<vector<token> *> *tokens;
 public:
     Tokens(string path);
     ~Tokens();
-    string getToken();
+    token getToken();
     void advanceToken();
-    vector<string> *getTokens(int line);
+    vector<token> *getTokens(int line);
     int line = 0;
     int pos = 0;
     bool isEmtpy()
@@ -32,20 +38,24 @@ Tokens::Tokens(string path)
         cerr << "Error: getTokens failed" << endl;
         exit(1);
     }
-    string line = readFile("token.txt")[0];
-    istringstream ss(line);
-    string token;
-    vector<string> *lineTokens = new vector<string>();
-    while (ss >> token)
-    {
-        lineTokens->push_back(token);
-        if (token == "_enter")
-        {
-            tokens->push_back(lineTokens);
-            lineTokens = new vector<string>();
+    vector<string> lines = readFile("token.txt");
+    tokens = new vector<vector<token> *>();
+    tokens->push_back(new vector<token>());
+    for(auto line : lines){
+        istringstream ss(line);
+        string type;
+        string value;
+        while(ss >> type >> value){
+            token t;
+            t.type = type;
+            t.value = value;
+            tokens->back()->push_back(t);
         }
-        
+        if (tokens->back()->back().type == "_enter"){
+            tokens->push_back(new vector<token>());
+        }
     }
+    
 }
 
 Tokens::~Tokens()
@@ -57,14 +67,17 @@ Tokens::~Tokens()
     delete tokens;
 }
 
-inline string Tokens::getToken()
+inline token Tokens::getToken()
 {
     if (isEmtpy())
     {
-        return "$";
+        token result;
+        result.type = "$";
+        result.value = "";
+        return result;
     }
     
-    string result = tokens->at(line)->at(pos);
+    token result = tokens->at(line)->at(pos);
     return result;
 }
 
@@ -78,7 +91,7 @@ inline void Tokens::advanceToken()
     }
 }
 
-inline vector<string> *Tokens::getTokens(int line)
+inline vector<token> *Tokens::getTokens(int line)
 {
     return tokens->at(line);
 }

@@ -114,18 +114,18 @@ void buildHead(){
     printf("\n\n\n");
 }
 
-void buildtoken(std::vector<gragh *> *Gs)
+void buildtoken(std::vector<gragh *> *Gs,std::string filename = "./temp.txt")
 {
     // 函数头
-    printf("std::vector<token> tokens(){ \n");
-    printf("    Input *input = new Input(\"./temp.txt\"); \n");
-    printf("    std::vector<std::string> tokens;  \n");
+    printf("std::vector<token> getTokens(){ \n");
+    printf("    Input *input = new Input(\"%s\"); \n", filename.c_str());
+    printf("    std::vector<token> tokens;  \n");
     printf("    while(!input->getInput().empty()){ \n"); // 如果输入不为空
     // 处理多行注释
     printf("        if (!tokens.empty() && tokens.back().name == \"_open_comment\")\n");
     printf("        { \n");
     printf("            if (!_close_comment(input)){input->goBackOneChar(); continue;} \n");
-    printf("            else{token newtoken;newtoken.name = \"_comment\"; tokens.push_back(newtoken);newtoken.name = \"_close_commnet\"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}\n");
+    printf("            else{token newtoken; newtoken.name = \"_comment\"; tokens.push_back(newtoken); newtoken.name = \"_close_commnet\"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}\n");
     printf("        }\n");
 
     //获取字符
@@ -137,21 +137,20 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("         if(!tokens.empty() && tokens.back().name == \"_oneLine_comment_open\")\n");
     printf("         { \n");
     printf("             if (c != '\\n'){ continue;} \n");
-    printf("             else{tokens.push_back(\"_comment\");continue;}\n");
+    printf("             else{token newtoken; newtoken.name = \"_comment\"; tokens.push_back(newtoken); continue;}\n");
     printf("         }\n");
 
     // 处理空格 回车 制表符
-    printf("        if(c == ' ') {tokens.push_back(\"_space\"); continue;} \n");
-    printf("        else if(c == '\\t') {tokens.push_back(\"_tab\"); continue;} \n");
-    printf("        else if(c == '\\n') {tokens.push_back(\"_enter\"); continue;} \n");
-
+    printf("        if(c == ' ') { token newtoken; newtoken.name = \"_space\"; tokens.push_back(newtoken); continue;} \n");
+    printf("        else if(c == '\\t') { token newtoken; newtoken.name = \"_tab\"; tokens.push_back(newtoken); continue;} \n");
+    printf("        else if(c == '\\n') {token newtoken; newtoken.name = \"_enter\"; tokens.push_back(newtoken); continue;} \n");
     printf("        input->goBackOneChar();\n");
-    printf("        int pos = input->getPos();\n");
 
     // 为每个 gragh 对象生成相应的词法分析调用
+    printf("        int pos = input->getPos();\n");
     for (auto g : *Gs)
     {
-        printf("        if(%s(input)) { \ntoken = tokens.push_back(\"%s\"); input->goBackOneChar(); input->getTokenWord() continue; }  \n", g->name.c_str(), g->name.c_str());
+        printf("        if(%s(input)) {token newtoken; newtoken.name = \"%s\"; newtoken.value = input->getTokenWord(pos); tokens.push_back(newtoken); input->goBackOneChar(); continue; }  \n", g->name.c_str(), g->name.c_str());
         printf("        else input->goBack(pos);\n");
     }
 
@@ -167,7 +166,17 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("}\n");
 }
 
-void buildMain(std::string path)
+void buildMain(){
+    printf("int main(){ \n");
+    printf("    std::vector<token> tokens = getTokens(); \n");
+    printf("    for (auto t : tokens){ \n");
+    printf("        std::cout << t.name << \" \" << t.value << std::endl; \n");
+    printf("    } \n");
+    printf("    return 0; \n");
+    printf("} \n");
+}
+
+void buildProgram(std::string path)
 {
     std::vector<std::string> reLines = readFile(path);
     std::vector<std::string> tokens;
@@ -182,6 +191,8 @@ void buildMain(std::string path)
     }
 
     buildtoken(Gs);
+
+
 }
 
 int main(int argc, char *argv[]){
@@ -189,5 +200,7 @@ int main(int argc, char *argv[]){
         std::cerr << "Usage: " << argv[0] << " <path>" << std::endl;
         return 1;
     }
-    buildMain(argv[1]);
+    buildProgram(argv[1]);
+    buildMain();
+    return 0;
 }

@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include "IndexedSet.h"
-#pragma once
+
 using namespace std;
 
 std::string removeSpacesAndTabs(const std::string &str)
@@ -222,3 +222,5 @@ public:
         outFile.close();
     }
 };
+
+#pragma once

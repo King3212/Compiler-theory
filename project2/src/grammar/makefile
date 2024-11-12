@@ -3,12 +3,10 @@ CC=g++
 
 # 源文件和头文件的路径
 SRCDIR=.
-GRAGHDIR=./Gragh
-ERRORDIR=./Error
-FILEDIR=./File
-
+FILEDIR=../File
+ERRORDIR=../Error
 # 可执行文件名
-TARGET=./Test
+TARGET=./genTable
 
 # 编译选项
 CFLAGS=-g
@@ -21,10 +19,9 @@ OBJECTS=$(SOURCES:.cpp=.o)
 
 # 编译目标
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES)
-	./Test test.txt > ../build/code.cpp
+	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES) 
 	
 
 # 清理目标
 clean:
-	rm -f $(TARGET) $(OBJECTS) ../build/code.h
+	rm -f $(TARGET) $(OBJECTS) 

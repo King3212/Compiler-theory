@@ -9,6 +9,7 @@
 #include "globle.h"
 #include <fstream>
 #include "First_Follow.h"
+#pragma once
 using namespace std;
 
 enum _op
@@ -515,3 +516,4 @@ public:
         file.close();
     }
 };
+#pragma once

@@ -397,7 +397,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
             if(Ne == -1){
                 Ne = nodeVec.size();
                 nodeVec.push_back(finalstate);
-
+                makeG(finalstate,nextjumps,G,result,nodeVec);
             }//结束点是新的，取点
             result.insert(edge(Ns,Ne,true,j));
             if (finalstate.find(G.end) != finalstate.end())
@@ -405,7 +405,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
                 inGragh->finalNodes.insert(Ne);
             }
             
-            makeG(finalstate,nextjumps,G,result,nodeVec);
+            
         }
     }
     

@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "LR1.h"
-
+#pragma once
 
 
 
@@ -256,15 +256,7 @@ public:
             }
         }
 
-        edge e;
-        e.start = 0;
-        e.end = -1;
-        e.sign = "$";
-        e.action = "a";
-        e.grammer = virtualGram;
-        actionTable.push_back(e);
-
-
         return {actionTable, gotoTable};
     }
 };
+#pragma once

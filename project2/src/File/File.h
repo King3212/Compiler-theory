@@ -14,7 +14,7 @@
 
 #pragma execution_character_set("utf-8") // 设置执行字符集为UTF-8
 #include "../Error/error.h" // 包含错误处理模块的头文件
-#include "../grammar/LALR1.h"
+#include "../grammar/globle.h" // 包含全局变量模块的头文件
 #include <vector> // 包含向量模块
 #include <string> // 包含字符串模块
 #include <iostream> // 包含输入输出模块
@@ -30,3 +30,5 @@
  * @note 如果文件无法打开，将调用Error函数并返回空向量
  */
 vector<string> readFile(string path);
+
+void writeTables(vector<vector<edge>> edges, string path); // 写入表格到文件

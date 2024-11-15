@@ -1,0 +1,125 @@
+.
+├── genTable
+│   ├── build
+│   │   └── genTable
+│   ├── inputFiles
+│   │   ├── grammer.txt
+│   │   └── tables.txt
+│   └── src
+│       ├── Error
+│       │   ├── error.cpp
+│       │   ├── error.h
+│       │   ├── error.log
+│       │   ├── error.o
+│       │   └── error.txt
+│       ├── File
+│       │   ├── File.cpp
+│       │   ├── File.h
+│       │   ├── File.h.gch
+│       │   └── File.o
+│       ├── grammar
+│       │   ├── First_Follow.h
+│       │   ├── globle.h
+│       │   ├── IndexedSet.h
+│       │   ├── LALR1.h
+│       │   └── LR1.h
+│       └── main
+│           ├── genTable
+│           ├── main.cpp
+│           └── main.o
+├── genWordAnalyzer
+│   ├── build
+│   │   └── genWordAnalysis
+│   ├── inputFiles
+│   │   ├── test.backup.txt
+│   │   └── words.rul
+│   └── src
+│       ├── Error
+│       │   ├── error.cpp
+│       │   ├── error.h
+│       │   ├── error.log
+│       │   ├── error.o
+│       │   └── error.txt
+│       ├── File
+│       │   ├── File.cpp
+│       │   ├── File.h
+│       │   └── File.o
+│       ├── Gragh
+│       │   ├── Gragh.cpp
+│       │   ├── Gragh.h
+│       │   ├── Gragh.o
+│       │   ├── scanner.cpp
+│       │   ├── scanner.h
+│       │   └── scanner.o
+│       ├── GraghToCode.cpp
+│       └── GraghToCode.o
+├── grammarAnalyzer
+│   ├── build
+│   │   ├── analyzer
+│   │   └── token.txt
+│   ├── inputFiles
+│   │   ├── getTokens
+│   │   ├── ignore.txt
+│   │   ├── sourceCode.tny
+│   │   └── tables.txt
+│   └── src
+│       ├── analyzer
+│       │   ├── analyzer.cpp
+│       │   ├── analyzer.h
+│       │   └── analyzer.o
+│       ├── Error
+│       │   ├── error.cpp
+│       │   ├── error.h
+│       │   ├── error.log
+│       │   ├── error.o
+│       │   └── error.txt
+│       ├── File
+│       │   ├── File.cpp
+│       │   ├── File.h
+│       │   ├── File.h.gch
+│       │   └── File.o
+│       ├── globle.h
+│       ├── IndexedSet.h
+│       ├── main
+│       │   ├── main.cpp
+│       │   └── main.o
+│       └── tokens
+│           └── tokens.h
+├── include
+│   ├── Error
+│   │   ├── error.cpp
+│   │   ├── error.h
+│   │   ├── error.log
+│   │   ├── error.o
+│   │   └── error.txt
+│   ├── File
+│   │   ├── File.cpp
+│   │   ├── File.h
+│   │   ├── File.h.gch
+│   │   └── File.o
+│   ├── Gragh
+│   │   ├── Gragh.cpp
+│   │   ├── Gragh.h
+│   │   ├── Gragh.o
+│   │   ├── scanner.cpp
+│   │   ├── scanner.h
+│   │   └── scanner.o
+│   └── grammar
+│       ├── First_Follow.h
+│       ├── globle.h
+│       ├── IndexedSet.h
+│       ├── LALR1.h
+│       └── LR1.h
+├── makefile
+├── tree.txt
+└── wordAnalyzer
+    ├── build
+    │   └── getTokens
+    ├── inputFiles
+    │   └── temp.txt
+    └── src
+        ├── code.cpp
+        ├── code.o
+        └── getInput.h
+
+34 directories, 89 files

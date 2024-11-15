@@ -12,8 +12,7 @@
  * 1.0 | 20222131044 | 2023-10-05 | 初始版本
  */
 
-#include "File.h"
-#include "../grammar/globle.h"
+#include "File.h" // 包含文件读取模块的头文件
 using namespace std;
 
 /**

@@ -114,11 +114,11 @@ void buildHead(){
     printf("\n\n\n");
 }
 
-void buildtoken(std::vector<gragh *> *Gs,std::string filename = "./temp.txt")
+void buildtoken(std::vector<gragh *> *Gs)
 {
     // 函数头
-    printf("std::vector<token> getTokens(){ \n");
-    printf("    Input *input = new Input(\"%s\"); \n", filename.c_str());
+    printf("std::vector<token> getTokens(std::string filename){ \n");
+    printf("    Input *input = new Input(filename); \n");
     printf("    std::vector<token> tokens;  \n");
     printf("    while(!input->getInput().empty()){ \n"); // 如果输入不为空
     // 处理多行注释
@@ -167,8 +167,8 @@ void buildtoken(std::vector<gragh *> *Gs,std::string filename = "./temp.txt")
 }
 
 void buildMain(){
-    printf("int main(){ \n");
-    printf("    std::vector<token> tokens = getTokens(); \n");
+    printf("int main(int argc,char* argv[]){ \n");
+    printf("    std::vector<token> tokens = getTokens(argv[1]); \n");
     printf("    for (auto t : tokens){ \n");
     printf("        std::cout << t.name << \" \" << t.value << std::endl; \n");
     printf("    } \n");

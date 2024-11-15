@@ -8844,8 +8844,52 @@ bool _number(Input *input){
     }
     return false;
 }
-std::vector<token> getTokens(){ 
-    Input *input = new Input("./temp.txt"); 
+bool _left_paren(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '(': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _right_paren(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case ')': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+std::vector<token> getTokens(std::string filename){ 
+    Input *input = new Input(filename); 
     std::vector<token> tokens;  
     while(!input->getInput().empty()){ 
         if (!tokens.empty() && tokens.back().name == "_open_comment")
@@ -8918,6 +8962,10 @@ std::vector<token> getTokens(){
         else input->goBack(pos);
         if(_number(input)) {token newtoken; newtoken.name = "_number"; newtoken.value = input->getTokenWord(pos); tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
+        if(_left_paren(input)) {token newtoken; newtoken.name = "_left_paren"; newtoken.value = input->getTokenWord(pos); tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_right_paren(input)) {token newtoken; newtoken.name = "_right_paren"; newtoken.value = input->getTokenWord(pos); tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
         if (tokens.size() == tokenSize) {
             std::cerr << "Error: Unexpected words" << std::endl; 
             break;
@@ -8925,8 +8973,8 @@ std::vector<token> getTokens(){
     } 
     return tokens;
 }
-int main(){ 
-    std::vector<token> tokens = getTokens(); 
+int main(int argc,char* argv[]){ 
+    std::vector<token> tokens = getTokens(argv[1]); 
     for (auto t : tokens){ 
         std::cout << t.name << " " << t.value << std::endl; 
     } 

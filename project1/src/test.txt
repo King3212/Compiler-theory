@@ -26,3 +26,5 @@ letter = [a-zA-Z]
 digit = [0-9]
 _identifier = letter(letter|digit)*
 _number = digit+
+_left_paren = \(
+_right_paren = \)

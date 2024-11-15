@@ -1,87 +1,104 @@
 #include "analyzer.h"
 using namespace std;
 
-vector<vector<edge>> readTables(string path) {
-    vector<edge> actionTable; // action表,存放移进和规约操作
-    vector<edge> gotoTable;   // goto表,存放状态转移操作
-    vector<string> lines = readFile(path);
+
+// 分割字符串的辅助函数
+vector<string> splitString(const string& str, char delimiter) {
+    vector<string> result;
+    stringstream ss(str);
+    string token;
+    while (getline(ss, token, delimiter)) {
+        result.push_back(token);
+    }
+    return result;
+}
+
+// 去除字符串前后的空白字符
+string trim(const string& str) {
+    size_t first = str.find_first_not_of(" \t\r\n");
+    if (first == string::npos) return "";  // 空字符串
+    size_t last = str.find_last_not_of(" \t\r\n");
+    return str.substr(first, last - first + 1);
+}
+
+// 从文件中读取数据并解析为 action 和 goto 表
+vector<vector<edge>> readTables(const string& path) {
+    vector<edge> actionTable;
+    vector<edge> gotoTable;
+    ifstream file(path);
+    if (!file.is_open()) {
+        cerr << "Failed to open file: " << path << endl;
+        return {};
+    }
+
+    string line;
     bool isAction = true;
-    for(auto &line: lines){
-        if(line == "----------------------"){
+
+    // 读取文件的每一行
+    while (getline(file, line)) {
+        line = trim(line);  // 去除前后空格
+
+        // 判断是否是分隔符
+        if (line == "----------------------") {
             isAction = false;
             continue;
         }
-        edge e;
-        string start, end, sign, action;
-        vector<string> followTokens;
-        Grammer grammer;
-        int index = 0;
-        while(line[index] != ','){
-            start += line[index];
-            index++;
-        }
-        index += 2;
-        while(line[index] != ','){
-            end += line[index];
-            index++;
-        }
-        index += 2;
-        while(line[index] != ','){
-            sign += line[index];
-            index++;
-        }
-        index += 2;
-        while(line[index] != ','){
-            action += line[index];
-            index++;
-        }
-        index += 2;
-        while(line[index] != '}'){
-            string token;
-            while(line[index] != ','){
-                token += line[index];
-                index++;
+
+        // 如果是一个 JSON 对象的开始
+        if (line.front() == '{') {
+            edge e;
+
+            // 解析 start
+            getline(file, line);
+            e.start = stoi(trim(line.substr(line.find(":") + 1)));
+
+            // 解析 end
+            getline(file, line);
+            e.end = stoi(trim(line.substr(line.find(":") + 1)));
+
+            // 解析 sign
+            getline(file, line);
+            e.sign = trim(line.substr(line.find(":") + 2, line.length() - 3));
+
+            // 解析 action
+            getline(file, line);
+            e.action = trim(line.substr(line.find(":") + 2, line.length() - 3));
+
+            // 解析 followTokens
+            getline(file, line);
+            string followStr = trim(line.substr(line.find(":") + 2));
+            followStr = followStr.substr(1, followStr.length() - 2); // 去掉 "[" 和 "]"
+            e.followTokens = splitString(followStr, ',');
+
+            // 解析 grammer
+            // 读取 grammer 的 sign
+            getline(file, line);
+            string grammerSign = trim(line.substr(line.find(":") + 2, line.length() - 3));
+            e.grammer.sign = grammerSign;
+
+            // 读取 grammer 的 grammer 数组
+            getline(file, line);
+            string grammerStr = trim(line.substr(line.find(":") + 2));
+            grammerStr = grammerStr.substr(1, grammerStr.length() - 2); // 去掉 "[" 和 "]"
+            e.grammer.grammer = splitString(grammerStr, ',');
+
+            // 跳过最后的 "}"
+            getline(file, line);
+
+            // 添加到相应的表
+            if (isAction) {
+                actionTable.push_back(e);
+            } else {
+                gotoTable.push_back(e);
             }
-            followTokens.push_back(token);
-            index += 2;
-        }
-        index += 2;
-        while(line[index] != '}'){
-            string token;
-            while(line[index] != ','){
-                token += line[index];
-                index++;
-            }
-            grammer.sign = token;
-            index += 2;
-            while(line[index] != '}'){
-                string token;
-                while(line[index] != ','){
-                    token += line[index];
-                    index++;
-                }
-                grammer.grammer.push_back(token);
-                index += 2;
-            }
-        }
-        e.start = stoi(start);
-        e.end = stoi(end);
-        e.sign = sign;
-        e.action = action;
-        e.followTokens = followTokens;
-        e.grammer = grammer;
-        if(isAction){
-            actionTable.push_back(e);
-        }else{
-            gotoTable.push_back(e);
         }
     }
-    vector<vector<edge>> res;
-    res.push_back(actionTable);
-    res.push_back(gotoTable);
+
+    file.close();
+
+    vector<vector<edge>> res = {actionTable, gotoTable};
     return res;
 }
-
 
 analyzer::analyzer(string path, string ignorePath, string tablePath)
 {
@@ -153,7 +170,10 @@ _action analyzer::analyze()
         return accept;
     }
     int state = 0;
-    state = stateStack.top();
+    if(stateStack.size() > 0)
+        state = stateStack.top();
+    else 
+        state = 0;
     string sign = tokens->getToken().type;
 
     //忽略需要忽略的符号

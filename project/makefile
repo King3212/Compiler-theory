@@ -1,9 +1,16 @@
-CC = gcc
-CFLAGS = -Wall -g -I$(INCLUDE)
+CC = g++
+CFLAGS = -Wall -g
 
 INCLUDE_DIR=include
-INCLUDE_CPP = $(INCLUDE_DIR)/Error/*.cpp $(INCLUDE_DIR)/File/*.cpp $(INCLUDE_DIR)/Gragh/*.cpp $(INCLUDE_DIR)/grammar/*.cpp $(INCLUDE_DIR)/tokens/*.cpp 
-INCLUDE_H = $(INCLUDE_DIR)/Error/*.h $(INCLUDE_DIR)/File/*.h $(INCLUDE_DIR)/Gragh/*.h $(INCLUDE_DIR)/grammar/*.h $(INCLUDE_DIR)/tokens/*.h
+
+INCLUDE_FILE = $(INCLUDE_DIR)/File/*.cpp
+INCLUDE_ERROR = $(INCLUDE_DIR)/Error/*.cpp
+INCLUDE_GRAGH = $(INCLUDE_DIR)/Gragh/*.cpp
+
+
+
+INCLUDE_CPP = $(INCLUDE_FILE) $(INCLUDE_ERROR) $(INCLUDE_GRAGH)
+
 
 BUILD_DIR = build
 
@@ -13,30 +20,36 @@ GT = genTable
 GT_SRC = $(GT)/*.cpp
 
 GWA = genWordAnalyzer
-GWA_SRC = $(GWA)/*.cpp $(GWA)/analyzer/*.cpp
-GWA_H = $(GWA)/*.h $(GWA)/analyzer/*.h
+GWA_SRC = $(GWA)/*.cpp 
 
 GA = grammarAnalyzer
-GA_SRC = $(GA)/*.cpp
+GA_SRC = $(GA)/*.cpp $(GA)/analyzer/*.cpp
+
 
 WA = wordAnalyzer
 WA_SRC = $(WA)/*.cpp
 
 # Gen Grammar Table
-$(GT): $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GT_SRC) $(INCLUDE_CPP)
+GT: $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
+	echo $(CC) $(CFLAGS) -o $(BUILD_DIR)/genTable $(GT_SRC) $(INCLUDE_CPP)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/genTable $(GT_SRC) $(INCLUDE_CPP)
 
 # Gen Word Analyzer
-$(GWA): $(GWA_SRC) $(GWA_H) $(INCLUDE_CPP) $(INCLUDE_H)
+GWA: $(GWA_SRC) $(GWA_H) $(INCLUDE_CPP) $(INCLUDE_H)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GWA_SRC) $(INCLUDE_CPP)
 
 # Word Analyzer
-$(WA): $(WA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
-	./$(BUILD_DIR)/$(GWA) $(INPUT_DIR)/word.rul
+WA: $(INCLUDE_CPP) $(INCLUDE_H)
+	./$(BUILD_DIR)/GWA $(INPUT_DIR)/word.rul > $(BUILD_DIR)/code.cpp
 	cp $(BUILD_DIR)/code.cpp $(WA)/code.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(WA_SRC) $(INCLUDE_CPP)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/getTokens $(WA_SRC) $(INCLUDE_CPP)
 
 # Grammar Analyzer
-$(GA): $(GA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
-
+GA: $(GA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GA_SRC) $(INCLUDE_CPP)
+
+all: GT GWA WA GA
+
+clean:
+	rm -f $(BUILD_DIR)/*
+	rm -f $(WA)/code.cpp

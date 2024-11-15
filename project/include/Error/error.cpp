@@ -5,7 +5,7 @@ void Error(int x)
     std::vector<std::string> errors; // 创建一个存储字符串的向量
 
     // 打开文件
-    std::ifstream file("./Error/error.txt");
+    std::ifstream file("./include/Error/error.txt");
 
     // 逐行读取文件内容
     std::string line;
@@ -16,8 +16,15 @@ void Error(int x)
     // 关闭文件
     file.close();
 
-    std::ofstream log("./Error/error.log",std::ios::app);
-    log << errors[x] << std::endl;
-    std::cerr << errors[x] << std::endl;
-    log.close();
+    std::ofstream log("./error.log",std::ios::app);
+    if (log.fail())
+    {
+        log << errors[x] << std::endl;
+        std::cerr << errors[x] << std::endl;
+        log.close();
+    }else{
+        std::cerr << "Error: error.log open failed" << std::endl;
+    }
+    
+    
 }

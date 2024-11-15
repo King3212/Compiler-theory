@@ -3,7 +3,7 @@
 
 
 int main(){
-    analyzer a("sourceCode.tny","ignore.txt");
+    analyzer a("./input/tinyProgram.tny","./input/ignore.txt","./input/tables.txt");
     printf("finish reading tables\n");
     a.run();
     return 0;

@@ -46,22 +46,4 @@ vector<string> readFile(string path) {
     return lines; // 返回包含文件内容的向量
 }
 
-void writeTables(vector<vector<edge>> edges, string path) {
-    ofstream file(path); // 打开文件
-    if (!file.is_open()) { // 检查文件是否成功打开
-        // 如果文件无法打开，向用户报告错误并返回空向量
-        Error(0);
-    }
-    vector<edge> actionTable; // action表,存放移进和规约操作
-    vector<edge> gotoTable;   // goto表,存放状态转移操作
-    actionTable = edges[0];
-    gotoTable = edges[1];
-    for(auto &e: actionTable){
-        file << e.toString() << endl;
-    }
-    file << "----------------------" << endl;
-    for(auto &e: gotoTable){
-        file << e.toString() << endl;
-    }
 
-}

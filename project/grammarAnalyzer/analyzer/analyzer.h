@@ -3,9 +3,10 @@
 #include <iostream>
 #include <stack>
 #include <algorithm>
+
 #include "../tokens/tokens.h"
-#include "../File/File.h"
-#include "../grammar/globle.h"
+#include "../../include/File/File.h"
+#include "../../include/grammar/globle.h"
 #pragma once
 
 using namespace std;
@@ -17,7 +18,7 @@ enum _action{
     error
 };
 
-vector<vector<edge>> readTables(string path);
+vector<vector<edge>> readTables(const string& path);
 
 struct tree
 {
@@ -44,7 +45,6 @@ public:
     ~analyzer();
     void run();
 private:
-    void getEdges(string path);
     edge fromGotoTableFindEdge(int state, string sign);
     edge fromActionTableFindEdge(int state, string sign);
     _action analyze();

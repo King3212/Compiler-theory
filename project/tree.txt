@@ -1,90 +1,14 @@
 .
 ├── genTable
-│   ├── build
-│   │   └── genTable
-│   ├── inputFiles
-│   │   ├── grammer.txt
-│   │   └── tables.txt
-│   └── src
-│       ├── Error
-│       │   ├── error.cpp
-│       │   ├── error.h
-│       │   ├── error.log
-│       │   ├── error.o
-│       │   └── error.txt
-│       ├── File
-│       │   ├── File.cpp
-│       │   ├── File.h
-│       │   ├── File.h.gch
-│       │   └── File.o
-│       ├── grammar
-│       │   ├── First_Follow.h
-│       │   ├── globle.h
-│       │   ├── IndexedSet.h
-│       │   ├── LALR1.h
-│       │   └── LR1.h
-│       └── main
-│           ├── genTable
-│           ├── main.cpp
-│           └── main.o
+│   └── main.cpp
 ├── genWordAnalyzer
-│   ├── build
-│   │   └── genWordAnalysis
-│   ├── inputFiles
-│   │   ├── test.backup.txt
-│   │   └── words.rul
-│   └── src
-│       ├── Error
-│       │   ├── error.cpp
-│       │   ├── error.h
-│       │   ├── error.log
-│       │   ├── error.o
-│       │   └── error.txt
-│       ├── File
-│       │   ├── File.cpp
-│       │   ├── File.h
-│       │   └── File.o
-│       ├── Gragh
-│       │   ├── Gragh.cpp
-│       │   ├── Gragh.h
-│       │   ├── Gragh.o
-│       │   ├── scanner.cpp
-│       │   ├── scanner.h
-│       │   └── scanner.o
-│       ├── GraghToCode.cpp
-│       └── GraghToCode.o
+│   └── GraghToCode.cpp
 ├── grammarAnalyzer
-│   ├── build
-│   │   ├── analyzer
-│   │   └── token.txt
-│   ├── inputFiles
-│   │   ├── getTokens
-│   │   ├── ignore.txt
-│   │   ├── sourceCode.tny
-│   │   └── tables.txt
-│   └── src
-│       ├── analyzer
-│       │   ├── analyzer.cpp
-│       │   ├── analyzer.h
-│       │   └── analyzer.o
-│       ├── Error
-│       │   ├── error.cpp
-│       │   ├── error.h
-│       │   ├── error.log
-│       │   ├── error.o
-│       │   └── error.txt
-│       ├── File
-│       │   ├── File.cpp
-│       │   ├── File.h
-│       │   ├── File.h.gch
-│       │   └── File.o
-│       ├── globle.h
-│       ├── IndexedSet.h
-│       ├── main
-│       │   ├── main.cpp
-│       │   └── main.o
-│       └── tokens
-│           └── tokens.h
+│   ├── analyzer
+│   │   ├── analyzer.cpp
+│   │   ├── analyzer.h
+│   │   └── analyzer.o
+│   └── main.cpp
 ├── include
 │   ├── Error
 │   │   ├── error.cpp
@@ -104,22 +28,25 @@
 │   │   ├── scanner.cpp
 │   │   ├── scanner.h
 │   │   └── scanner.o
-│   └── grammar
-│       ├── First_Follow.h
-│       ├── globle.h
-│       ├── IndexedSet.h
-│       ├── LALR1.h
-│       └── LR1.h
+│   ├── grammar
+│   │   ├── First_Follow.h
+│   │   ├── globle.h
+│   │   ├── IndexedSet.h
+│   │   ├── LALR1.h
+│   │   └── LR1.h
+│   └── tokens
+│       └── tokens.h
+├── input
+│   ├── grammer.txt
+│   ├── ignore.txt
+│   ├── tables.txt
+│   ├── tinyProgram.tny
+│   ├── token.txt
+│   ├── word.backup.rul
+│   └── word.rul
 ├── makefile
 ├── tree.txt
 └── wordAnalyzer
-    ├── build
-    │   └── getTokens
-    ├── inputFiles
-    │   └── temp.txt
-    └── src
-        ├── code.cpp
-        ├── code.o
-        └── getInput.h
+    └── getInput.h
 
-34 directories, 89 files
+13 directories, 37 files

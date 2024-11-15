@@ -11,8 +11,8 @@
  * ------|------|------|------
  * 1.0 | 2024-10-02 | 20222131044 | 初始版本
  */
-#include "Gragh/Gragh.h"
-#include "File/File.h"
+#include "../include/Gragh/Gragh.h"
+#include "../include/File/File.h"
 #include <iostream>
 /**
  * @brief 将正则表达式转换为图

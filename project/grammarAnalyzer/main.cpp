@@ -1,4 +1,4 @@
-#include "../analyzer/analyzer.h"
+#include "analyzer/analyzer.h"
 #include "iostream"
 
 

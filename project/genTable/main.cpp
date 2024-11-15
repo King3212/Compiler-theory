@@ -1,10 +1,10 @@
-#include"../grammar/LALR1.h"
-#include"../grammar/LR1.h"
-#include"../grammar/globle.h"
-#include"../grammar/First_Follow.h"
+#include"../include/grammar/LALR1.h"
+#include"../include/grammar/LR1.h"
+#include"../include/grammar/globle.h"
+#include"../include/grammar/First_Follow.h"
 #include<vector>
 #include<string>
-#include"../File/File.h"
+#include"../include/File/File.h"
 using namespace std;
 void process(vector<string> grammars){
     LR1 parser;

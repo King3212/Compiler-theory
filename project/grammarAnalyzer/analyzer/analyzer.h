@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "../tokens/tokens.h"
 #include "../File/File.h"
-#include "../globle.h"
+#include "../grammar/globle.h"
 #pragma once
 
 using namespace std;
@@ -40,7 +40,7 @@ private:
     vector<edge> actionTable;
     vector<string> ignoreSigns;
 public:
-    analyzer(string path, string ignorePath,string tablePath = "../inputFiles/tables.txt");
+    analyzer(string path, string ignorePath,string tablePath = "tables.txt");
     ~analyzer();
     void run();
 private:

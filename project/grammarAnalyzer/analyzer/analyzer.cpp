@@ -6,84 +6,79 @@ vector<vector<edge>> readTables(string path) {
     vector<edge> gotoTable;   // goto表,存放状态转移操作
     vector<string> lines = readFile(path);
     bool isAction = true;
-
-    for (auto &line : lines) {
-        if (line == "----------------------") {
+    for(auto &line: lines){
+        if(line == "----------------------"){
             isAction = false;
             continue;
         }
-        
         edge e;
         string start, end, sign, action;
         vector<string> followTokens;
         Grammer grammer;
-
-        int index = 1; // Skip the opening '{' character
-        while (line[index] != ',') {
-            start += line[index++];
+        int index = 0;
+        while(line[index] != ','){
+            start += line[index];
+            index++;
         }
         index += 2;
-        while (line[index] != ',') {
-            end += line[index++];
+        while(line[index] != ','){
+            end += line[index];
+            index++;
         }
         index += 2;
-        while (line[index] != ',') {
-            sign += line[index++];
+        while(line[index] != ','){
+            sign += line[index];
+            index++;
         }
         index += 2;
-        while (line[index] != ',') {
-            action += line[index++];
+        while(line[index] != ','){
+            action += line[index];
+            index++;
         }
-        index += 3; // Skip ", {" for followTokens
-
-        // Parse followTokens
-        while (line[index] != '}') {
+        index += 2;
+        while(line[index] != '}'){
             string token;
-            while (line[index] != ',' && line[index] != '}') {
-                token += line[index++];
+            while(line[index] != ','){
+                token += line[index];
+                index++;
             }
             followTokens.push_back(token);
-            if (line[index] == ',') index += 2; // Skip ", " between tokens
+            index += 2;
         }
-        index += 5; // Skip "}, { " to start of grammer
-
-        // Parse grammer.sign
-        if (line[index] != '}') {
+        index += 2;
+        while(line[index] != '}'){
             string token;
-            while (line[index] != ',') {
-                token += line[index++];
+            while(line[index] != ','){
+                token += line[index];
+                index++;
             }
             grammer.sign = token;
-            index += 4; // Skip ", { " to start of grammer.grammer
-
-            // Parse grammer.grammer
-            while (line[index] != '}') {
+            index += 2;
+            while(line[index] != '}'){
                 string token;
-                while (line[index] != ',' && line[index] != '}') {
-                    token += line[index++];
+                while(line[index] != ','){
+                    token += line[index];
+                    index++;
                 }
                 grammer.grammer.push_back(token);
-                if (line[index] == ',') index += 2; // Skip ", " between tokens
+                index += 2;
             }
         }
-
-        // Convert parsed strings to appropriate data types
         e.start = stoi(start);
         e.end = stoi(end);
         e.sign = sign;
         e.action = action;
         e.followTokens = followTokens;
         e.grammer = grammer;
-
-        if (isAction) {
+        if(isAction){
             actionTable.push_back(e);
-        } else {
+        }else{
             gotoTable.push_back(e);
         }
     }
-
-    // Store results in a 2D vector as per function specification
-    vector<vector<edge>> res = {actionTable, gotoTable};
+    vector<vector<edge>> res;
+    res.push_back(actionTable);
+    res.push_back(gotoTable);
     return res;
 }
 

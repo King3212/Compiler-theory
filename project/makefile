@@ -1,89 +1,42 @@
-CC=g++
-CFLAGS=-g -o2
+CC = gcc
+CFLAGS = -Wall -g -I$(INCLUDE)
 
+INCLUDE_DIR=include
+INCLUDE_CPP = $(INCLUDE_DIR)/Error/*.cpp $(INCLUDE_DIR)/File/*.cpp $(INCLUDE_DIR)/Gragh/*.cpp $(INCLUDE_DIR)/grammar/*.cpp $(INCLUDE_DIR)/tokens/*.cpp 
+INCLUDE_H = $(INCLUDE_DIR)/Error/*.h $(INCLUDE_DIR)/File/*.h $(INCLUDE_DIR)/Gragh/*.h $(INCLUDE_DIR)/grammar/*.h $(INCLUDE_DIR)/tokens/*.h
 
-INCLUDE=./include
-FILEDIR=$(INCLUDE)/File
-ErrorDir=$(INCLUDE)/Error
-GrammarDir=$(INCLUDE)/grammar
-# make genTable
+BUILD_DIR = build
 
-GT=./genTable
-GT_Src=$(GT)/src
+INPUT_DIR = input
 
-GT_MainDir=$(GT_Src)/main
-GT_Target=$(GT)/build/genTable
+GT = genTable
+GT_SRC = $(GT)/*.cpp
 
-GT_Sources=$(wildcard $(GrammarDir)/*.cpp $(ErrorDir)/*.cpp $(FileDir)/*.cpp $(GT_MainDir)/*.cpp)
+GWA = genWordAnalyzer
+GWA_SRC = $(GWA)/*.cpp $(GWA)/analyzer/*.cpp
+GWA_H = $(GWA)/*.h $(GWA)/analyzer/*.h
 
-GT_Objects=$(GT_Sources:.cpp=.o)
+GA = grammarAnalyzer
+GA_SRC = $(GA)/*.cpp
 
-genTable: $(GT_Objects)
-	$(CC) $(CFLAGS) -o $(GT_Target) $(GT_Sources)
+WA = wordAnalyzer
+WA_SRC = $(WA)/*.cpp
 
+# Gen Grammar Table
+$(GT): $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GT_SRC) $(INCLUDE_CPP)
 
-# gen word analyzer code
+# Gen Word Analyzer
+$(GWA): $(GWA_SRC) $(GWA_H) $(INCLUDE_CPP) $(INCLUDE_H)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GWA_SRC) $(INCLUDE_CPP)
 
-GWA=./genWordAnalyzer
-GWA_Src=$(GWA)/src
-GWA_FileDir=$(INCLUDE)/File
-GWA_ErrorDir=$(INCLUDE)/Error
-GWA_GraghDir=$(GWA_Src)/Gragh
-GWA_BuildDir=$(GWA)/build
+# Word Analyzer
+$(WA): $(WA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
+	./$(BUILD_DIR)/$(GWA) $(INPUT_DIR)/word.rul
+	cp $(BUILD_DIR)/code.cpp $(WA)/code.cpp
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(WA_SRC) $(INCLUDE_CPP)
 
-GWA_Target=$(GWA_BuildDir)/genWordAnalysis
+# Grammar Analyzer
+$(GA): $(GA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
 
-GWA_Sources=$(wildcard $(GWA_ErrorDir)/*.cpp $(GWA_FileDir)/*.cpp $(GWA_GraghDir)/*.cpp $(GWA_Src)/*.cpp)
-
-GWA_Objects=$(GWA_Sources:.cpp=.o)
-
-genWordAnalyzer: $(GWA_Objects)
-	$(CC) $(CFLAGS) -o $(GWA_Target) $(GWA_Sources)
-
-
-# make word analyzer
-WA=./wordAnalyzer
-WA_Src=$(WA)/src
-
-WA_Target=$(WA)/build/getTokens
-
-WA_Sources=$(wildcard $(WA_Src)/*.cpp)
-
-WA_Objects=$(WA_Sources:.cpp=.o)
-
-getTokens: $(WA_Objects)
-	rm $(WA_Src)/code.cpp
-	$(GWA_Target) $(GWA)/inputFiles/words.rul > $(WA_Src)/code.cpp
-	$(CC) $(CFLAGS) -o $(WA_Target) $(WA_Sources)
-
-
-# make grammar analyzer
-
-GA=./grammarAnalyzer
-GA_Src=$(GA)/src
-GA_AnalyzerDir=$(GA_Src)/analyzer
-GA_MainDir=$(GA_Src)/main
-GA_FileDir=$(GA_Src)/File
-GA_ErrorDir=$(GA_Src)/Error
-GA_TokensDir=$(GA_Src)/tokens
-GA_BuildDir=$(GA)/build
-GA_InputDir=$(GA)/inputFiles
-
-GA_Target=$(GA)/build/analyzer
-
-GA_Sources=$(wildcard $(GA_AnalyzerDir)/*.cpp $(GA_MainDir)/*.cpp $(GA_FileDir)/*.cpp $(GA_ErrorDir)/*.cpp $(GA_TokensDir)/*.cpp)
-
-GA_Objects=$(GA_Sources:.cpp=.o)
-
-analyzer: $(GA_Objects)
-	rm $(GA_InputDir)/getTokens
-	cp $(WA_Target) $(GA_InputDir)/getTokens
-	./$(GT_Target) $(GA_InputDir)/grammar.rul
-	mv $(GT)/build/table.txt $(GA_InputDir)/table.txt
-	$(CC) $(CFLAGS) -o $(GA_Target) $(GA_Sources)
-
-clean:
-	rm $(GT_Objects) $(GT_Target) $(GWA_Objects) $(GWA_Target) $(WA_Objects) $(WA_Target) $(GA_Objects) $(GA_Target)
-
-
-all: genTable genWordAnalyzer getTokens analyzer
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GA_SRC) $(INCLUDE_CPP)

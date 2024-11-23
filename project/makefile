@@ -6,10 +6,11 @@ INCLUDE_DIR=include
 INCLUDE_FILE = $(INCLUDE_DIR)/File/*.cpp
 INCLUDE_ERROR = $(INCLUDE_DIR)/Error/*.cpp
 INCLUDE_GRAGH = $(INCLUDE_DIR)/Gragh/*.cpp
+INCLUDE_GRAMMAR = $(INCLUDE_DIR)/grammar/*.cpp
 
 
 
-INCLUDE_CPP = $(INCLUDE_FILE) $(INCLUDE_ERROR) $(INCLUDE_GRAGH)
+INCLUDE_CPP = $(INCLUDE_FILE) $(INCLUDE_ERROR) $(INCLUDE_GRAGH) $(INCLUDE_GRAMMAR)
 
 
 BUILD_DIR = build
@@ -29,6 +30,9 @@ GA_SRC = $(GA)/*.cpp $(GA)/analyzer/*.cpp
 WA = wordAnalyzer
 WA_SRC = $(WA)/*.cpp
 
+TLR1 = testLR1
+
+
 # Gen Grammar Table
 GT: $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
 	echo $(CC) $(CFLAGS) -o $(BUILD_DIR)/genTable $(GT_SRC) $(INCLUDE_CPP)
@@ -46,6 +50,7 @@ WA: $(INCLUDE_CPP) $(INCLUDE_H)
 
 # Grammar Analyzer
 GA: $(GA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
+	./$(BUILD_DIR)/genTable
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GA_SRC) $(INCLUDE_CPP)
 
 all: GT GWA WA GA

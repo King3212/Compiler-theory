@@ -1,100 +1,168 @@
-_open_comment { 
+_oneLine_comment_open //
 _comment 
-_close_commnet 
 _enter 
-_read read 
+_int int
 _space 
-_identifier x;
-_semicolon ; 
+_id main
+_left_paren (
+_void void
+_right_paren )
 _space 
-_open_comment { 
-_comment 
-_close_commnet 
-_enter 
-_if if 
-_space 
-_identifier x 
-_space 
-_greater > 
-_space 
-_number 0 
-_space 
-_then then
-
-_enter 
-_space 
-_space 
-_space 
-_open_comment { 
-_comment 
-_close_commnet 
-_enter 
-_space 
-_space 
-_space 
-_repeat repeat
-
+_left_brace {
 _enter 
 _space 
 _space 
 _space 
 _space 
+_int int
 _space 
-_space 
-_identifier x 
-_space 
-_assign := 
-_space 
-_identifier x 
-_space 
-_minus - 
-_space 
-_number 1;
+_id a
 _semicolon ;
-
 _enter 
 _space 
 _space 
 _space 
 _space 
+_int int
 _space 
-_space 
-_write write 
-_space 
-_identifier x;
+_id b
 _semicolon ;
-
-_enter 
 _space 
-_space 
-_space 
-_until until 
-_space 
-_identifier x 
-_space 
-_equal = 
-_space 
-_number 0
-
-_enter 
-_else else
-
-_enter 
-_space 
-_space 
-_space 
-_open_comment { 
+_oneLine_comment_open //
 _comment 
-_close_commnet 
+_space 
+_space 
+_space 
+_space 
+_float float
+_space 
+_id result_add
+_semicolon ;
 _enter 
 _space 
 _space 
 _space 
-_write write 
 _space 
-_number 0
-
+_float float
+_space 
+_id result_sub
+_semicolon ;
+_space 
+_oneLine_comment_open //
+_comment 
 _enter 
-_end end
-
+_space 
+_space 
+_space 
+_space 
+_oneLine_comment_open //
+_comment 
+_space 
+_space 
+_space 
+_space 
+_id a
+_space 
+_assign =
+_space 
+_num 10
+_semicolon ;
+_space 
+_oneLine_comment_open //
+_comment 
+_space 
+_space 
+_space 
+_space 
+_id b
+_space 
+_assign =
+_space 
+_num 20
+_semicolon ;
+_space 
+_oneLine_comment_open //
+_comment 
+_enter 
+_space 
+_space 
+_space 
+_space 
+_oneLine_comment_open //
+_comment 
+_space 
+_space 
+_space 
+_space 
+_id result_add
+_space 
+_assign =
+_space 
+_id a
+_space 
+_add +
+_space 
+_id b
+_semicolon ;
+_space 
+_oneLine_comment_open //
+_comment 
+_space 
+_space 
+_space 
+_space 
+_id result_sub
+_space 
+_assign =
+_space 
+_id a
+_space 
+_minus -
+_space 
+_id b
+_semicolon ;
+_space 
+_oneLine_comment_open //
+_comment 
+_enter 
+_space 
+_space 
+_space 
+_space 
+_oneLine_comment_open //
+_comment 
+_space 
+_space 
+_space 
+_space 
+_id print
+_left_paren (
+_id result_add
+_right_paren )
+_semicolon ;
+_enter 
+_enter 
+_space 
+_space 
+_space 
+_space 
+_id print
+_left_paren (
+_id result_sub
+_right_paren )
+_semicolon ;
+_enter 
+_enter 
+_space 
+_space 
+_space 
+_space 
+_return return
+_space 
+_num 0
+_semicolon ;
+_space 
+_oneLine_comment_open //
+_comment 
+_right_brace }
 _enter 

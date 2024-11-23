@@ -1,0 +1,23 @@
+// miniC示例程序：计算两个数的和与差
+
+int main(void) {
+    int a;
+    int b; // 定义两个整型变量
+    float result_add;
+    float result_sub; // 定义两个浮点型变量用于存储结果
+
+    // 赋值操作
+    a = 10; // 第一个数
+    b = 20; // 第二个数
+
+    // 加法和减法
+    result_add = a + b; // 计算和
+    result_sub = a - b; // 计算差
+
+    // 输出结果
+    print(result_add);
+
+    print(result_sub);
+
+    return 0; // 程序正常结束
+}

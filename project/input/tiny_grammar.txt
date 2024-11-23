@@ -7,10 +7,9 @@ assign-stmt -> _identifier _assign exp
 read-stmt -> _read _identifier
 write-stmt -> _write exp
 exp -> simple-exp comparison-op simple-exp | simple-exp
-comparison-op -> _less | _not_equal | _equal | _less_equal | _not_equal | _greater_equal
+comparison-op -> _less | _greater | _equal | _less_equal | _not_equal | _greater_equal
 simple-exp -> simple-exp addop term | term
 addop -> _plus | _minus
 term -> term mulop factor | factor
 mulop -> _multiply | _divide | _mod | _power
-paren-exp -> _left_paren exp _right_paren
-factor ->  | _number | _identifier
+factor -> _left_paren exp _right_paren | _number | _identifier

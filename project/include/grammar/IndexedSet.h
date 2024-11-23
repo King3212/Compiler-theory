@@ -141,6 +141,11 @@ public:
                           { return a == b; });
     }
 
+    bool operator<(const IndexedSet &other) const
+    {
+        return elements < other.elements;
+    }
+
     // 重载 != 运算符
     bool operator!=(const IndexedSet &other) const
     {

@@ -4,3 +4,4 @@ _enter
 _comment
 _open_comment
 _close_comment
+_oneLine_comment_open

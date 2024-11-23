@@ -22,8 +22,10 @@ private:
     vector<vector<token> *> *tokens;
 public:
     Tokens(string path)
-    {
+    {   
+        cout << "running dir: ";
         system("pwd");
+        cout << endl;
         if (system(("./build/getTokens "+path+" > token.txt").c_str())){
             cerr << "Error: getTokens failed" << endl;
             exit(1);
@@ -87,7 +89,7 @@ public:
     
     bool isEmtpy()
     {
-        return (line == tokens->size() && pos == tokens->at(line)->size());
+        return (line == (*tokens).size());
     }
 };
 

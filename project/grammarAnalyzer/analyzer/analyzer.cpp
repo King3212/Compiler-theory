@@ -1,224 +1,164 @@
 #include "analyzer.h"
-using namespace std;
+#include "sstream"
+std::string trim(const std::string& str) {
+    // 找到第一个非空格字符
+    size_t start = str.find_first_not_of(" \t\n\r");
+    // 找到最后一个非空格字符
+    size_t end = str.find_last_not_of(" \t\n\r");
+    // 如果字符串全是空格，直接返回空字符串
+    return (start == std::string::npos) ? "" : str.substr(start, end - start + 1);
+}
 
+Edge Parser::getEdge(int from, string sign)
+{
+    for(auto edge : edges){
+        if(edge.from == from && edge.sign == sign){
+            return edge;
+        }
+    }
+    cout << "error, no edge found" << endl;
+    exit(1);
+}
 
-// 分割字符串的辅助函数
-vector<string> splitString(const string& str, char delimiter) {
-    vector<string> result;
-    stringstream ss(str);
-    string token;
-    while (getline(ss, token, delimiter)) {
-        result.push_back(token);
+string Parser::showSignStack()
+{
+    vector<string> temp;
+    while (!signStack.empty())
+    {
+        temp.push_back(signStack.top());
+        signStack.pop();
+    }
+    reverse(temp.begin(), temp.end());
+    string result;
+    for (auto sign : temp)
+    {
+        result += sign + " ";
+        signStack.push(sign);
     }
     return result;
 }
 
-// 去除字符串前后的空白字符
-string trim(const string& str) {
-    size_t first = str.find_first_not_of(" \t\r\n");
-    if (first == string::npos) return "";  // 空字符串
-    size_t last = str.find_last_not_of(" \t\r\n");
-    return str.substr(first, last - first + 1);
-}
-
-// 从文件中读取数据并解析为 action 和 goto 表
-vector<vector<edge>> readTables(const string& path) {
-    vector<edge> actionTable;
-    vector<edge> gotoTable;
-    ifstream file(path);
-    if (!file.is_open()) {
-        cerr << "Failed to open file: " << path << endl;
-        return {};
-    }
-
-    string line;
-    bool isAction = true;
-
-    // 读取文件的每一行
-    while (getline(file, line)) {
-        line = trim(line);  // 去除前后空格
-
-        // 判断是否是分隔符
-        if (line == "----------------------") {
-            isAction = false;
-            continue;
-        }
-
-        // 如果是一个 JSON 对象的开始
-        if (line.front() == '{') {
-            edge e;
-
-            // 解析 start
-            getline(file, line);
-            e.start = stoi(trim(line.substr(line.find(":") + 1)));
-
-            // 解析 end
-            getline(file, line);
-            e.end = stoi(trim(line.substr(line.find(":") + 1)));
-
-            // 解析 sign
-            getline(file, line);
-            e.sign = trim(line.substr(line.find(":") + 2, line.length() - 3));
-
-            // 解析 action
-            getline(file, line);
-            e.action = trim(line.substr(line.find(":") + 2, line.length() - 3));
-
-            // 解析 followTokens
-            getline(file, line);
-            string followStr = trim(line.substr(line.find(":") + 2));
-            followStr = followStr.substr(1, followStr.length() - 2); // 去掉 "[" 和 "]"
-            e.followTokens = splitString(followStr, ',');
-
-            // 解析 grammer
-            // 读取 grammer 的 sign
-            getline(file, line);
-            string grammerSign = trim(line.substr(line.find(":") + 2, line.length() - 3));
-            e.grammer.sign = grammerSign;
-
-            // 读取 grammer 的 grammer 数组
-            getline(file, line);
-            string grammerStr = trim(line.substr(line.find(":") + 2));
-            grammerStr = grammerStr.substr(1, grammerStr.length() - 2); // 去掉 "[" 和 "]"
-            e.grammer.grammer = splitString(grammerStr, ',');
-
-            // 跳过最后的 "}"
-            getline(file, line);
-
-            // 添加到相应的表
-            if (isAction) {
-                actionTable.push_back(e);
-            } else {
-                gotoTable.push_back(e);
+void Parser::readEdges(string path)
+{
+    vector<string> lines = readFile(path);
+    int i = 0;
+    while(i < lines.size()){
+        Edge edge;
+        if (trim(lines[i]) == "Edge:")
+        {
+            i+=2;
+            edge.from = stoi(trim(lines[i]));
+            i+=2;
+            edge.to = stoi(trim(lines[i]));
+            i+=2;
+            edge.sign = trim(lines[i]);
+            i+=2;
+            edge.type = (ActionType)stoi(trim(lines[i]));
+            i+=4;
+            Grammar g;
+            g.left = trim(lines[i]);
+            i+=2;
+            string right = trim(lines[i]);
+            stringstream ss(right);
+            string temp;
+            while (ss >> temp)
+            {
+                g.right.push_back(temp);
             }
+            edge.reduceProduction = g;
+
+            edges.insert(edge);
+
+            i+=2;
+            
+        }else{
+            i++;
         }
+        
     }
-
-    file.close();
-
-    vector<vector<edge>> res = {actionTable, gotoTable};
-    return res;
+        
 }
 
-analyzer::analyzer(string path, string ignorePath, string tablePath)
+Parser::Parser(string path, vector<string> ignoreSigns)
+{
+    readEdges(path);
+    for(auto sign : ignoreSigns){
+        this->ignoreSigns.insert(sign);
+    }
+}
+
+void Parser::parse(string path)
 {
     tokens = new Tokens(path);
-    ignoreSigns = readFile(ignorePath);
-    if (ignoreSigns.size() == 0)
-    {
-        printf("ignore.txt is empty\n");
-    }
-    
-    vector<vector<edge>> tables = readTables(tablePath);
-    if (tables.size() != 2)
-    {
-        printf("tables.txt is not correct\n");
-    }
-    
-    actionTable = tables[0];
-    gotoTable = tables[1];
-}
-
-analyzer::~analyzer()
-{
-    delete tokens;
-    delete syntaxTree;
-}
-
-void analyzer::run()
-{
+    stateStack.push(0);
     while (true)
     {
-        _action action = analyze();
-        if (action == error)
+        if (action() == ACCEPT)
         {
-            cout << "Error" << endl;
-            break;
-        }
-        if (action == accept)
-        {
-            cout << "Accept" << endl;
             break;
         }
     }
+    cout << "accept" << endl;
 }
 
-inline edge analyzer::fromGotoTableFindEdge(int state, string sign)
+ActionType Parser::action()
 {
-    for(auto &edge: gotoTable){
-        if(edge.start == state && edge.sign == sign){
-            return edge;
-        }
-    }
-    return edge();
-}
-
-inline edge analyzer::fromActionTableFindEdge(int state, string sign)
-{
-    for(auto &edge: actionTable){
-        if(edge.start == state && edge.sign == sign){
-            return edge;
-        }
-    }
-    return edge();
-}
-
-_action analyzer::analyze()
-{
-    if(tokens->getToken().type == "$" && stateStack.top() == 0 && signStack.size() == 1)
-    {
-        return accept;
-    }
-    int state = 0;
-    if(stateStack.size() > 0)
-        state = stateStack.top();
-    else 
-        state = 0;
-    string sign = tokens->getToken().type;
-
-    //忽略需要忽略的符号
-    while (find(ignoreSigns.begin(), ignoreSigns.end(), sign) != ignoreSigns.end())
+    int state = stateStack.top();
+    cout << "state: " << state << endl;
+    token oneToken = tokens->getToken();
+    while (ignoreSigns.contains(oneToken.type))
     {
         tokens->advanceToken();
-        sign = tokens->getToken().type;
+        oneToken = tokens->getToken();
     }
+    cout << "token: " << oneToken.type << " " << oneToken.value << endl;
+    Edge edge = getEdge(state, oneToken.type);
     
-    edge action = fromActionTableFindEdge(state, sign);
-    if(action.action == "s") //移进,将当前token移入分析栈
+    if (edge.type == SHIFT)
     {
-        stateStack.push(action.end);
-        signStack.push(sign);
-        tree *node = new tree();
-        node->sign = sign;
-        node->value = tokens->getToken().value;
-        treeStack.push(node);
+        stateStack.push(edge.to);
+        signStack.push(oneToken.type);
+        Tree *t = new Tree();
+        t->sign = oneToken.type;
+        t->value = oneToken.value;
+        treeStack.push(t);
         tokens->advanceToken();
-        printf("移进:%s\n", sign.c_str());
-        return shift;
-    }
-    if (action.action == "r")//规约
-    {
-        Grammer grammer = action.grammer;
-        vector<string> followTokens = action.followTokens;
-        vector<tree *> children;
-        for (int i = 0; i < grammer.grammer.size(); i++)
-        {
-            stateStack.pop();
-            signStack.pop();
-            tree *node = treeStack.top();
-            treeStack.pop();
-            children.push_back(node);
+        cout << "shift"<< endl << showSignStack() << endl << endl;
+        return SHIFT;
+    }else if(edge.type == REDUCE){
+        Grammar g = edge.reduceProduction;
+        vector<Tree *> children;
+        if (g.right[0] != "@"){
+            for (int i = 0; i < g.right.size(); i++)
+            {
+                stateStack.pop();
+                signStack.pop();
+                Tree *t = treeStack.top();
+                treeStack.pop();
+                children.push_back(t);
+            }
+            reverse(children.begin(), children.end());
+            Tree *t = new Tree();
+            t->sign = g.left;
+            t->children = children;
+            treeStack.push(t);
+        }else{
+            Tree *t = new Tree();
+            t->sign = g.left;
+            t->value = "@";
+            treeStack.push(t);
+            signStack.push(g.left);
         }
-        tree *node = new tree();
-        node->sign = grammer.sign;
-        node->children = children;
-        treeStack.push(node);
+        cout << "reduce:\t" << g.toString() << endl << showSignStack()<< endl << endl;
         state = stateStack.top();
-        edge gotoEdge = fromGotoTableFindEdge(state, grammer.sign);
-        stateStack.push(gotoEdge.end);
-        signStack.push(grammer.sign);
-        printf("规约:%s\n", grammer.sign.c_str());
-        return reduce;
+        Edge newEdge = getEdge(state, g.left);
+        stateStack.push(newEdge.to);
+        signStack.push(g.left);
+        cout << "goto: "<< endl << showSignStack() << newEdge.to << endl << endl;
+        return REDUCE;
+    }else if(edge.type == ACCEPT){
+        root = treeStack.top();
+        return ACCEPT;
     }
     
 }

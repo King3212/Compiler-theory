@@ -4,7 +4,7 @@ if x > 0 then
    { If x is greater than 0, execute the following }
    repeat
       x := x - 1;
-      write x;
+      write x
    until x = 0
 else
    { If x is not greater than 0, output 0 }

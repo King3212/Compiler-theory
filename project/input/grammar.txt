@@ -1,0 +1,30 @@
+program -> definition-list
+definition-list -> definition-list definition | definition
+definition -> variable-definition | function-definition
+variable-definition -> type-indicator _id _semicolon | type-indicator _id _left_bracket _num _right_bracket _semicolon
+type-indicator -> _int | _float | _double | _void
+function-definition -> type-indicator _id _left_paren parameters _right_paren compound-stmt
+parameters -> parameter-list | _void
+parameter-list -> parameter-list _comma parameter | parameter
+parameter -> type-indicator _id | type-indicator _id _left_bracket _right_bracket
+compound-stmt -> _left_brace local-definitions statement-list _right_brace
+local-definitions -> local-definitions variable-definition | @
+statement-list -> statement-list statement | @
+statement -> expression-stmt | compound-stmt | condition-stmt | while-stmt | dowhile-stmt | return-stmt
+expression-stmt -> expression _semicolon | _semicolon
+condition-stmt -> _if _left_paren expression _right_paren statement | _if _left_paren expression _right_paren statement _else statement
+while-stmt -> _while _left_paren expression _right_paren statement
+dowhile-stmt -> _do statement _while _left_paren expression _right_paren _semicolon
+return-stmt -> _return _semicolon | _return expression _semicolon
+expression -> variable _assign expression | simple-expression
+variable -> _id | _id _left_bracket expression _right_bracket
+simple-expression -> additive-expression relop additive-expression | additive-expression
+relop -> _less_equal | _less | _greater | _greater_equal | _equal | _not_equal
+additive-expression -> additive-expression addop term | term
+addop -> _add | _minus
+term -> term mulop factor | factor
+mulop -> _multiply | _divide | _mod | _power
+factor -> _left_paren expression _right_paren | variable | call | _num
+call -> _id _left_paren arguments _right_paren
+arguments -> argument-list | @
+argument-list -> argument-list _comma expression | expression

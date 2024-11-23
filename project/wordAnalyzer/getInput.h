@@ -94,9 +94,10 @@ inline std::string Input::getTokenWord(int pos)
     file.seekg(pos);
 
     // 读取单词
-    while (file.tellg() < currentPos)
+    while (file.tellg() < currentPos - 1)
     {
         word += getInput();
     }
+    getInput();
     return word;
 }

@@ -1,0 +1,296 @@
+#include "LR1.h"
+
+State LR1::gotoState(State state, string sign) {
+    State newState;
+    IndexedSet<Item> items;
+
+    for (auto& item : state.items) {
+        // 如果点在产生式最后，无法移进
+        if (item.dot == item.production.right.size()) {
+            continue;
+        }
+
+        // 如果点后符号与 sign 匹配
+        if (item.production.right[item.dot] == sign) {
+            // 对 item 进行移进，并计算闭包
+            Item advancedItem = item;
+            advancedItem.dot++; // 点右移
+            items.insert(advancedItem);
+            IndexedSet<Item> closureItems;
+            closure(advancedItem, closureItems);
+            for (auto& closureItem : closureItems) {
+                items.insert(closureItem);
+            }
+        }
+    }
+
+    // 更新新状态的项集
+    newState.items = items;
+    return newState;
+}
+
+void LR1::genDFA()
+{
+    // 添加虚拟产生式
+    virtualGrammar.left = "S'";
+    if(signs.contains("S'")){
+        virtualGrammar.left+="'";
+    }
+    virtualGrammar.right.push_back(grammars[0].left);
+    grammars.push_back(virtualGrammar);
+    grammarMap[virtualGrammar.left].push_back(virtualGrammar);
+    nonTerminals.insert(virtualGrammar.left);
+    signs.insert(virtualGrammar.left);
+
+    // 初始化状态
+    State startState;
+    IndexedSet<Item> items;
+    for(auto g : grammarMap[virtualGrammar.left]){
+        Item item;
+        item.production = g;
+        item.dot = 0;
+        item.lookahead.insert("$");
+        items.insert(item);
+        IndexedSet<Item> closureItems;
+        closure(item, closureItems);
+        for(auto closureItem : closureItems){
+            items.insert(closureItem);
+        }
+    }
+    startState.items = items;
+    states.insert(startState);
+    genDFArec(startState);
+}
+
+void LR1::printEdge()
+{
+    for(auto edge : edges){
+        cout << edge.toString() << endl;
+    }
+}
+
+void LR1::printState()
+{
+    int i = 0;
+    for(auto state : states){
+        cout << "State: " << i << endl;
+        for(auto item : state.items){
+            cout << item.toString() << endl;
+        }
+        i++;
+    }
+}
+
+string LR1::toString()
+{
+    string result = "";
+    for(auto edge : edges){
+        result += edge.toString() + "\n";
+    }
+    return result;
+}
+
+void LR1::genFirst()
+{
+
+    for(auto sign : signs){
+        if(nonTerminals.contains(sign)){
+            First[sign] = IndexedSet<string>();
+        }else{
+            First[sign] = IndexedSet<string>();
+            First[sign].insert(sign);
+        }
+    }
+    bool updated = true;
+    while(updated){
+        updated = false;
+        for(auto g : grammars){
+            for(auto sign : g.right){
+                for(auto firstSign : First[sign]){
+                    if (First[g.left].contains(firstSign)){
+                        continue;
+                    }else{
+                        First[g.left].insert(firstSign);
+                        updated = true;
+                    }
+                }
+                if(!nullable[sign]){
+                    if (First[g.left].contains(sign)){
+                        break;
+                    }
+                    First[g.left].insert(sign);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void LR1::genNullable()
+{
+    for(auto sign : signs){
+        nullable[sign] = false;
+    }
+    for(auto g : grammars){
+        if(g.right[0] == "@"){
+            nullable[g.left] = true;
+        }
+    }
+    bool updated = true;
+    while(updated){
+        updated = false;
+        for(auto g : grammars){
+            if(nullable[g.left]){
+                continue;
+            }
+            bool flag = true;
+            for(auto sign : g.right){
+                if(nullable[sign]){
+                    continue;
+                }else{
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                nullable[g.left] = true;
+                updated = true;
+            }
+        }
+    }
+}
+
+void LR1::closure(Item item, IndexedSet<Item> &result)
+{
+    if (item.dot == item.production.right.size())   // 点号已经到达末尾，不需要闭包
+    {
+        return;
+    }else if(nonTerminals.contains(item.production.right[item.dot])){   // 如果点号后面是非终结符
+        for(auto g : grammarMap[item.production.right[item.dot]]){  //展开非终结符
+            Item newItem;
+            newItem.production = g;
+            if(g.right[0] == "@"){ // 如果是空产生式,则点在最后
+                newItem.dot = 1;
+            }else{
+                newItem.dot = 0;
+            }
+            /**
+             * A -> a.Bb, a
+             * B -> b, lookahead
+             * lookhead = First(ba)
+             * */
+            if (item.dot + 1 < item.production.right.size()) {  // 如果epsilon闭包的新项目的后面还有符号，计算lookahead
+                IndexedSet<string> firstSet;
+                vector<string> remainingSymbles(item.production.right.begin() + item.dot + 1, item.production.right.end());
+                firstSet = getFirstSet(remainingSymbles, item.lookahead);
+                for (auto firstSign : firstSet){
+                    newItem.lookahead.insert(firstSign);
+                }
+            } else { // 如果epsilon闭包的新项目的后面没有符号,继承lookahead
+                newItem.lookahead = item.lookahead;
+            }
+            if(result.contains(newItem)){
+                continue;
+            }else{
+                result.insert(newItem);
+                closure(newItem, result);
+            }
+            
+
+            
+        }
+    }else{
+        return;
+    }
+    return ;
+}
+
+/**
+ * 遍历 remainingSymble 的符号：
+ * 如果是 非终结符：
+ * - 若该符号是可空的，将其 FIRST 集合全部插入。
+ * - 若不可空，将其 FIRST 集合全部插入后直接返回。
+ * 如果是 终结符，直接将该符号插入并返回。
+ * 如果所有符号都为可空，将继续处理 oldLookahead。
+ */
+IndexedSet<string> LR1::getFirstSet(vector<string> remainingSymble, IndexedSet<string> oldLookahead)
+{
+    IndexedSet<string> result;
+    
+    for(auto sign : remainingSymble){
+        if(nonTerminals.contains(sign)){
+            for (auto firstSign : First[sign]){
+                result.insert(firstSign);
+            }
+            if(!nullable[sign]){
+                return result;
+            }
+        }else{
+            string s = sign;
+            result.insert(s);
+            return result;
+        }
+    }
+    for(auto sign : oldLookahead){
+        result.insert(sign);
+    }
+    return result;
+}
+
+IndexedSet<string> LR1::getJumpSet(State &state)
+{
+    IndexedSet<string> result;
+    for(auto item : state.items){
+        if(item.dot == item.production.right.size()){
+            continue;
+        }
+        result.insert(item.production.right[item.dot]);
+    }
+    return result;
+}
+
+void LR1::genDFArec(State &state)
+{
+    for (auto item : state.items)// 进行规约处理
+    {
+        if(item.dot == item.production.right.size()){   // 如果点在产生式最后,实现规约
+            for (auto lookahead : item.lookahead)
+            {
+                Edge edge;
+                edge.from = states.find(state);
+                if(edge.from == -1){
+                    cout << "error,当前项目未被插入？？？" << endl;
+                    exit(1);
+                }
+                edge.to = -1;
+                edge.sign = lookahead;
+                edge.type = REDUCE;
+                if(item.production.left == virtualGrammar.left && lookahead == "$"){
+                    edge.type = ACCEPT;
+                }
+                edge.reduceProduction = item.production;
+                edges.insert(edge);
+            }
+        }
+    }
+    IndexedSet<string> jumpSet = getJumpSet(state); // 获得跳转集合
+
+
+    for (auto jump : jumpSet){  // 对于每一个跳转符号
+        State newState;
+        newState = gotoState(state, jump); // 获得新状态
+        bool contains = states.contains(newState); // 判断新状态是否已经存在
+        bool shift = !nonTerminals.contains(jump); // 是否是shift还是goto
+        int to = states.insert(newState); // 插入新状态
+        Edge edge;
+        edge.from = states.find(state);
+        edge.to = to;
+        edge.sign = jump;
+        edge.type = shift ? SHIFT : GOTO;
+        edges.insert(edge);
+        if(!contains){
+            genDFArec(newState);
+        }
+    }
+
+}

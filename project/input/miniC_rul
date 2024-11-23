@@ -34,6 +34,6 @@ _left_brace = \{
 _right_brace = \}
 letter = [a-zA-Z]
 digit = [0-9]
-_id = (_|letter)(_|letter|digit)*
+_id = (_|letter)(_|\w)*
 _num = digit+(\.digit+)?
 

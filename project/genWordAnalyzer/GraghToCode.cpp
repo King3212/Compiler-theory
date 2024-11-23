@@ -150,7 +150,7 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("        int pos = input->getPos();\n");
     for (auto g : *Gs)
     {
-        printf("        if(%s(input)) {token newtoken; newtoken.name = \"%s\"; newtoken.value = input->getTokenWord(pos); tokens.push_back(newtoken); input->goBackOneChar(); continue; }  \n", g->name.c_str(), g->name.c_str());
+        printf("        if(%s(input)) {token newtoken; newtoken.name = \"%s\"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  \n", g->name.c_str(), g->name.c_str());
         printf("        else input->goBack(pos);\n");
     }
 

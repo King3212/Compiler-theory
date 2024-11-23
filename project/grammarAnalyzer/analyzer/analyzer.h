@@ -10,42 +10,29 @@
 #pragma once
 
 using namespace std;
-
-enum _action{
-    shift,
-    reduce,
-    accept,
-    error
-};
-
-vector<vector<edge>> readTables(const string& path);
-
-struct tree
+struct Tree
 {
     string sign;
     string value;
-    vector<tree *> children;
+    vector<Tree *> children;
 };
 
-
-
-class analyzer
+class Parser
 {
 private:
-    Tokens *tokens;
-    tree* syntaxTree;
+    IndexedSet<Edge> edges;
     stack<int> stateStack;
     stack<string> signStack;
-    stack<tree *> treeStack;
-    vector<edge> gotoTable;
-    vector<edge> actionTable;
-    vector<string> ignoreSigns;
+    stack<Tree *> treeStack;
+    Tokens *tokens;
+    Tree *root;
+    IndexedSet<string> ignoreSigns;
+
+    Edge getEdge(int from, string sign);
+    string showSignStack();
+    ActionType action();
+    void readEdges(string path);
 public:
-    analyzer(string path, string ignorePath,string tablePath = "tables.txt");
-    ~analyzer();
-    void run();
-private:
-    edge fromGotoTableFindEdge(int state, string sign);
-    edge fromActionTableFindEdge(int state, string sign);
-    _action analyze();
+    Parser(string path, vector<string> ignoreSigns);
+    void parse(string path);
 };

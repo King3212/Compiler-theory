@@ -87,6 +87,16 @@ Parser::Parser(string path, vector<string> ignoreSigns)
     }
 }
 
+Tree *Parser::getTree()
+{
+    return root;
+}
+
+vector<vector<token> *> *Parser::getTokens()
+{
+    return tokens->getTokens();
+}
+
 void Parser::parse(string path)
 {
     tokens = new Tokens(path);

@@ -33,6 +33,8 @@ private:
     ActionType action();
     void readEdges(string path);
 public:
-    Parser(string path, vector<string> ignoreSigns);
-    void parse(string path);
+    Parser(string edgesPath, vector<string> ignoreSigns);
+    Tree *getTree();
+    vector<vector<token> *> *getTokens();
+    void parse(string srcPath);
 };

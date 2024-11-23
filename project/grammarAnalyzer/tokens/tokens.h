@@ -82,9 +82,9 @@ public:
         }
     }
 
-    vector<token> *getTokens(int line)
+    vector<vector<token>*> *getTokens()
     {
-        return tokens->at(line);
+        return tokens;
     }
     
     bool isEmtpy()

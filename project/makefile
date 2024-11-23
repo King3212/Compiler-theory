@@ -52,9 +52,9 @@ WA: $(INCLUDE_CPP) $(INCLUDE_H)
 GA: $(GA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
 	./$(BUILD_DIR)/genTable
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GA_SRC) $(INCLUDE_CPP)
-
+	
 all: GT GWA WA GA
 
 clean:
-	rm -f $(BUILD_DIR)/*
-	rm -f $(WA)/code.cpp
+	rm -rf $(BUILD_DIR)/*
+	rm -rf $(WA)/code.cpp

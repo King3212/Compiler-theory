@@ -55,7 +55,12 @@ struct edge
         this->express = express;
     }
     std::string toString(){
-        return std::to_string(begin) + "--- \'" + express + "\' -->" + std::to_string(end);
+        std::string result;
+        result += std::to_string(begin) + " ";
+        result += std::to_string(end) + " ";
+        result += express;
+        result += "\n";
+        return result;
     }
     // 定义相等运算符
     bool operator==(const edge& other) const {
@@ -101,6 +106,23 @@ struct gragh
     gragh(){
         this->edges = new std::vector<edge>();
         size = 0;
+    }
+    std::string toString(){
+        std::string result;
+        result += "Gragh: \n";
+        result += name + " ";
+        result += std::to_string(start) + " ";
+        result += std::to_string(size) + "\n";
+        result += "ends: \n";
+        for (auto e : finalNodes){
+            result += std::to_string(e) + " ";
+        }
+        result += "\nedges: \n";
+        for (auto e : *edges){
+            result += e.toString();
+        }
+        result += "\n";
+        return result;
     }
 };
 

@@ -20,27 +20,52 @@
  * @param reLines 正则表达式
  * @return std::vector<gragh*> 图
  */
+
+void printGragh(std::vector<gragh> *Gs,std::string name)
+{
+    std::fstream file;
+    file.open("./input/" + name + ".gh", std::ios::out);
+    for (auto g : *Gs)
+    {
+        file << g.toString() << std::endl;
+    }
+    file.close();
+}
 std::vector<gragh *>* textsToGraghs(std::vector<std::string> reLines)
 {
     std::vector<gragh *> *Gs = new std::vector<gragh *>();
+    std::vector<gragh> *NFA = new std::vector<gragh>();
+    std::vector<gragh> *DFA = new std::vector<gragh>();
+    std::vector<gragh> *miniDFA = new std::vector<gragh>();
     Gragh *P_G = nullptr;
 
     std::vector<finalData *> *reData = scanner(reLines);
 
     for (int i = 0; i < reData->size(); i++)
     {
+        gragh *g = new gragh();
         P_G = new Gragh();
 
         P_G->process((*reData)[i]->reExpress);
-        P_G->toDFA();
-        P_G->compressDFA();
-
-        gragh *g = new gragh();
         *g = P_G->getGragh();
         g->name = (*reData)[i]->name;
+        NFA->push_back(*g);
+
+        P_G->toDFA();
+        *g = P_G->getGragh();
+        g->name = (*reData)[i]->name;
+        DFA->push_back(*g);
+
+        P_G->compressDFA();
+        *g = P_G->getGragh();
+        g->name = (*reData)[i]->name;
+        miniDFA->push_back(*g);
         
         Gs->push_back(g);
     }
+    printGragh(NFA, "NFA");
+    printGragh(DFA, "DFA");
+    printGragh(miniDFA, "miniDFA");
     return Gs;
 }
 /**
@@ -176,6 +201,7 @@ void buildMain(){
     printf("} \n");
 }
 
+
 void buildProgram(std::string path)
 {
     std::vector<std::string> reLines = readFile(path);
@@ -184,15 +210,11 @@ void buildProgram(std::string path)
     buildHead();
 
     std::vector<gragh *> *Gs = textsToGraghs(reLines);
-
     for (auto g : *Gs)
     {
         buildFunction(g);
     }
-
     buildtoken(Gs);
-
-
 }
 
 int main(int argc, char *argv[]){

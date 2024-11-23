@@ -1,4 +1,14 @@
-.
+project
+├── build
+│   ├── build.txt
+│   ├── code.cpp
+│   ├── error.log
+│   ├── GA
+│   ├── genTable
+│   ├── getTokens
+│   ├── GWA
+│   └── token.txt
+├── error.log
 ├── genTable
 │   └── main.cpp
 ├── genWordAnalyzer
@@ -8,7 +18,10 @@
 │   │   ├── analyzer.cpp
 │   │   ├── analyzer.h
 │   │   └── analyzer.o
-│   └── main.cpp
+│   ├── main.cpp
+│   └── tokens
+│       ├── tokens
+│       └── tokens.h
 ├── include
 │   ├── Error
 │   │   ├── error.cpp
@@ -28,25 +41,33 @@
 │   │   ├── scanner.cpp
 │   │   ├── scanner.h
 │   │   └── scanner.o
-│   ├── grammar
-│   │   ├── First_Follow.h
-│   │   ├── globle.h
-│   │   ├── IndexedSet.h
-│   │   ├── LALR1.h
-│   │   └── LR1.h
-│   └── tokens
-│       └── tokens.h
+│   └── grammar
+│       ├── globle.cpp
+│       ├── globle.h
+│       ├── IndexedSet.h
+│       ├── initGrammar.h
+│       ├── LALR1.cpp
+│       ├── LALR1.h
+│       ├── LR1.cpp
+│       └── LR1.h
 ├── input
-│   ├── grammer.txt
+│   ├── edge.txt
+│   ├── grammar.txt
 │   ├── ignore.txt
-│   ├── tables.txt
+│   ├── miniC_grammar.txt
+│   ├── minicProgram.minic
+│   ├── miniC_rul
+│   ├── program.prm
+│   ├── tiny_grammar.txt
 │   ├── tinyProgram.tny
 │   ├── token.txt
-│   ├── word.backup.rul
-│   └── word.rul
+│   ├── word.rul
+│   └── word.tiny.rul
 ├── makefile
+├── token.txt
 ├── tree.txt
 └── wordAnalyzer
+    ├── code.cpp
     └── getInput.h
 
-13 directories, 37 files
+14 directories, 57 files

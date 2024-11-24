@@ -18,20 +18,15 @@
 #include "globle.h"
 #include <QVBoxLayout>
 #include <cmath>
+#include <QTreeWidgetItem>
+#include "../tokens/tokens.h"
+#include "../analyzer/analyzer.h"
 using namespace std;
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
-
-
-
-
-
-
-
-
 
 class MainWindow : public QMainWindow
 {
@@ -40,15 +35,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void initSource();
+    void setSource();
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_pushButton_saveSrc_clicked();
 
     void on_pushButton_load_word_rul_clicked();
-
-    void on_plainTextEdit_textChanged();
 
     void on_pushButton_Word_NFA_clicked();
 
@@ -56,15 +49,49 @@ private slots:
 
     void on_pushButton_word_miniDFA_clicked();
 
+    void on_pushButton_Word_Analyze_clicked();
+
+    void on_pushButton_openSrc_clicked();
+
+    void on_pushButton_show_result_WA_clicked();
+
+    void on_pushButton_load_BNF_clicked();
+
+    void on_pushButton_GA_run_clicked();
+
+    void on_pushButton_LR1DFA_clicked();
+
+    void on_pushButton_LALR1DFA_clicked();
+
+    void on_pushButton_show_log_clicked();
+
+    void on_pushButton_show_Analyze_Tree_clicked();
+
+    void on_pushButton_show_FirstFollow_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString srcPath;
     QString ignorePath;
     QString wordRulPath;
-    vector<gragh> NFA;
-    vector<gragh> DFA;
-    vector<gragh> miniDFA;
+    QString BNFPath;
+    QString LR1Path;
+    QString LALR1Path;
+    vector<graghForWA> NFA;
+    vector<graghForWA> DFA;
+    vector<graghForWA> miniDFA;
+    vector<token> tokens;
+    IndexedSet<Edge> LR1edges;
+    IndexedSet<Edge> LALR1edges;
+    Tree *tree;
+    QString AnalyzeLog;
+    Parser *parser;
+    QString FirstFollow;
+    bool wordAnalyzed;
+    bool grammarAnalyzed;
 
-    void showAGragh(gragh g);
+    void showAGragh(graghForWA g);
+    IndexedSet<Edge> getEdgesFromFile(string path);
 };
+
 #endif // MAINWINDOW_H

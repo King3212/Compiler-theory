@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "globle.h"
 #include "../../include/grammar/IndexedSet.h"
+#include "../../include/grammar/globle.h"
 using namespace std;
 namespace Ui {
 class tableForGragh;
@@ -16,7 +17,8 @@ class tableForGragh : public QWidget
 public:
     explicit tableForGragh(QWidget *parent = nullptr);
     ~tableForGragh();
-    void initTable(gragh oneGragh);
+    void initTable(graghForWA oneGragh);
+    void initTable(IndexedSet<Edge> edges,QString name);
 private:
     Ui::tableForGragh *ui;
     

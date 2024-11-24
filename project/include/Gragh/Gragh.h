@@ -42,13 +42,13 @@ enum sign{
  * @param calEx 是否为判定条件
  * @param express 跳转条件
  */
-struct edge
+struct edgeForWA
 {
     int begin;
     int end;
     bool calEx;//是否为判定条件
     std::string express;
-    edge(int begin = 0, int end = 0, bool calEx = true, std::string express = ""){
+    edgeForWA(int begin = 0, int end = 0, bool calEx = true, std::string express = ""){
         this->begin = begin;
         this->end = end;
         this->calEx = calEx;
@@ -63,15 +63,15 @@ struct edge
         return result;
     }
     // 定义相等运算符
-    bool operator==(const edge& other) const {
+    bool operator==(const edgeForWA& other) const {
         return begin == other.begin && end == other.end && calEx == other.calEx && express == other.express;
     }
 
 };
 namespace std {
     template <>
-    struct hash<edge> {
-        std::size_t operator()(const edge& e) const {
+    struct hash<edgeForWA> {
+        std::size_t operator()(const edgeForWA& e) const {
             // 组合成员变量的哈希值
             std::size_t hashBegin = std::hash<int>()(e.begin);
             std::size_t hashEnd = std::hash<int>()(e.end);
@@ -101,10 +101,10 @@ struct gragh
     int end;
     int size;
     std::unordered_set<int>finalNodes;
-    std::vector<edge> *edges;
+    std::vector<edgeForWA> *edges;
     std::string name;
     gragh(){
-        this->edges = new std::vector<edge>();
+        this->edges = new std::vector<edgeForWA>();
         size = 0;
     }
     std::string toString(){
@@ -134,13 +134,13 @@ class Gragh
 {
 private:
     gragh *inGragh;
-    std::stack<edge> subG;
+    std::stack<edgeForWA> subG;
     std::stack<sign> signs;
     
 private:
     void toNFA(std::string re);
     void aNewEdge(std::string x);
-    void makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec);
+    void makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edgeForWA> &result,std:: vector<std::unordered_set<int>> &nodeVec);
     void andConnet();
     void orConnet();
     void qmConnet();

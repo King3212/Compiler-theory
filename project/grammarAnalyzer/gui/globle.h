@@ -7,13 +7,13 @@
 #include <unordered_set>
 #include <vector>
 
-struct edge
+struct edgeForWA
 {
     int begin;
     int end;
     bool calEx;//是否为判定条件
     std::string express;
-    edge(int begin = 0, int end = 0, bool calEx = true, std::string express = ""){
+    edgeForWA(int begin = 0, int end = 0, bool calEx = true, std::string express = ""){
         this->begin = begin;
         this->end = end;
         this->calEx = calEx;
@@ -28,22 +28,22 @@ struct edge
         return result;
     }
     // 定义相等运算符
-    bool operator==(const edge& other) const {
+    bool operator==(const edgeForWA& other) const {
         return begin == other.begin && end == other.end && calEx == other.calEx && express == other.express;
     }
 
 };
 
-struct gragh
+struct graghForWA
 {
     int start;
     int end;
     int size;
     std::unordered_set<int>finalNodes;
-    std::vector<edge> *edges;
+    std::vector<edgeForWA> *edges;
     std::string name;
-    gragh(){
-        this->edges = new std::vector<edge>();
+    graghForWA(){
+        this->edges = new std::vector<edgeForWA>();
         size = 0;
     }
     std::string toString(){

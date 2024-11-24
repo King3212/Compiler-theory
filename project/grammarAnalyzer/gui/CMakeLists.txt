@@ -26,6 +26,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         tableforgragh.h tableforgragh.cpp tableforgragh.ui
         globle.h
         ../../include/grammar/IndexedSet.h
+        ../tokens/tokens.h
+        ../../include/File/File.cpp ../../include/File/File.h
+        ../../include/Error/error.cpp ../../include/Error/error.h
+        ../analyzer/analyzer.h ../analyzer/analyzer.cpp
+        ../../include/grammar/globle.cpp ../../include/grammar/globle.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET gui APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

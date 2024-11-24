@@ -23,12 +23,10 @@ GT_SRC = $(GT)/*.cpp
 GWA = genWordAnalyzer
 GWA_SRC = $(GWA)/*.cpp 
 
-GA = grammarAnalyzer
-GA_SRC = $(GA)/*.cpp $(GA)/analyzer/*.cpp
-
-
 WA = wordAnalyzer
 WA_SRC = $(WA)/*.cpp
+
+GUI = grammarAnalyzer/gui/
 
 TLR1 = testLR1
 
@@ -42,19 +40,16 @@ GT: $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
 GWA: $(GWA_SRC) $(GWA_H) $(INCLUDE_CPP) $(INCLUDE_H)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GWA_SRC) $(INCLUDE_CPP)
 
-# Word Analyzer
-WA: $(INCLUDE_CPP) $(INCLUDE_H)
-	./$(BUILD_DIR)/GWA $(INPUT_DIR)/word.rul > $(BUILD_DIR)/code.cpp
-	cp $(BUILD_DIR)/code.cpp $(WA)/code.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/getTokens $(WA_SRC) $(INCLUDE_CPP)
 
-# Grammar Analyzer
-GA: $(GA_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
-	./$(BUILD_DIR)/genTable
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GA_SRC) $(INCLUDE_CPP)
-	
-all: GT GWA WA GA
+gui: 
+	cmake -S ./grammarAnalyzer/gui/ -B $(BUILD_DIR)
+	cmake --build $(BUILD_DIR) --target all
+
+all: GT GWA gui
 
 clean:
 	rm -rf $(BUILD_DIR)/*
 	rm -rf $(WA)/code.cpp
+
+run:
+	./$(BUILD_DIR)/gui

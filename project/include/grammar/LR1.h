@@ -40,6 +40,7 @@ public:
 
         genNullable();
         genFirst();
+        genFollow();
 
     }
 
@@ -52,8 +53,12 @@ public:
     void printState();
 
     string toString();
+
+    string getFirstFollow();
 private:
     void genFirst();
+
+    void genFollow();
 
     void genNullable();
 

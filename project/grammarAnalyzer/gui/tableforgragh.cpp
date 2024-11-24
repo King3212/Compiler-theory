@@ -13,7 +13,7 @@ tableForGragh::~tableForGragh()
     delete ui;
 }
 
-void tableForGragh::initTable(gragh oneGragh)
+void tableForGragh::initTable(graghForWA oneGragh)
 {
     ui->label_name->setText(QString::fromStdString("name: " + oneGragh.name));
     ui->label_start->setText(QString::fromStdString("start: " + std::to_string(oneGragh.start)));
@@ -53,4 +53,41 @@ void tableForGragh::initTable(gragh oneGragh)
     {
         ui->tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::fromStdString(std::to_string(i))));
     }
+}
+
+void tableForGragh::initTable(IndexedSet<Edge> edges,QString name)
+{
+    IndexedSet<string> signs;
+    int max = 0;
+    for (auto e : edges)
+    {
+        signs.insert(e.sign);
+        max = std::max(max, e.from);
+    }
+    ui->tableWidget->setColumnCount(signs.size());
+    ui->tableWidget->setRowCount(max + 1);
+    for (auto e : edges)
+    {
+        if (e.type == SHIFT)
+            ui->tableWidget->setItem(e.from, signs.find(e.sign), new QTableWidgetItem(QString::fromStdString("s " + std::to_string(e.to))));
+        else if (e.type == REDUCE)
+            ui->tableWidget->setItem(e.from, signs.find(e.sign), new QTableWidgetItem(QString::fromStdString("r")));
+        else if (e.type == ACCEPT){
+            ui->tableWidget->setItem(e.from, signs.find(e.sign), new QTableWidgetItem("acc"));
+        }
+        else if (e.type == GOTO)
+            ui->tableWidget->setItem(e.from, signs.find(e.sign), new QTableWidgetItem(QString::fromStdString("g " + std::to_string(e.to))));
+    }
+    for (auto s : signs)
+    {
+        ui->tableWidget->setHorizontalHeaderItem(signs.find(s), new QTableWidgetItem(QString::fromStdString(s)));
+    }
+    for (int i = 0; i < max + 1; i++)
+    {
+        ui->tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::fromStdString(std::to_string(i))));
+    }
+    ui->label_name->setText("name: " + name);
+    ui->label_start->setText("start: 0");
+    ui->label_size->setText("size: " + QString::fromStdString(std::to_string(max + 1)));
+    ui->label_end->setText("Acc");
 }

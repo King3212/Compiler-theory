@@ -11,6 +11,10 @@ struct token
 {
     string type;
     string value;
+    string toString()
+    {
+        return type + " " + value;
+    }
 };
 
 
@@ -26,7 +30,7 @@ public:
         cout << "running dir: ";
         system("pwd");
         cout << endl;
-        if (system(("./build/getTokens "+path+" > token.txt").c_str())){
+        if (system(("./getTokens "+path+" > token.txt").c_str())){
             cerr << "Error: getTokens failed" << endl;
             exit(1);
         }
@@ -82,9 +86,14 @@ public:
         }
     }
 
-    vector<vector<token>*> *getTokens()
+    vector<vector<token>> getTokens()
     {
-        return tokens;
+        vector<vector<token>> result;
+        for (auto lineTokens : *tokens)
+        {
+            result.push_back(*lineTokens);
+        }
+        return result;
     }
     
     bool isEmtpy()

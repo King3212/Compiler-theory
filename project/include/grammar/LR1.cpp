@@ -90,6 +90,25 @@ string LR1::toString()
     return result;
 }
 
+string LR1::getFirstFollow()
+{
+    string result = "";
+    for(auto sign : nonTerminals){
+        result += "\n\n[" + sign + "]\n\n";
+        result += "First: ";
+        for(auto firstSign : First[sign]){
+            result += firstSign + " ";
+        }
+        result += "\n\n";
+        result += "Follow: ";
+        for(auto followSign : Follow[sign]){
+            result += followSign + " ";
+        }
+        result += "\n";
+    }
+    return result;
+}
+
 void LR1::genFirst()
 {
 
@@ -120,6 +139,47 @@ void LR1::genFirst()
                     }
                     First[g.left].insert(sign);
                     break;
+                }
+            }
+        }
+    }
+}
+
+void LR1::genFollow()
+{
+    for(auto sign : nonTerminals){
+        Follow[sign] = IndexedSet<string>();
+    }
+    Follow[virtualGrammar.left].insert("$");
+    bool updated = true;
+    while(updated){
+        updated = false;
+        for(auto g : grammars){
+            for(int i = 0; i < g.right.size(); i++){
+                if(nonTerminals.contains(g.right[i])){
+                    for(int j = i + 1; j < g.right.size(); j++){
+                        for(auto firstSign : First[g.right[j]]){
+                            if (Follow[g.right[i]].contains(firstSign)){
+                                continue;
+                            }else{
+                                Follow[g.right[i]].insert(firstSign);
+                                updated = true;
+                            }
+                        }
+                        if(!nullable[g.right[j]]){
+                            break;
+                        }
+                    }
+                    if (i == g.right.size() - 1){
+                        for(auto followSign : Follow[g.left]){
+                            if (Follow[g.right[i]].contains(followSign)){
+                                continue;
+                            }else{
+                                Follow[g.right[i]].insert(followSign);
+                                updated = true;
+                            }
+                        }
+                    }
                 }
             }
         }

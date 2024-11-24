@@ -13,7 +13,8 @@ enum ActionType
     SHIFT,
     GOTO,
     REDUCE,
-    ACCEPT
+    ACCEPT,
+    ERROR
 };
 
 struct Grammar{

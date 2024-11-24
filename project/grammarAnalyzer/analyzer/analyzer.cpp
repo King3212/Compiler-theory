@@ -22,6 +22,7 @@ Edge Parser::getEdge(int from, string sign)
 
 string Parser::showSignStack()
 {
+
     vector<string> temp;
     while (!signStack.empty())
     {
@@ -29,7 +30,8 @@ string Parser::showSignStack()
         signStack.pop();
     }
     reverse(temp.begin(), temp.end());
-    string result;
+    string result = "";
+    result += "SignStack: \n";
     for (auto sign : temp)
     {
         result += sign + " ";
@@ -87,41 +89,45 @@ Parser::Parser(string path, vector<string> ignoreSigns)
     }
 }
 
+string Parser::getLog()
+{
+    return log;
+}
+
 Tree *Parser::getTree()
 {
     return root;
 }
-
-vector<vector<token> *> *Parser::getTokens()
-{
-    return tokens->getTokens();
-}
-
 void Parser::parse(string path)
 {
+    log = "";
     tokens = new Tokens(path);
     stateStack.push(0);
     while (true)
     {
-        if (action() == ACCEPT)
+        ActionType ac = action();
+        if (ac == ACCEPT)
         {
+            break;
+        }else if(ac == ERROR){
+            log += "\n\nERROR\n\n";
             break;
         }
     }
-    cout << "accept" << endl;
+    log += "Accept\n";
 }
 
 ActionType Parser::action()
 {
     int state = stateStack.top();
-    cout << "state: " << state << endl;
+    log += "state: " + to_string(state) + "\n";
     token oneToken = tokens->getToken();
     while (ignoreSigns.contains(oneToken.type))
     {
         tokens->advanceToken();
         oneToken = tokens->getToken();
     }
-    cout << "token: " << oneToken.type << " " << oneToken.value << endl;
+    log += "token: " + oneToken.type + " " + oneToken.value + "\n";
     Edge edge = getEdge(state, oneToken.type);
     
     if (edge.type == SHIFT)
@@ -133,7 +139,7 @@ ActionType Parser::action()
         t->value = oneToken.value;
         treeStack.push(t);
         tokens->advanceToken();
-        cout << "shift"<< endl << showSignStack() << endl << endl;
+        log += "shift\n"+ showSignStack() + "\n\n";
         return SHIFT;
     }else if(edge.type == REDUCE){
         Grammar g = edge.reduceProduction;
@@ -159,16 +165,16 @@ ActionType Parser::action()
             treeStack.push(t);
             signStack.push(g.left);
         }
-        cout << "reduce:\t" << g.toString() << endl << showSignStack()<< endl << endl;
+        log += "reduce:\t" + g.toString() + "\n" + showSignStack() + "\n\n";
         state = stateStack.top();
         Edge newEdge = getEdge(state, g.left);
         stateStack.push(newEdge.to);
         signStack.push(g.left);
-        cout << "goto: "<< endl << showSignStack() << newEdge.to << endl << endl;
+        log += "goto: " + to_string(newEdge.to) + "\n" + showSignStack() + "\n\n";
         return REDUCE;
     }else if(edge.type == ACCEPT){
         root = treeStack.top();
         return ACCEPT;
     }
-    
+    return ERROR;
 }

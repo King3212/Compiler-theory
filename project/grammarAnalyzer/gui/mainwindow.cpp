@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    grammarAnalyzed = false;
+    wordAnalyzed = false;
 }
 
 MainWindow::~MainWindow()
@@ -14,26 +16,37 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::initSource()
 {
-    // 打开文件资源浏览器，选择文件并获取路径
-    QString filePath = QFileDialog::getOpenFileName(this, tr("选择文件"), "", tr("所有文件 (*)"));
-
-    // 检查用户是否选择了文件
-    if (!filePath.isEmpty()) {
-        this->srcPath = filePath;
-        QFile file(filePath);
-        if (file.open(QIODevice::ReadOnly|QIODevice::Text)){
-            QTextStream in(&file);
-            QString fileContent = in.readAll();
-
-            ui->plainTextEdit->setPlainText(fileContent);
-
-            file.close();
+    QFile file("../input/Sources.txt");
+    if (file.open(QIODevice::ReadOnly|QIODevice::Text)){
+        QTextStream in(&file);
+        QString fileContent = in.readLine();
+        if (fileContent.isEmpty()){
+            fileContent = "无";
+        }else{
+            wordRulPath = fileContent;
         }
+        ui->label_Word_source->setText("当前词法来源："+fileContent);
+        fileContent = in.readLine();
+        if (fileContent.isEmpty()){
+            fileContent = "无";
+        }else{
+            BNFPath = fileContent;
+        }
+        ui->label_Grammar_source->setText("当前文法来源："+fileContent);
+        file.close();
+    }
+}
 
-    }else{
-        qDebug() << "无法打开文件";
+void MainWindow::setSource()
+{
+    QFile file("../input/Sources.txt");
+    if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+        QTextStream out(&file);
+        out << wordRulPath+"\n";
+        out << BNFPath+"\n";
+        file.close();
     }
 }
 
@@ -60,11 +73,16 @@ void MainWindow::on_pushButton_saveSrc_clicked()
 void MainWindow::on_pushButton_load_word_rul_clicked()
 {
     // 打开文件资源浏览器，选择文件并获取路径
-    QString filePath = QFileDialog::getOpenFileName(this, tr("选择文件"), "", tr("所有文件 (*)"));
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        tr("选择文件"),                  // 窗口标题
+        "",                              // 初始目录
+        tr("规则文件 (*.rul);;所有文件 (*)") // 文件类型过滤器
+    );
 
     // 检查用户是否选择了文件
     if (!filePath.isEmpty()) {
-        QString wordRulPath = filePath;
+        wordRulPath = filePath;
         QString command = "./GWA " + wordRulPath + " > ../wordAnalyzer/code.cpp";
         qDebug() << command;
         
@@ -89,17 +107,14 @@ void MainWindow::on_pushButton_load_word_rul_clicked()
             
             // 生成完成提示
             QMessageBox::information(this, "提示", "词法分析器生成成功");
+            QFile file = QFile("../input/Sources.txt");
+            setSource();
+            initSource();
         });
 
     }else{
         qDebug() << "无法打开文件";
     }
-}
-
-
-void MainWindow::on_plainTextEdit_textChanged()
-{
-
 }
 
 
@@ -110,8 +125,8 @@ void MainWindow::on_plainTextEdit_textChanged()
 #include <string>
 #include <iostream>
 
-std::vector<gragh> getGraghFromFile(const std::string& path) {
-    std::vector<gragh> graphs; // 存储多个图
+std::vector<graghForWA> getGraghFromFile(const std::string& path) {
+    std::vector<graghForWA> graphs; // 存储多个图
     std::ifstream file(path); // 打开文件
 
     if (!file.is_open()) {
@@ -128,7 +143,7 @@ std::vector<gragh> getGraghFromFile(const std::string& path) {
 
         // 读取每个图的信息
         if (line == "Gragh: ") {
-            gragh g;
+            graghForWA g;
             // 读取图的基本信息
             std::getline(file, line); // 跳过 "name start size"
             std::stringstream ss(line);
@@ -164,7 +179,7 @@ std::vector<gragh> getGraghFromFile(const std::string& path) {
                 }
                 
                 // 创建边并加入图的边列表
-                edge one;
+                edgeForWA one;
                 one.begin = std::stoi(begin);
                 one.end = std::stoi(end);
                 one.express = express;
@@ -181,14 +196,55 @@ std::vector<gragh> getGraghFromFile(const std::string& path) {
     return graphs;
 }
 
-void MainWindow::showAGragh(gragh g){
+void MainWindow::showAGragh(graghForWA g){
     tableForGragh *table = new tableForGragh(this);
     table->initTable(g);
     table->show();
 }
 
 
-void MainWindow::on_pushButton_Word_NFA_clicked()
+IndexedSet<Edge> MainWindow::getEdgesFromFile(string path)
+{
+    IndexedSet<Edge> edges;
+    vector<string> lines = readFile(path);
+    int i = 0;
+    while(i < lines.size()){
+        Edge edge;
+        if (trim(lines[i]) == "Edge:")
+        {
+            i+=2;
+            edge.from = stoi(trim(lines[i]));
+            i+=2;
+            edge.to = stoi(trim(lines[i]));
+            i+=2;
+            edge.sign = trim(lines[i]);
+            i+=2;
+            edge.type = (ActionType)stoi(trim(lines[i]));
+            i+=4;
+            Grammar g;
+            g.left = trim(lines[i]);
+            i+=2;
+            string right = trim(lines[i]);
+            stringstream ss(right);
+            string temp;
+            while (ss >> temp)
+            {
+                g.right.push_back(temp);
+            }
+            edge.reduceProduction = g;
+
+            edges.insert(edge);
+
+            i+=2;
+            
+        }else{
+            i++;
+        }
+    }
+    return edges;
+}
+
+void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
 {
     NFA = getGraghFromFile("../input/NFA.gh");
     QDialog *dialog = new QDialog(this);
@@ -225,7 +281,7 @@ void MainWindow::on_pushButton_Word_NFA_clicked()
 
 
 
-void MainWindow::on_pushButton_word_DFA_clicked()
+void MainWindow::on_pushButton_word_DFA_clicked()// 显示DFA
 {
     DFA = getGraghFromFile("../input/DFA.gh");
     QDialog *dialog = new QDialog(this);
@@ -261,7 +317,7 @@ void MainWindow::on_pushButton_word_DFA_clicked()
 }
 
 
-void MainWindow::on_pushButton_word_miniDFA_clicked()
+void MainWindow::on_pushButton_word_miniDFA_clicked() // 显示最小化DFA
 {
     miniDFA = getGraghFromFile("../input/miniDFA.gh");
     QDialog *dialog = new QDialog(this);
@@ -294,5 +350,261 @@ void MainWindow::on_pushButton_word_miniDFA_clicked()
     // 设置对话框的布局并显示
     dialog->setLayout(layout);
     dialog->show(); // 弹出对话框
+}
+
+
+void MainWindow::on_pushButton_Word_Analyze_clicked()
+{
+    QString src = ui->plainTextEdit->toPlainText();
+    if(src == ""){
+        QMessageBox::information(this, "提示", "请先输入源代码");
+        return;
+    }
+    QString tempSRC = "../input/tempSRC.prm";
+    QFile file(tempSRC);
+    if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+        QTextStream out(&file);
+        out << src;
+        file.close();
+    }
+    Tokens tokens(tempSRC.toStdString());
+    this->tokens = tokens.getTokens()[0];
+    QMessageBox::information(this, "提示", "词法分析完成");
+}
+
+
+void MainWindow::on_pushButton_openSrc_clicked() // 打开源代码
+{
+     // 打开文件资源浏览器，选择文件并获取路径
+    QString filePath = QFileDialog::getOpenFileName(this, tr("选择文件"), "", tr("所有文件 (*)"));
+
+    // 检查用户是否选择了文件
+    if (!filePath.isEmpty()) {
+        // 创建 QFile 对象
+        QFile file(filePath);
+
+        // 打开文件
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            // 使用 QTextStream 读取文件内容
+            QTextStream in(&file);
+            QString fileContent = in.readAll();  // 读取文件的所有内容
+
+            // 设置 QPlainTextEdit 的内容
+            ui->plainTextEdit->setPlainText(fileContent);
+
+            // 关闭文件
+            file.close();
+        } else {
+            // 如果文件无法打开，输出错误信息
+            qDebug() << "无法打开文件!";
+        }
+    }
+}
+
+
+
+
+void MainWindow::on_pushButton_show_result_WA_clicked() // 显示词法分析结果
+{
+    QWidget *window = new QWidget();
+    window->setWindowTitle("Token Viewer");
+    window->resize(400, 300);
+    
+    QPlainTextEdit *textEdit = new QPlainTextEdit(window);
+    QString result = "";
+    if (tokens.empty()){
+        QMessageBox::information(this, "提示", "请先进行词法分析");
+        return;
+    }
+    for (auto t : tokens){
+        if (t.type == "_open_comment"){
+            continue;
+        }
+        result += QString::fromStdString(t.toString());
+        result += "\n";
+    }
+    textEdit->setPlainText(result);
+    textEdit->setReadOnly(true);
+    textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
+
+
+    window->show();
+
+}
+
+
+void MainWindow::on_pushButton_load_BNF_clicked()
+{
+     // 打开文件资源浏览器，选择文件并获取路径
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        tr("选择文件"),                  // 窗口标题
+        "",                              // 初始目录
+        tr("规则文件 (*.grm);;所有文件 (*)") // 文件类型过滤器
+    );
+
+    // 检查用户是否选择了文件
+    if (!filePath.isEmpty()) {
+        QString currentPath = QDir::currentPath();
+
+        QString command = "./genTable " + filePath + " " + currentPath; // 生成图
+        system(command.toStdString().c_str());
+        BNFPath = filePath;
+        setSource();
+        initSource();
+
+    } else {
+        // 如果文件无法打开，输出错误信息
+        qDebug() << "无法打开文件!";
+    }
+}
+
+
+
+void MainWindow::on_pushButton_GA_run_clicked()
+{
+    QString tempSRC = ui->plainTextEdit->toPlainText();
+    if (tempSRC.isEmpty()){
+        QMessageBox::information(this, "提示", "请先输入源代码");
+        return;
+    }
+    QString tempPath = "../input/tempSRC.prm";
+    QFile tempFile(tempPath);
+    if (tempFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&tempFile);
+        out << tempSRC;
+        tempFile.close();
+    }
+    on_pushButton_Word_Analyze_clicked(); // 词法分析
+    if (BNFPath.isEmpty()){
+        QMessageBox::information(this, "提示", "请先加载文法");
+        return;
+    }else{
+        QString currentPath = QDir::currentPath();
+        vector<string> ignoreSigns = readFile((currentPath+"/../input/ignore.txt").toStdString());
+        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns);
+    }
+    parser->parse(tempPath.toStdString());
+    AnalyzeLog = QString::fromStdString(parser->getLog());
+    tree = parser->getTree();
+    grammarAnalyzed = true;
+    QMessageBox::information(this, "提示", "语法分析完成");
+
+    
+
+}
+
+
+void MainWindow::on_pushButton_LR1DFA_clicked()
+{
+    QString currentPath = QDir::currentPath();
+    this->LR1edges = getEdgesFromFile((currentPath+"/LR1Edge.txt").toStdString());
+    tableForGragh *table = new tableForGragh();
+    table->initTable(LR1edges,"LR(1)");
+    table->show();
+}
+
+
+void MainWindow::on_pushButton_LALR1DFA_clicked()
+{
+    QString currentPath = QDir::currentPath();
+    this->LALR1edges = getEdgesFromFile((currentPath+"/LALR1Edge.txt").toStdString());
+    tableForGragh *table = new tableForGragh();
+    table->initTable(LALR1edges,"LALR(1)");
+    table->show();
+}
+
+
+void MainWindow::on_pushButton_show_log_clicked()
+{
+    if (AnalyzeLog.isEmpty() || !grammarAnalyzed){
+        QMessageBox::information(this, "提示", "没有可用的分析日志");
+        return;
+    }
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("Analyze Log");
+    dialog->resize(400, 300);
+    
+    QPlainTextEdit *textEdit = new QPlainTextEdit(dialog);
+    textEdit->setPlainText(AnalyzeLog);
+    textEdit->setReadOnly(true);
+    textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
+
+    dialog->show();
+}
+
+
+void populateTreeWidget(QTreeWidgetItem *parentItem, Tree *tree) {
+    if (!tree) return;
+
+    // 创建当前节点
+    QString text = QString::fromStdString(tree->sign + ": " + tree->value);
+    QTreeWidgetItem *currentItem = new QTreeWidgetItem(parentItem, QStringList(text));
+    parentItem->addChild(currentItem);
+
+    // 遍历子节点
+    for (auto child : tree->children) {
+        populateTreeWidget(currentItem, child);
+    }
+}
+
+void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
+{
+    if (!tree || grammarAnalyzed == false) {
+        QMessageBox::information(this, "提示", "没有可用的语法树");
+        return;
+    }
+
+    // 创建新窗口
+    QWidget *window = new QWidget();
+    window->setWindowTitle("语法树");
+    window->resize(600, 400);
+
+    // 创建 QTreeWidget
+    QTreeWidget *treeWidget = new QTreeWidget(window);
+    treeWidget->setHeaderLabel("语法树");
+
+    // 创建根节点
+    QTreeWidgetItem *rootItem = new QTreeWidgetItem(treeWidget, QStringList("根节点"));
+    treeWidget->addTopLevelItem(rootItem);
+
+    // 填充分析树
+    populateTreeWidget(rootItem, tree);
+
+    // 展开所有节点
+    treeWidget->expandAll();
+
+    // 使用布局管理器将 treeWidget 添加到窗口
+    QVBoxLayout *layout = new QVBoxLayout(window);
+    layout->addWidget(treeWidget);
+    window->setLayout(layout);
+
+    // 显示窗口
+    window->show();
+}
+
+
+void MainWindow::on_pushButton_show_FirstFollow_clicked()
+{
+    QString currentPath = QDir::currentPath();
+    QString FFPath = currentPath + "/FirstFollow.txt";
+    QFile file(FFPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::information(this, "提示", "无法打开文件");
+        return;
+    }
+    FirstFollow = file.readAll();
+    file.close();
+
+    QDialog *dialog = new QDialog();
+    dialog->setWindowTitle("First & Follow");
+    dialog->resize(400, 300);
+    
+    QPlainTextEdit *textEdit = new QPlainTextEdit(dialog);
+    textEdit->setPlainText(FirstFollow);
+    textEdit->setReadOnly(true);
+    textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
+
+    dialog->show();
 }
 

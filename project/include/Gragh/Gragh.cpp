@@ -62,8 +62,8 @@ sign dealSign(char sign)
  */
 void Gragh::toNFA(std::string re){
     
-    std::vector<edge>*edges = this->inGragh->edges;
-    this->subG = std::stack<edge>();
+    std::vector<edgeForWA>*edges = this->inGragh->edges;
+    this->subG = std::stack<edgeForWA>();
     int pos = 0;
     bool lastOneIsSign = true;//判断是否加入AND(真就不加)
     bool turn;//判断是否转义
@@ -167,8 +167,8 @@ void Gragh::aNewEdge(std::string x)
     int end = this->inGragh->size;
     (this->inGragh->size)++;
     //取新节点
-    this->inGragh->edges->push_back(edge(start,end,true,x));
-    this->subG.push(edge(start,end,true,x));
+    this->inGragh->edges->push_back(edgeForWA(start,end,true,x));
+    this->subG.push(edgeForWA(start,end,true,x));
     //添加条件并压栈
 }
 
@@ -179,15 +179,15 @@ void Gragh::aNewEdge(std::string x)
  */
 void Gragh::andConnet()
 {
-    edge first,second;
+    edgeForWA first,second;
     second = this->subG.top();
     this->subG.pop();
     first = subG.top();
     this->subG.pop();
     //取出栈中前两个元素
-    this->inGragh->edges->push_back(edge(first.end,second.begin));
+    this->inGragh->edges->push_back(edgeForWA(first.end,second.begin));
     //添加空边
-    subG.push(edge(first.begin,second.end));
+    subG.push(edgeForWA(first.begin,second.end));
     //压栈
 }
 
@@ -196,7 +196,7 @@ void Gragh::andConnet()
  */
 void Gragh::orConnet()
 {
-    edge first,second;
+    edgeForWA first,second;
     first = this->subG.top();
     this->subG.pop();
     second = subG.top();
@@ -207,12 +207,12 @@ void Gragh::orConnet()
     int end = this->inGragh->size;
     (this->inGragh->size)++;
     //取新节点
-    this->inGragh->edges->push_back(edge(start,first.begin));
-    this->inGragh->edges->push_back(edge(start,second.begin));
-    this->inGragh->edges->push_back(edge(first.end,end));
-    this->inGragh->edges->push_back(edge(second.end,end));
+    this->inGragh->edges->push_back(edgeForWA(start,first.begin));
+    this->inGragh->edges->push_back(edgeForWA(start,second.begin));
+    this->inGragh->edges->push_back(edgeForWA(first.end,end));
+    this->inGragh->edges->push_back(edgeForWA(second.end,end));
     //添加空边
-    subG.push(edge(start,end,false));
+    subG.push(edgeForWA(start,end,false));
     //压栈
 
     
@@ -223,7 +223,7 @@ void Gragh::orConnet()
  */
 void Gragh::closure()
 {
-    edge ele;
+    edgeForWA ele;
     ele = this->subG.top();
     this->subG.pop();
     //取出栈中一个元素
@@ -232,12 +232,12 @@ void Gragh::closure()
     int end = this->inGragh->size;
     (this->inGragh->size)++;
     //取新节点
-    this->inGragh->edges->push_back(edge(start,ele.begin));
-    this->inGragh->edges->push_back(edge(start,end));
-    this->inGragh->edges->push_back(edge(ele.end,ele.begin));
-    this->inGragh->edges->push_back(edge(ele.end,end));
+    this->inGragh->edges->push_back(edgeForWA(start,ele.begin));
+    this->inGragh->edges->push_back(edgeForWA(start,end));
+    this->inGragh->edges->push_back(edgeForWA(ele.end,ele.begin));
+    this->inGragh->edges->push_back(edgeForWA(ele.end,end));
     //添加空边
-    subG.push(edge(start,end,false));
+    subG.push(edgeForWA(start,end,false));
     //压栈
 }
 
@@ -246,7 +246,7 @@ void Gragh::closure()
  */
 void Gragh::qmConnet()
 {
-    edge ele;
+    edgeForWA ele;
     ele = this->subG.top();
     this->subG.pop();
     //取出栈中一个元素
@@ -255,11 +255,11 @@ void Gragh::qmConnet()
     int end = this->inGragh->size;
     (this->inGragh->size)++;
     //取新节点
-    this->inGragh->edges->push_back(edge(start,ele.begin));
-    this->inGragh->edges->push_back(edge(start,end));
-    this->inGragh->edges->push_back(edge(ele.end,end));
+    this->inGragh->edges->push_back(edgeForWA(start,ele.begin));
+    this->inGragh->edges->push_back(edgeForWA(start,end));
+    this->inGragh->edges->push_back(edgeForWA(ele.end,end));
     //添加空边
-    subG.push(edge(start,end,false));
+    subG.push(edgeForWA(start,end,false));
     //压栈
 }
 
@@ -268,7 +268,7 @@ void Gragh::qmConnet()
  */
 void Gragh::positive_closure()
 {
-    edge ele;
+    edgeForWA ele;
     ele = this->subG.top();
     this->subG.pop();
     //取出栈中一个元素
@@ -277,11 +277,11 @@ void Gragh::positive_closure()
     int end = this->inGragh->size;
     (this->inGragh->size)++;
     //取新节点
-    this->inGragh->edges->push_back(edge(start,ele.begin));
-    this->inGragh->edges->push_back(edge(ele.end,ele.begin));
-    this->inGragh->edges->push_back(edge(ele.end,end));
+    this->inGragh->edges->push_back(edgeForWA(start,ele.begin));
+    this->inGragh->edges->push_back(edgeForWA(ele.end,ele.begin));
+    this->inGragh->edges->push_back(edgeForWA(ele.end,end));
     //添加空边
-    subG.push(edge(start,end,false));
+    subG.push(edgeForWA(start,end,false));
     //压栈
 }
 
@@ -297,7 +297,7 @@ std::unordered_set<std::string> eclosure(std::unordered_set<int> &starts,gragh &
     std::unordered_set<std::string> jump;
     std::unordered_set<int> add;
     for(int start : starts){//遍历当前所有起点
-        for(edge &e: *(G.edges)){
+        for(edgeForWA &e: *(G.edges)){
             if (e.begin == start && e.calEx == true)
             {
                 if (e.express == "")
@@ -381,7 +381,7 @@ int search(std:: vector<std::unordered_set<int>> &nodeVec, std::unordered_set<in
  * @param result 结果集合
  * @param nodeVec 闭包集合
  */
-void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edge> &result,std:: vector<std::unordered_set<int>> &nodeVec){
+void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>jumps, gragh G, std::unordered_set<edgeForWA> &result,std:: vector<std::unordered_set<int>> &nodeVec){
     std::unordered_set<std::string> nextjumps;
     for (auto j : jumps){
         std::unordered_set<int> finalstate = strJump(G,j,start);
@@ -390,7 +390,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
         int Ns = search(nodeVec,start);
         
 
-        if(Ne  != -1 && result.find(edge(Ns,Ne,true,j)) != result.end())//这既没有新节点也没有新边
+        if(Ne  != -1 && result.find(edgeForWA(Ns,Ne,true,j)) != result.end())//这既没有新节点也没有新边
         {
             continue;
         }else{
@@ -399,7 +399,7 @@ void Gragh::makeG(std::unordered_set<int> start,std::unordered_set<std::string>j
                 nodeVec.push_back(finalstate);
                 makeG(finalstate,nextjumps,G,result,nodeVec);
             }//结束点是新的，取点
-            result.insert(edge(Ns,Ne,true,j));
+            result.insert(edgeForWA(Ns,Ne,true,j));
             if (finalstate.find(G.end) != finalstate.end())
             {
                 inGragh->finalNodes.insert(Ne);
@@ -425,7 +425,7 @@ void Gragh::toDFA(){
     if(start.find(oldG->end) != start.end()){
         inGragh->finalNodes.insert(0);
     }
-    std::unordered_set<edge> result;
+    std::unordered_set<edgeForWA> result;
     std:: vector<std::unordered_set<int>> nodeVec = {start};
     makeG(start,jumps,*oldG,result,nodeVec);
     for (auto e : result)
@@ -565,7 +565,7 @@ void Gragh::compressDFA(){
     //如果属性相同,则两个节点可以合并(终止状态和非终止状态分离),得到合并集合
     
     inGragh->size = unionVec.size();
-    std::unordered_set<edge> *edgeSet = new std::unordered_set<edge>(0);
+    std::unordered_set<edgeForWA> *edgeSet = new std::unordered_set<edgeForWA>(0);
     //创建节点集合数个节点和边集
 
     for (auto e : *oldG->edges){//遍历边
@@ -624,7 +624,7 @@ void Gragh::compressDFA(){
             
         }
 
-        edgeSet->insert(edge(stB,stE,true,e.express));
+        edgeSet->insert(edgeForWA(stB,stE,true,e.express));
     }
     if(oldG->finalNodes.find(oldG->start) != oldG->finalNodes.end()){
         inGragh->finalNodes.insert(inGragh->start);

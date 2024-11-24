@@ -32,9 +32,13 @@ private:
     string showSignStack();
     ActionType action();
     void readEdges(string path);
+
+    string log;
 public:
     Parser(string edgesPath, vector<string> ignoreSigns);
+    string getLog();
     Tree *getTree();
-    vector<vector<token> *> *getTokens();
     void parse(string srcPath);
 };
+
+std::string trim(const std::string& str);

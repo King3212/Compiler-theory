@@ -33,14 +33,17 @@ TLR1 = testLR1
 
 # Gen Grammar Table
 GT: $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
+	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/genTable $(GT_SRC) $(INCLUDE_CPP)
 
 # Gen Word Analyzer
 GWA: $(GWA_SRC) $(GWA_H) $(INCLUDE_CPP) $(INCLUDE_H)
+	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ $(GWA_SRC) $(INCLUDE_CPP)
 
 
 gui: 
+	mkdir -p $(BUILD_DIR)
 	cmake -S ./grammarAnalyzer/gui/ -B $(BUILD_DIR)
 	cmake --build $(BUILD_DIR) --target all
 

@@ -33,7 +33,6 @@ TLR1 = testLR1
 
 # Gen Grammar Table
 GT: $(GT_SRC) $(INCLUDE_CPP) $(INCLUDE_H)
-	echo $(CC) $(CFLAGS) -o $(BUILD_DIR)/genTable $(GT_SRC) $(INCLUDE_CPP)
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/genTable $(GT_SRC) $(INCLUDE_CPP)
 
 # Gen Word Analyzer
@@ -50,6 +49,9 @@ all: GT GWA gui
 clean:
 	rm -rf $(BUILD_DIR)/*
 	rm -rf $(WA)/code.cpp
-
+	rm -rf $(INPUT_DIR)/Sources.txt
 run:
-	./$(BUILD_DIR)/gui
+	./build/gui
+
+rmCache:
+	rm -rf $(INPUT_DIR)/Sources.txt

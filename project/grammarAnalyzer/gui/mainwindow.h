@@ -69,6 +69,8 @@ private slots:
 
     void on_pushButton_show_FirstFollow_clicked();
 
+    void on_pushButton_show_code_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString srcPath;
@@ -92,6 +94,8 @@ private:
 
     void showAGragh(graghForWA g);
     IndexedSet<Edge> getEdgesFromFile(string path);
+
+    void compressTree(Tree *node);
 };
 
 #endif // MAINWINDOW_H

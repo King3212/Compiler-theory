@@ -244,6 +244,27 @@ IndexedSet<Edge> MainWindow::getEdgesFromFile(string path)
     return edges;
 }
 
+void MainWindow::compressTree(Tree* node) {
+    if (!node->value.empty()) {
+        return;
+    }
+    // 递归压缩所有子节点
+    for (auto it = node->children.begin(); it != node->children.end();) {
+        compressTree(*it);
+        ++it;
+    }
+    // 如果当前节点只有一个子节点,进行合并
+    if (node->children.size() == 1) {
+        Tree* child = node->children[0];
+        node->sign = child->sign;
+        node->value = child->value;
+        node->children = child->children;
+        delete child;
+    }
+
+    // 进一步优化：根据实际需求，可以添加其他合并规则，例如忽略某些特定的语法符号
+}
+
 void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
 {
     NFA = getGraghFromFile("../input/NFA.gh");
@@ -567,7 +588,7 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     // 创建根节点
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(treeWidget, QStringList("根节点"));
     treeWidget->addTopLevelItem(rootItem);
-
+    compressTree(tree);
     // 填充分析树
     populateTreeWidget(rootItem, tree);
 
@@ -602,6 +623,42 @@ void MainWindow::on_pushButton_show_FirstFollow_clicked()
     
     QPlainTextEdit *textEdit = new QPlainTextEdit(dialog);
     textEdit->setPlainText(FirstFollow);
+    textEdit->setReadOnly(true);
+    textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
+
+    dialog->show();
+}
+
+
+void MainWindow::on_pushButton_show_code_clicked()
+{
+    QString Path = QDir::currentPath() + "/../wordAnalyzer/code.cpp";
+    QFile file(Path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::information(this, "提示", "无法打开文件");
+        return;
+    }
+    QString code = "[wordAnalyzer/code.cpp]\n\n";
+    code += file.readAll();
+    file.close();
+
+    Path = QDir::currentPath() + "/../wordAnalyzer/getInput.h";
+    file.setFileName(Path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::information(this, "提示", "无法打开文件");
+        return;
+    }
+    code += "\n\n\n\n[wordAnalyzer/getInput.h]\n\n";
+    code += file.readAll();
+    file.close();
+
+
+    QDialog *dialog = new QDialog();
+    dialog->setWindowTitle("词法分析器代码");
+    dialog->resize(400, 300);
+
+    QPlainTextEdit *textEdit = new QPlainTextEdit(dialog);
+    textEdit->setPlainText(code);
     textEdit->setReadOnly(true);
     textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
 

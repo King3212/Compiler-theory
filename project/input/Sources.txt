@@ -1,2 +1,2 @@
-/home/king3212/Documents/Compiler-theory/project/input/word.tiny.rul
-/home/king3212/Documents/Compiler-theory/project/input/tiny_grammar.grm
+/home/king3212/Documents/Compiler-theory/project/input/miniC.rul
+/home/king3212/Documents/Compiler-theory/project/input/miniC.grm

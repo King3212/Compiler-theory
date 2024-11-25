@@ -473,6 +473,7 @@ void MainWindow::on_pushButton_load_BNF_clicked()
         BNFPath = filePath;
         setSource();
         initSource();
+        QMessageBox::information(this, "提示", "文法加载成功");
 
     } else {
         // 如果文件无法打开，输出错误信息
@@ -503,6 +504,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
     }else{
         QString currentPath = QDir::currentPath();
         vector<string> ignoreSigns = readFile((currentPath+"/../input/ignore.txt").toStdString());
+        cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
         parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns);
     }
     parser->parse(tempPath.toStdString());

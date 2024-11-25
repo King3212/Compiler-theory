@@ -17,7 +17,9 @@ Edge Parser::getEdge(int from, string sign)
         }
     }
     cout << "error, no edge found" << endl;
-    exit(1);
+    Edge error;
+    error.type = ERROR;
+    return error;
 }
 
 string Parser::showSignStack()
@@ -43,6 +45,7 @@ string Parser::showSignStack()
 void Parser::readEdges(string path)
 {
     vector<string> lines = readFile(path);
+    cout << lines.size() << endl;
     int i = 0;
     while(i < lines.size()){
         Edge edge;
@@ -68,7 +71,6 @@ void Parser::readEdges(string path)
                 g.right.push_back(temp);
             }
             edge.reduceProduction = g;
-
             edges.insert(edge);
 
             i+=2;
@@ -129,7 +131,6 @@ ActionType Parser::action()
     }
     log += "token: " + oneToken.type + " " + oneToken.value + "\n";
     Edge edge = getEdge(state, oneToken.type);
-    
     if (edge.type == SHIFT)
     {
         stateStack.push(edge.to);
@@ -161,7 +162,7 @@ ActionType Parser::action()
         }else{
             Tree *t = new Tree();
             t->sign = g.left;
-            t->value = "@";
+            t->value = "";
             treeStack.push(t);
             signStack.push(g.left);
         }

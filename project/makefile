@@ -54,4 +54,4 @@ run:
 	./build/gui
 
 rmCache:
-	rm -rf $(INPUT_DIR)/Sources.txt
+	rm -rf $(INPUT_DIR)/*.txt $(INPUT_DIR)/*.gh $(INPUT_DIR)/token.txt $(INPUT_DIR)/*.prm

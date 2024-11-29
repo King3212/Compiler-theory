@@ -38,7 +38,7 @@ public:
     Parser(string edgesPath, vector<string> ignoreSigns);
     string getLog();
     Tree *getTree();
-    void parse(string srcPath);
+    bool parse(string srcPath);
 };
 
 std::string trim(const std::string& str);

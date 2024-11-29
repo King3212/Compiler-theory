@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     grammarAnalyzed = false;
     wordAnalyzed = false;
+    genSuccess = false;
 }
 
 MainWindow::~MainWindow()
@@ -253,6 +254,17 @@ void MainWindow::compressTree(Tree* node) {
         compressTree(*it);
         ++it;
     }
+
+    // 删除无用的符号
+    for(int i = 0; i < node->children.size(); i++){
+        if (ignoreSigns.contains(node->children[i]->sign) && node->children[i]->children.size() == 0){
+            node->children.erase(node->children.begin()+i);
+            i--;
+        }
+    }
+
+    
+
     // 如果当前节点只有一个子节点,进行合并
     if (node->children.size() == 1) {
         Tree* child = node->children[0];
@@ -262,7 +274,18 @@ void MainWindow::compressTree(Tree* node) {
         delete child;
     }
 
-    // 进一步优化：根据实际需求，可以添加其他合并规则，例如忽略某些特定的语法符号
+    
+    vector<Tree*> newChildren;
+    // 如果子节点和当前节点的符号相同，进行合并
+    for(int i = 0; i < node->children.size(); i++){
+        if (node->children[i]->sign == node->sign){
+            for (auto child : node->children[i]->children){
+                newChildren.push_back(child);
+            }
+        }else
+            newChildren.push_back(node->children[i]);
+    }
+    node->children = newChildren;
 }
 
 void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
@@ -507,7 +530,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
         cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
         parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns);
     }
-    parser->parse(tempPath.toStdString());
+    genSuccess = parser->parse(tempPath.toStdString());
     AnalyzeLog = QString::fromStdString(parser->getLog());
     tree = parser->getTree();
     grammarAnalyzed = true;
@@ -577,6 +600,10 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
         QMessageBox::information(this, "提示", "没有可用的语法树");
         return;
     }
+    if (genSuccess == false){
+        QMessageBox::information(this, "提示", "语法树生成失败");
+        return;
+    }
 
     // 创建新窗口
     QWidget *window = new QWidget();
@@ -590,6 +617,8 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     // 创建根节点
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(treeWidget, QStringList("根节点"));
     treeWidget->addTopLevelItem(rootItem);
+    loadTreeIgnore();
+    // 压缩分析树
     compressTree(tree);
     // 填充分析树
     populateTreeWidget(rootItem, tree);
@@ -667,3 +696,10 @@ void MainWindow::on_pushButton_show_code_clicked()
     dialog->show();
 }
 
+void MainWindow::loadTreeIgnore()
+{
+    vector<string>ignoreSigns = readFile("../input/TreeIgnore.txt");
+    for (auto sign : ignoreSigns){
+        this->ignoreSigns.insert(sign);
+    }
+}

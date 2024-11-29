@@ -71,6 +71,8 @@ private slots:
 
     void on_pushButton_show_code_clicked();
 
+    void loadTreeIgnore();
+
 private:
     Ui::MainWindow *ui;
     QString srcPath;
@@ -91,6 +93,8 @@ private:
     QString FirstFollow;
     bool wordAnalyzed;
     bool grammarAnalyzed;
+    bool genSuccess;
+    IndexedSet<string> ignoreSigns;
 
     void showAGragh(graghForWA g);
     IndexedSet<Edge> getEdgesFromFile(string path);

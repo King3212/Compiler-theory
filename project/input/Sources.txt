@@ -1,0 +1,2 @@
+/home/king3212/Documents/Compiler-theory/project/input/tiny.rul
+/home/king3212/Documents/Compiler-theory/project/input/tiny.grm

@@ -100,7 +100,7 @@ Tree *Parser::getTree()
 {
     return root;
 }
-void Parser::parse(string path)
+bool Parser::parse(string path)
 {
     log = "";
     tokens = new Tokens(path);
@@ -110,13 +110,13 @@ void Parser::parse(string path)
         ActionType ac = action();
         if (ac == ACCEPT)
         {
-            break;
+            return true;
         }else if(ac == ERROR){
             log += "\n\nERROR\n\n";
-            break;
+            return false;
         }
     }
-    log += "Accept\n";
+    return false;
 }
 
 ActionType Parser::action()
@@ -175,6 +175,7 @@ ActionType Parser::action()
         return REDUCE;
     }else if(edge.type == ACCEPT){
         root = treeStack.top();
+        log += "Accept\n";
         return ACCEPT;
     }
     return ERROR;

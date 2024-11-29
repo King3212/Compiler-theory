@@ -32,7 +32,11 @@ Terminal: gnome-terminal
 ```
 测试环境2
 ```ASN.1
-
+OS: Ubuntu 22.04.3 LTS on Windows 10 x86_64 
+Kernel: 5.15.167.4-microsoft-standard-WSL2
+Theme: Yaru [GTK3] 
+Icons: Yaru [GTK3] 
+Terminal: vscode
 ```
 ### 依赖项安装(以`Ubuntu22.04`为例)
 项目的图形化部分使用`QT5`开发，故需要`QT5`的有关依赖

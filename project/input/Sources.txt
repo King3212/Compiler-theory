@@ -1,2 +1,2 @@
-/home/king3212/Documents/Compiler-theory/project/input/tiny.rul
-/home/king3212/Documents/Compiler-theory/project/input/tiny.grm
+/mnt/c/Users/HZQhz/Github/Compiler-theory/project/input/tiny.rul
+/mnt/c/Users/HZQhz/Github/Compiler-theory/project/input/tiny.grm

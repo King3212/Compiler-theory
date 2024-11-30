@@ -286,6 +286,9 @@ void MainWindow::compressTree(Tree* node) {
             newChildren.push_back(node->children[i]);
     }
     node->children = newChildren;
+
+
+    
 }
 
 void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA

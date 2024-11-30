@@ -30,11 +30,11 @@ public:
         cout << "running dir: ";
         system("pwd");
         cout << endl;
-        if (system(("./getTokens "+path+" > token.txt").c_str())){
+        if (system(("./getTokens "+path+" > token.lex").c_str())){
             cerr << "Error: getTokens failed" << endl;
             exit(1);
         }
-        vector<string> lines = readFile("token.txt");
+        vector<string> lines = readFile("token.lex");
         tokens = new vector<vector<token> *>();
         tokens->push_back(new vector<token>());
         for(auto line : lines){

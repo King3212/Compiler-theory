@@ -29,6 +29,7 @@ State LR1::gotoState(State state, string sign) {
     return newState;
 }
 
+// 生成DFA
 void LR1::genDFA()
 {
     // 添加虚拟产生式
@@ -59,9 +60,11 @@ void LR1::genDFA()
     }
     startState.items = items;
     states.insert(startState);
+    // 递归生成DFA
     genDFArec(startState);
 }
 
+// 这个函数打印边
 void LR1::printEdge()
 {
     for(auto edge : edges){
@@ -69,6 +72,7 @@ void LR1::printEdge()
     }
 }
 
+// 这个函数打印状态信息
 void LR1::printState()
 {
     int i = 0;
@@ -109,6 +113,8 @@ string LR1::getFirstFollow()
     return result;
 }
 
+// 这个函数生成 First 集合，需要先生成 nullable
+// 存放在类的 First 成员中
 void LR1::genFirst()
 {
 
@@ -145,6 +151,8 @@ void LR1::genFirst()
     }
 }
 
+// 这个函数生成 Follow 集合，需要先生成 First
+// 存放在类的 Follow 成员中
 void LR1::genFollow()
 {
     for(auto sign : nonTerminals){
@@ -186,6 +194,8 @@ void LR1::genFollow()
     }
 }
 
+// 这个函数生成 nullable 集合
+// 存放在类的 nullable 成员中
 void LR1::genNullable()
 {
     for(auto sign : signs){

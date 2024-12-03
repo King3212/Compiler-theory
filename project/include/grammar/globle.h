@@ -8,7 +8,7 @@
 // 定义 grammar 结构体
 #pragma once
 using namespace std;
-enum ActionType
+enum ActionType // 动作类型
 {
     SHIFT,
     GOTO,

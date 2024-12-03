@@ -27,7 +27,7 @@ bool LALR1::sameCore(State s1, State s2)
     return true;
 }
 
-void LALR1::rebuild()
+void LALR1:rebuild()
 {
     map<int,int> indexMap;
     vector<bool> visited(states.size(), false);

@@ -24,7 +24,7 @@
 void printGragh(std::vector<gragh> *Gs,std::string name)
 {
     std::fstream file;
-    file.open("./input/" + name + ".gh", std::ios::out);
+    file.open("../input/" + name + ".gh", std::ios::out);
     for (auto g : *Gs)
     {
         file << g.toString() << std::endl;

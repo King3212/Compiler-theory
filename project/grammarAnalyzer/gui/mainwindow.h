@@ -15,6 +15,7 @@
 #include <fstream>
 #include <sstream>
 #include "tableforgragh.h"
+#include "QDesktopServices"
 #include "globle.h"
 #include <QVBoxLayout>
 #include <cmath>
@@ -59,10 +60,6 @@ private slots:
 
     void on_pushButton_GA_run_clicked();
 
-    void on_pushButton_LR1DFA_clicked();
-
-    void on_pushButton_LALR1DFA_clicked();
-
     void on_pushButton_show_log_clicked();
 
     void on_pushButton_show_Analyze_Tree_clicked();
@@ -72,6 +69,12 @@ private slots:
     void on_pushButton_show_code_clicked();
 
     void loadTreeIgnore();
+
+    void on_pushButton_LALR1Table_clicked();
+
+    void on_pushButton_show_LR1_DFA_clicked();
+
+    void on_pushButton_show_LALR_DFA_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -100,6 +103,9 @@ private:
     IndexedSet<Edge> getEdgesFromFile(string path);
 
     void compressTree(Tree *node);
+
+    bool lr1DFAgened;
+    bool lalr1DFAgened;
 };
 
 #endif // MAINWINDOW_H

@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>882</width>
+    <width>864</width>
     <height>1044</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_openSrc">
@@ -22,6 +25,9 @@
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
     </property>
     <property name="text">
      <string>打开源程序文件</string>
@@ -36,6 +42,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
+    </property>
     <property name="text">
      <string>载入词法正则文件</string>
     </property>
@@ -44,10 +53,13 @@
     <property name="geometry">
      <rect>
       <x>660</x>
-      <y>90</y>
+      <y>20</y>
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
     </property>
     <property name="text">
      <string>载入BNF语法文件</string>
@@ -72,6 +84,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
+    </property>
     <property name="text">
      <string>保存源程序到文件</string>
     </property>
@@ -84,6 +99,9 @@
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
     </property>
     <property name="text">
      <string>语法分析</string>
@@ -98,11 +116,14 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
+    </property>
     <property name="text">
      <string>查看语法树</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_LR1DFA">
+   <widget class="QPushButton" name="pushButton_show_LR1_DFA">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -111,11 +132,14 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
+    </property>
     <property name="text">
      <string>查看LR(1)DFA</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_LALR1DFA">
+   <widget class="QPushButton" name="pushButton_LALR1Table">
     <property name="geometry">
      <rect>
       <x>660</x>
@@ -124,8 +148,11 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
+    </property>
     <property name="text">
-     <string>查看LALR(1)DFA</string>
+     <string>查看LALR(1)分析表</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_show_FirstFollow">
@@ -136,6 +163,9 @@
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
     </property>
     <property name="text">
      <string>查看First/Follow集合</string>
@@ -150,6 +180,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
+    </property>
     <property name="text">
      <string>查看词法NFA</string>
     </property>
@@ -162,6 +195,9 @@
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
     </property>
     <property name="text">
      <string>词法分析</string>
@@ -176,6 +212,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
+    </property>
     <property name="text">
      <string>查看词法分析结果</string>
     </property>
@@ -189,6 +228,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
+    </property>
     <property name="text">
      <string>查看分析过程</string>
     </property>
@@ -198,9 +240,12 @@
      <rect>
       <x>30</x>
       <y>10</y>
-      <width>821</width>
+      <width>611</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>当前词法来源：</string>
@@ -211,9 +256,12 @@
      <rect>
       <x>30</x>
       <y>50</y>
-      <width>821</width>
+      <width>611</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>当前语法来源：</string>
@@ -228,6 +276,9 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
+    </property>
     <property name="text">
      <string>查看词法DFA</string>
     </property>
@@ -240,6 +291,9 @@
       <width>191</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
     </property>
     <property name="text">
      <string>查看词法最小化的DFA</string>
@@ -254,8 +308,27 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(217, 217, 217);</string>
+    </property>
     <property name="text">
      <string>查看词法分析器代码</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_show_LALR_DFA">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>90</y>
+      <width>191</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(160, 160, 160);</string>
+    </property>
+    <property name="text">
+     <string>查看LALR1DFA</string>
     </property>
    </widget>
   </widget>
@@ -264,7 +337,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>882</width>
+     <width>864</width>
      <height>36</height>
     </rect>
    </property>

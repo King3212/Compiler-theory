@@ -52,6 +52,8 @@ public:
 
     void printState();
 
+    string toGraph();
+
     string toString();
 
     string getFirstFollow();

@@ -85,6 +85,54 @@ void LR1::printState()
     }
 }
 
+// 生成.dot格式的图，使用graphviz生成图
+string LR1::toGraph() {
+    string result;
+    result += "digraph G {\n";
+    result += "    node [shape=box, style=rounded, color=lightblue, fontsize=12];\n";
+
+    int stateId = 0;
+    for (const auto& state : this->states) {
+        result += "    State" + std::to_string(stateId) + " [label=<\n";
+        result += "        <table border='0' cellborder='1' cellspacing='0' cellpadding='4'>\n"; // 增加单元格边距
+        result += "            <tr><td bgcolor='lightgray'><b>State " + std::to_string(stateId) + "</b></td></tr>\n";
+
+        for (const auto& item : state.items) {
+            result += "            <tr><td align='left' cellpadding='2'>\n";
+            result += "                <i>dot:</i> " + std::to_string(item.dot) + "<br align='left'/>\n";
+            result += "                <i>production:</i> <br align='left'/>\n";
+            result += "                &nbsp;&nbsp;&nbsp;&nbsp;<i>left:</i> " + item.production.left + "<br align='left'/>\n";
+            string right = "";
+            for(auto r : item.production.right)
+            {
+                right += r + " ";
+            }
+            result += "                &nbsp;&nbsp;&nbsp;&nbsp;<i>right:</i> " + right + "<br align='left'/>\n";
+            string lookahead = "";
+            for(auto l : item.lookahead)
+            {
+                lookahead += l + " ";
+            }
+            result += "                <i>lookahead:</i> " + lookahead + "\n";
+            result += "            </td></tr>\n";
+        }
+
+        result += "        </table>>];\n";
+        stateId++;
+    }
+
+    for (const auto& edge : this->edges) {
+        if (edge.type == SHIFT || edge.type == GOTO) {
+            result += "    State" + std::to_string(edge.from) + " -> State" + std::to_string(edge.to) + " [label=\"" + edge.sign + "\", fontsize=10];\n";
+        }
+    }
+
+    result += "}\n";
+    return result;
+}
+
+
+
 string LR1::toString()
 {
     string result = "";

@@ -34,6 +34,8 @@ void MainWindow::initSource()
             fileContent = "无";
         }else{
             BNFPath = fileContent;
+            lr1DFAgened = true;
+            lalr1DFAgened = true;
         }
         ui->label_Grammar_source->setText("当前文法来源："+fileContent);
         file.close();
@@ -495,12 +497,31 @@ void MainWindow::on_pushButton_load_BNF_clicked()
         QString currentPath = QDir::currentPath();
 
         QString command = "./genTable " + filePath + " " + currentPath; // 生成图
-        system(command.toStdString().c_str());
-        BNFPath = filePath;
-        setSource();
-        initSource();
-        QMessageBox::information(this, "提示", "文法加载成功");
+        // system(command.toStdString().c_str());
+        // BNFPath = filePath;
+        // setSource();
+        // initSource();
+        // QMessageBox::information(this, "提示", "文法加载成功");
+        // lr1DFAgened = false;
+        // lalr1DFAgened = false;
 
+        //异步执行
+        QMessageBox* msgBox = new QMessageBox(this);
+        msgBox->setText("正在生成文法分析器，请稍候...");
+        msgBox->setWindowTitle("提示");
+        msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
+        msgBox->show();
+        QTimer::singleShot(1000, this, [=]() {
+            system(command.toStdString().c_str());
+            BNFPath = filePath;
+            setSource();
+            initSource();
+            QMessageBox::information(this, "提示", "文法加载成功");
+            lr1DFAgened = false;
+            lalr1DFAgened = false;
+            msgBox->close();
+            msgBox->deleteLater();
+        });
     } else {
         // 如果文件无法打开，输出错误信息
         qDebug() << "无法打开文件!";
@@ -544,24 +565,6 @@ void MainWindow::on_pushButton_GA_run_clicked()
 }
 
 
-void MainWindow::on_pushButton_LR1DFA_clicked()
-{
-    QString currentPath = QDir::currentPath();
-    this->LR1edges = getEdgesFromFile((currentPath+"/LR1Edge.txt").toStdString());
-    tableForGragh *table = new tableForGragh();
-    table->initTable(LR1edges,"LR(1)");
-    table->show();
-}
-
-
-void MainWindow::on_pushButton_LALR1DFA_clicked()
-{
-    QString currentPath = QDir::currentPath();
-    this->LALR1edges = getEdgesFromFile((currentPath+"/LALR1Edge.txt").toStdString());
-    tableForGragh *table = new tableForGragh();
-    table->initTable(LALR1edges,"LALR(1)");
-    table->show();
-}
 
 
 void MainWindow::on_pushButton_show_log_clicked()
@@ -706,3 +709,92 @@ void MainWindow::loadTreeIgnore()
         this->ignoreSigns.insert(sign);
     }
 }
+
+
+void MainWindow::on_pushButton_LALR1Table_clicked()
+{
+    QString currentPath = QDir::currentPath();
+    this->LALR1edges = getEdgesFromFile((currentPath+"/LALR1Edge.txt").toStdString());
+    tableForGragh *table = new tableForGragh();
+    table->initTable(LALR1edges,"LALR(1)");
+    table->show();
+}
+
+
+void MainWindow::on_pushButton_show_LR1_DFA_clicked()
+{
+    QString outputDir = QDir::currentPath();
+    if (lr1DFAgened == true){
+        QString pdfPath = outputDir+"/LR1.pdf";
+        QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
+    }else{
+        QMessageBox* msgBox = new QMessageBox(this);
+        msgBox->setText("正在生成LR1DFA，请稍候...");
+        msgBox->setWindowTitle("提示");
+        msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
+        msgBox->show();
+
+        
+
+        QString command = "dot -Tpdf "+outputDir+"/LR1DFA.dot -o "+outputDir+"/LR1.pdf";
+        
+        // 启动异步执行
+        QTimer::singleShot(1000, this, [=]() {
+            // 执行命令
+            if(system(command.toStdString().c_str()) != 0){
+                QMessageBox::information(this, "提示", "LR1DFA生成失败");
+                return;
+            }else{
+                QMessageBox::information(this, "提示", "LR1DFA生成成功");
+                lr1DFAgened = true;
+                QString pdfPath = outputDir+"/LR1.pdf";
+                QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
+            }
+            msgBox->close();
+            msgBox->deleteLater();
+            
+        }
+        );
+    }
+
+}
+
+
+void MainWindow::on_pushButton_show_LALR_DFA_clicked()
+{
+    if (lalr1DFAgened == true){
+        QString outputDir = QDir::currentPath();
+        QString pdfPath = outputDir+"/LALR1.pdf";
+        QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
+    }else{
+        QMessageBox* msgBox = new QMessageBox(this);
+        msgBox->setText("正在生成LALR1DFA，请稍候...");
+        msgBox->setWindowTitle("提示");
+        msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
+        msgBox->show();
+
+        QString outputDir = QDir::currentPath();
+
+        QString command = "dot -Tpdf "+outputDir+"/LALR1DFA.dot -o "+outputDir+"/LALR1.pdf";
+
+        // 启动异步执行
+        QTimer::singleShot(1000, this, [=]() {
+            // 执行命令
+            if(system(command.toStdString().c_str()) != 0){
+                QMessageBox::information(this, "提示", "LALR1DFA生成失败");
+                return;
+            }else{
+                lalr1DFAgened = true;
+                QMessageBox::information(this, "提示", "LALR1DFA生成成功");
+                QString pdfPath = outputDir+"/LALR1.pdf";
+                QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
+            }
+            msgBox->close();
+            msgBox->deleteLater();
+            
+        }
+        );
+    }
+    
+}
+

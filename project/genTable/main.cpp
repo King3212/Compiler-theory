@@ -12,17 +12,19 @@
 
 using namespace std;
 void process(vector<Grammar> grammars, string outputDir){
+
+    // 输出LR1 DFA
     LR1 lr1 = LR1(grammars);
     lr1.genDFA();
-    ofstream file(outputDir+"/LR1Edge.txt");
+    ofstream file(outputDir+"/LR1DFA.dot");
     if (file.fail()){
-        cerr << "Failed to open file: " << outputDir+"/LR1Edge.txt" << endl;
+        cerr << "Failed to open file: " << outputDir+"/LR1DFA.dot" << endl;
         return;
     }
-    file << lr1.toString();
+    file << lr1.toGraph();
     file.close();
 
-
+    // 输出LALR1 分析表
     LALR1 lalr1 = LALR1(grammars);
     file = ofstream(outputDir+"/LALR1Edge.txt");
     if (file.fail()){
@@ -32,6 +34,16 @@ void process(vector<Grammar> grammars, string outputDir){
     file << lalr1.toString();
     file.close();
 
+    // 输出LALR1 DFA
+    file = ofstream(outputDir+"/LALR1DFA.dot");
+    if (file.fail()){
+        cerr << "Failed to open file: " << outputDir+"/LALR1DFA.dot" << endl;
+        return;
+    }
+    file << lalr1.toGraph();
+    file.close();
+
+    // 输出FirstFollow集合
     file = ofstream(outputDir+"/FirstFollow.txt");
     if (file.fail()){
         cerr << "Failed to open file: " << outputDir+"/FirstFollow.txt" << endl;
@@ -40,6 +52,8 @@ void process(vector<Grammar> grammars, string outputDir){
     file << lr1.getFirstFollow();
     file.close();
     cout <<"edgeOutputDIR: "+outputDir << endl;
+
+
 }
 
 int main(int argc, char const *argv[]){

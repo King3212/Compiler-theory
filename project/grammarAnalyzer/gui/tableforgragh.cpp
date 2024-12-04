@@ -89,5 +89,5 @@ void tableForGragh::initTable(IndexedSet<Edge> edges,QString name)
     ui->label_name->setText("name: " + name);
     ui->label_start->setText("start: 0");
     ui->label_size->setText("size: " + QString::fromStdString(std::to_string(max + 1)));
-    ui->label_end->setText("Acc");
+
 }

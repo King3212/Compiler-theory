@@ -729,7 +729,7 @@ void MainWindow::on_pushButton_show_LR1_DFA_clicked()
         QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
     }else{
         QMessageBox* msgBox = new QMessageBox(this);
-        msgBox->setText("正在生成LR1DFA，请稍候...");
+        msgBox->setText("正在生成LR(1)DFA的向量图，请稍候...");
         msgBox->setWindowTitle("提示");
         msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
         msgBox->show();
@@ -768,7 +768,7 @@ void MainWindow::on_pushButton_show_LALR_DFA_clicked()
         QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
     }else{
         QMessageBox* msgBox = new QMessageBox(this);
-        msgBox->setText("正在生成LALR1DFA，请稍候...");
+        msgBox->setText("正在生成LALR(1)DFA的向量图，请稍候...");
         msgBox->setWindowTitle("提示");
         msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
         msgBox->show();

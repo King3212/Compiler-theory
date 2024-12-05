@@ -30,7 +30,7 @@
      <string notr="true">background-color: rgb(160, 160, 160);</string>
     </property>
     <property name="text">
-     <string>打开源程序文件</string>
+     <string>打开文件到编辑框</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_load_word_rul">
@@ -71,7 +71,7 @@
       <x>30</x>
       <y>90</y>
       <width>611</width>
-      <height>821</height>
+      <height>781</height>
      </rect>
     </property>
    </widget>
@@ -88,7 +88,7 @@
      <string notr="true">background-color: rgb(160, 160, 160);</string>
     </property>
     <property name="text">
-     <string>保存源程序到文件</string>
+     <string>保存编辑框文本到文件</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_GA_run">
@@ -329,6 +329,45 @@
     </property>
     <property name="text">
      <string>查看LALR1DFA</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_Program">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>890</y>
+      <width>111</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>编辑源程序</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_Re">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>890</y>
+      <width>111</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>编辑词法</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_BNF">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>890</y>
+      <width>111</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>编辑文法</string>
     </property>
    </widget>
   </widget>

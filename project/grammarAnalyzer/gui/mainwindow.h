@@ -20,6 +20,7 @@
 #include <QVBoxLayout>
 #include <cmath>
 #include <QTreeWidgetItem>
+#include <QRadioButton>
 #include "../tokens/tokens.h"
 #include "../analyzer/analyzer.h"
 using namespace std;
@@ -68,13 +69,17 @@ private slots:
 
     void on_pushButton_show_code_clicked();
 
-    void loadTreeIgnore();
-
     void on_pushButton_LALR1Table_clicked();
 
     void on_pushButton_show_LR1_DFA_clicked();
 
     void on_pushButton_show_LALR_DFA_clicked();
+
+    void on_checkBox_Program_stateChanged(int arg1);
+
+    void on_checkBox_Re_stateChanged(int arg1);
+
+    void on_checkBox_BNF_stateChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -94,18 +99,24 @@ private:
     QString AnalyzeLog;
     Parser *parser;
     QString FirstFollow;
+    QString program;
+    QString bnf;
+    QString re;
     bool wordAnalyzed;
     bool grammarAnalyzed;
     bool genSuccess;
     IndexedSet<string> ignoreSigns;
-
     void showAGragh(graghForWA g);
     IndexedSet<Edge> getEdgesFromFile(string path);
-
+    vector<QString> split(QString str, QString pattern);
+    void loadTreeIgnore();
+    void loadTreeFuc();
     void compressTree(Tree *node);
-
+    void fixTree(Tree *node);
     bool lr1DFAgened;
     bool lalr1DFAgened;
+    IndexedSet<string> ops;
+    IndexedSet<string> ass;
 };
 
 #endif // MAINWINDOW_H

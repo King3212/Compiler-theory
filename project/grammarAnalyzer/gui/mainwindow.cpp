@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     grammarAnalyzed = false;
     wordAnalyzed = false;
     genSuccess = false;
+    ui->checkBox_Program->setChecked(true);
 }
 
 MainWindow::~MainWindow()
@@ -291,6 +292,36 @@ void MainWindow::compressTree(Tree* node) {
 
 }
 
+void MainWindow::fixTree(Tree *node)
+{
+    if (node->children.size() == 0){
+        return;
+    }
+    for (auto child : node->children){
+        fixTree(child);
+    }
+
+    if(!node->value.empty()){
+        return;
+    }
+
+    if (node->children.size() == 3){
+        if(ops.contains(node->children[1]->value) && node->children[1]->children.size() == 0){
+            node->value = node->children[1]->value;
+            node->sign = node->children[1]->sign;
+            node->children.erase(node->children.begin()+1);
+        }
+    }
+    if (node->children.size() == 3){
+        if (ass.contains(node->children[1]->value) && node->children[1]->children.size() == 0 && node->children[0]->children.size() == 0){
+            node->value = node->children[0]->value;
+            node->sign = node->children[0]->sign;
+            node->children.erase(node->children.begin());
+            node->children.erase(node->children.begin());
+        }
+    }
+}
+
 void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
 {
     NFA = getGraghFromFile("../input/NFA.gh");
@@ -403,6 +434,11 @@ void MainWindow::on_pushButton_word_miniDFA_clicked() // 显示最小化DFA
 void MainWindow::on_pushButton_Word_Analyze_clicked()
 {
     QString src = ui->plainTextEdit->toPlainText();
+    if (ui->checkBox_Program->isChecked()){
+        program = src;
+    }else{
+        src = program;
+    }
     if(src == ""){
         QMessageBox::information(this, "提示", "请先输入源代码");
         return;
@@ -530,12 +566,38 @@ void MainWindow::on_pushButton_load_BNF_clicked()
 
 void MainWindow::on_pushButton_GA_run_clicked()
 {
-    QString tempSRC = ui->plainTextEdit->toPlainText();
+    QString tempPath = "../input/tempSRC.prm";
+    if(ui->checkBox_BNF->isChecked()){
+        if (!ui->plainTextEdit->toPlainText().isEmpty()){
+            QFile file(BNFPath);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream out(&file);
+                out << ui->plainTextEdit->toPlainText();
+                file.close();
+            }
+        }
+    }else if(ui->checkBox_Re->isChecked()){
+        if (!ui->plainTextEdit->toPlainText().isEmpty()){
+            QFile file(wordRulPath);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream out(&file);
+                out << ui->plainTextEdit->toPlainText();
+                file.close();
+            }
+        }
+    }
+    QString tempSRC;
+    if (ui->checkBox_Program->isChecked()){
+        tempSRC = ui->plainTextEdit->toPlainText();
+        program = tempSRC;
+    }else{
+        tempSRC = program;
+    }
     if (tempSRC.isEmpty()){
         QMessageBox::information(this, "提示", "请先输入源代码");
         return;
     }
-    QString tempPath = "../input/tempSRC.prm";
+    
     QFile tempFile(tempPath);
     if (tempFile.open(QIODevice::WriteOnly | QIODevice::Text)){
         QTextStream out(&tempFile);
@@ -624,6 +686,9 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     loadTreeIgnore();
     // 压缩分析树
     compressTree(tree);
+    // 调整分析树
+    loadTreeFuc();
+    fixTree(tree);
     // 填充分析树
     populateTreeWidget(rootItem, tree);
 
@@ -708,6 +773,50 @@ void MainWindow::loadTreeIgnore()
     }
 }
 
+vector<QString> MainWindow::split(QString str, QString pattern)
+{
+    vector<QString> res;
+    int pos;
+    str += pattern;
+    int size = str.size();
+    for (int i = 0; i < size; i++)
+    {
+        pos = str.indexOf(pattern, i);
+        if (pos < size)
+        {
+            QString s = str.mid(i, pos - i);
+            res.push_back(s);
+            i = pos + pattern.size() - 1;
+        }
+    }
+    return res;
+}
+
+
+void MainWindow::loadTreeFuc()
+{
+    QString path = QDir::currentPath() + "/../input/fixTree.txt";
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::information(this, "提示", "无法打开文件");
+        return;
+    }
+    file.readLine();
+    QString line_op = file.readLine();
+    file.readLine();
+    QString line_as = file.readLine();
+
+    vector<QString> ops = split(line_op, " ");
+    vector<QString> ass = split(line_as, " ");
+
+    for(auto op : ops){
+        this->ops.push_back(op.toStdString());
+    }
+    for(auto as : ass){
+        this->ass.push_back(as.toStdString());
+    }
+
+}
 
 void MainWindow::on_pushButton_LALR1Table_clicked()
 {
@@ -794,5 +903,57 @@ void MainWindow::on_pushButton_show_LALR_DFA_clicked()
         );
     }
     
+}
+
+
+
+
+void MainWindow::on_checkBox_Program_stateChanged(int arg1)
+{
+    if (arg1 == 2){
+        QString currentText = ui->plainTextEdit->toPlainText();
+        if (ui->checkBox_Re->isChecked()){
+            re = currentText;
+        }else if (ui->checkBox_BNF->isChecked()){
+            bnf = currentText;
+        }
+        ui->checkBox_Re->setChecked(false);
+        ui->checkBox_BNF->setChecked(false);
+
+        ui->plainTextEdit->setPlainText(program);
+    }
+}
+
+
+void MainWindow::on_checkBox_Re_stateChanged(int arg1)
+{
+    if (arg1 == 2){
+        QString currentText = ui->plainTextEdit->toPlainText();
+        if (ui->checkBox_Program->isChecked()){
+            program = currentText;
+        }else if (ui->checkBox_BNF->isChecked()){
+            bnf = currentText;
+        }
+        ui->checkBox_Program->setChecked(false);
+        ui->checkBox_BNF->setChecked(false);
+        ui->plainTextEdit->setPlainText(re);
+    }
+}
+
+
+void MainWindow::on_checkBox_BNF_stateChanged(int arg1)
+{
+    if (arg1 == 2){
+        QString currentText = ui->plainTextEdit->toPlainText();
+        if (ui->checkBox_Program->isChecked()){
+            program = currentText;
+        }else if (ui->checkBox_Re->isChecked()){
+            re = currentText;
+        }
+        ui->checkBox_Program->setChecked(false);
+        ui->checkBox_Re->setChecked(false);
+        ui->plainTextEdit->setPlainText(bnf);
+
+    }
 }
 

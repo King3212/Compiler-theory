@@ -292,35 +292,7 @@ void MainWindow::compressTree(Tree* node) {
 
 }
 
-void MainWindow::fixTree(Tree *node)
-{
-    if (node->children.size() == 0){
-        return;
-    }
-    for (auto child : node->children){
-        fixTree(child);
-    }
 
-    if(!node->value.empty()){
-        return;
-    }
-
-    if (node->children.size() == 3){
-        if(ops.contains(node->children[1]->value) && node->children[1]->children.size() == 0){
-            node->value = node->children[1]->value;
-            node->sign = node->children[1]->sign;
-            node->children.erase(node->children.begin()+1);
-        }
-    }
-    if (node->children.size() == 3){
-        if (ass.contains(node->children[1]->value) && node->children[1]->children.size() == 0 && node->children[0]->children.size() == 0){
-            node->value = node->children[0]->value;
-            node->sign = node->children[0]->sign;
-            node->children.erase(node->children.begin());
-            node->children.erase(node->children.begin());
-        }
-    }
-}
 
 void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
 {
@@ -793,30 +765,7 @@ vector<QString> MainWindow::split(QString str, QString pattern)
 }
 
 
-void MainWindow::loadTreeFuc()
-{
-    QString path = QDir::currentPath() + "/../input/fixTree.txt";
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::information(this, "提示", "无法打开文件");
-        return;
-    }
-    file.readLine();
-    QString line_op = file.readLine();
-    file.readLine();
-    QString line_as = file.readLine();
 
-    vector<QString> ops = split(line_op, " ");
-    vector<QString> ass = split(line_as, " ");
-
-    for(auto op : ops){
-        this->ops.push_back(op.toStdString());
-    }
-    for(auto as : ass){
-        this->ass.push_back(as.toStdString());
-    }
-
-}
 
 void MainWindow::on_pushButton_LALR1Table_clicked()
 {

@@ -115,8 +115,7 @@ private:
     void fixTree(Tree *node);
     bool lr1DFAgened;
     bool lalr1DFAgened;
-    IndexedSet<string> ops;
-    IndexedSet<string> ass;
+    vector<IndexedSet<string>> ops;
 };
 
 #endif // MAINWINDOW_H

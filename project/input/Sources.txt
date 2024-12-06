@@ -1,2 +1,2 @@
-/home/king3212/Compiler-theory/project/input/miniC.rul
-/home/king3212/Compiler-theory/project/input/miniC.grm
+/home/king3212/Compiler-theory/project/input/tiny.rul
+/home/king3212/Compiler-theory/project/input/tiny.grm

@@ -46,7 +46,7 @@ void MainWindow::fixTree(Tree *node)
     // 修改之后请重新编译这一部分，编译命令为：make gui
 }
 
-// 这个函数获取fix的参数
+// 这个函数获取fix的参数,写入类的私有变量中
 void MainWindow::loadTreeFuc()
 {
     QString path = QDir::currentPath() + "/../input/fixTree.txt";

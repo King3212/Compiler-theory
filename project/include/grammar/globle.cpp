@@ -1,6 +1,22 @@
-#include "globle.h"
+/**
+ * @file globle.cpp
+ * @brief 语法分析器的全局变量和函数的实现
+ * 
+ * @version 1.0
+ * @date 2024-4-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-4-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
 
-string Grammar::toString()
+#include "globle.h"
+// 去除字符串两端的空格
+string Grammar::toString() 
 {
     string result = "Grammar:\n";
     result += "left: \n" + left + "\n";
@@ -27,6 +43,7 @@ bool Item::operator==(const Item &other) const
     return dot == other.dot && production == other.production && lookahead == other.lookahead;
 }
 
+// 将 Item 转为字符串
 string Item::toString()
 {
     string result = "Item:\n";

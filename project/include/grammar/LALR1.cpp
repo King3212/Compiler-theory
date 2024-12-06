@@ -1,8 +1,20 @@
 #include "LALR1.h"
 
-
-
-bool LALR1::sameCore(State s1, State s2)
+/**
+ * @file LALR1.cpp
+ * @brief LALR1分析表生成模块的实现文件
+ * 
+ * @version 1.0
+ * @date 2024-9-28
+ * @auther 20222131044
+ * 
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2023-9-28 | 20222131044 | 初始版本
+ */
+// 判断两个状态的核心是否相同
+bool LALR1::sameCore(State s1, State s2) 
 {
     if (s1.items.size() != s2.items.size())
     {
@@ -27,6 +39,7 @@ bool LALR1::sameCore(State s1, State s2)
     return true;
 }
 
+// 重构
 void LALR1::rebuild()
 {
     map<int,int> indexMap;
@@ -86,12 +99,14 @@ void LALR1::rebuild()
         }
     }
     states.clear();
+    // 更新状态
     for (auto state: newStates){
         states.insert(state);
     }
     newStates.clear();
     indexMap[-1] = -1;
     IndexedSet<Edge> newEdges;
+    // 更新边
     for (auto edge: edges){
         Edge newEdge;
         newEdge.from = indexMap[edge.from];

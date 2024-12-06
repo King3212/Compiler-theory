@@ -1,5 +1,22 @@
+/**
+ * @file LR1.cpp
+ * @brief LR1分析表生成模块的实现文件
+ * 
+ * @version 1.0
+ * @date 2024-9-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-9-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
 #include "LR1.h"
 
+// 生成可空集合
 State LR1::gotoState(State state, string sign) {
     State newState;
     IndexedSet<Item> items;
@@ -132,7 +149,7 @@ string LR1::toGraph() {
 }
 
 
-
+// 生成字符串
 string LR1::toString()
 {
     string result = "";
@@ -142,6 +159,7 @@ string LR1::toString()
     return result;
 }
 
+// 获取FirstFollow集合
 string LR1::getFirstFollow()
 {
     string result = "";
@@ -278,6 +296,7 @@ void LR1::genNullable()
     }
 }
 
+// 这个函数生成闭包
 void LR1::closure(Item item, IndexedSet<Item> &result)
 {
     if (item.dot == item.production.right.size())   // 点号已经到达末尾，不需要闭包
@@ -355,6 +374,7 @@ IndexedSet<string> LR1::getFirstSet(vector<string> remainingSymble, IndexedSet<s
     return result;
 }
 
+// 获得跳转集合
 IndexedSet<string> LR1::getJumpSet(State &state)
 {
     IndexedSet<string> result;
@@ -367,6 +387,7 @@ IndexedSet<string> LR1::getJumpSet(State &state)
     return result;
 }
 
+// 生成DFA
 void LR1::genDFArec(State &state)
 {
     for (auto item : state.items)// 进行规约处理

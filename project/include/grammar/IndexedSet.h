@@ -1,4 +1,20 @@
-﻿#pragma execution_character_set("utf-8")
+﻿/**
+ * @file IndexedSet.h
+ * @brief 定义了一个带索引的集合
+ * 
+ * @version 1.0
+ * @date 2024-6-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-6-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
+#pragma execution_character_set("utf-8")
 #include <vector>
 #include <unordered_map>
 #include <stdexcept>

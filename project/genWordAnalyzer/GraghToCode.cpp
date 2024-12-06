@@ -21,6 +21,7 @@
  * @return std::vector<gragh*> 图
  */
 
+// 打印图
 void printGragh(std::vector<gragh> *Gs,std::string name)
 {
     std::fstream file;
@@ -31,6 +32,7 @@ void printGragh(std::vector<gragh> *Gs,std::string name)
     }
     file.close();
 }
+// 将正则表达式转换为图
 std::vector<gragh *>* textsToGraghs(std::vector<std::string> reLines)
 {
     std::vector<gragh *> *Gs = new std::vector<gragh *>();
@@ -138,7 +140,7 @@ void buildHead(){
     printf("}; \n");
     printf("\n\n\n");
 }
-
+// 生成 token 函数
 void buildtoken(std::vector<gragh *> *Gs)
 {
     // 函数头
@@ -190,7 +192,7 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("    return tokens;\n");
     printf("}\n");
 }
-
+// 主函数
 void buildMain(){
     printf("int main(int argc,char* argv[]){ \n");
     printf("    std::vector<token> tokens = getTokens(argv[1]); \n");

@@ -1,3 +1,19 @@
+/**
+ * @file tokens.h
+ * @brief 词法分析器的词法分析结果的数据结构
+ * 
+ * @version 1.0
+ * @date 2024-9-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-9-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
 #include<vector>
 #include<string>
 #include<iostream>
@@ -6,7 +22,7 @@
 #include"../../include/File/File.h"
 using namespace std;
 #pragma once
-
+// 词法分析器的词法分析结果的数据结构
 struct token
 {
     string type;
@@ -17,15 +33,15 @@ struct token
     }
 };
 
-
+// 词法分析器读取词法分析结果的数据结构
 class Tokens
 {
 private:
-    int line = 0;
-    int pos = 0;
-    vector<vector<token> *> *tokens;
+    int line = 0; // 当前行
+    int pos = 0; // 当前列
+    vector<vector<token> *> *tokens; // 词法分析结果
 public:
-    Tokens(string path)
+    Tokens(string path) // 构造函数
     {   
         cout << "running dir: ";
         system("pwd");
@@ -53,7 +69,7 @@ public:
         }
         
     }
-    ~Tokens()
+    ~Tokens() // 析构函数
     {
         for (auto lineTokens : *tokens)
         {
@@ -61,8 +77,8 @@ public:
         }
         delete tokens;
     }
-
-    token getToken()
+ 
+    token getToken() // 获取当前 token
     {
         if (isEmtpy())
         {
@@ -76,7 +92,7 @@ public:
         return result;
     }
 
-    void advanceToken()
+    void advanceToken() // 移动到下一个 token
     {
         pos++;
         if (pos == tokens->at(line)->size())
@@ -86,7 +102,7 @@ public:
         }
     }
 
-    vector<vector<token>> getTokens()
+    vector<vector<token>> getTokens() // 获取所有 token
     {
         vector<vector<token>> result;
         for (auto lineTokens : *tokens)
@@ -96,7 +112,7 @@ public:
         return result;
     }
     
-    bool isEmtpy()
+    bool isEmtpy() // 判断是否为空
     {
         return (line == (*tokens).size());
     }

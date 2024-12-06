@@ -1,5 +1,17 @@
 
-
+/**
+ * @file globle.h
+ * @brief 实现了主界面的类
+ * 
+ * @version 1.0
+ * @date 2024-9-25
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2024-9-25 | 初始版本
+ */
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -44,81 +56,81 @@ public:
     void setSource();
 
 private slots:
-    void on_pushButton_saveSrc_clicked();
+    void on_pushButton_saveSrc_clicked();  // 保存源文件
 
-    void on_pushButton_load_word_rul_clicked();
+    void on_pushButton_load_word_rul_clicked();  // 加载词法规则
 
-    void on_pushButton_Word_NFA_clicked();
+    void on_pushButton_Word_NFA_clicked();  // 生成NFA
 
-    void on_pushButton_word_DFA_clicked();
+    void on_pushButton_word_DFA_clicked();  // 生成DFA
 
-    void on_pushButton_word_miniDFA_clicked();
+    void on_pushButton_word_miniDFA_clicked();  // 生成最小化DFA
 
-    void on_pushButton_Word_Analyze_clicked();
+    void on_pushButton_Word_Analyze_clicked();  // 词法分析
 
-    void on_pushButton_openSrc_clicked();
+    void on_pushButton_openSrc_clicked();  // 打开源代码
 
-    void on_pushButton_show_result_WA_clicked();
+    void on_pushButton_show_result_WA_clicked();  // 显示词法分析结果
 
-    void on_pushButton_load_BNF_clicked();
+    void on_pushButton_load_BNF_clicked();  // 加载BNF
 
-    void on_pushButton_GA_run_clicked();
+    void on_pushButton_GA_run_clicked();  // 语法分析
 
-    void on_pushButton_show_log_clicked();
+    void on_pushButton_show_log_clicked();  // 显示分析日志
 
-    void on_pushButton_show_Analyze_Tree_clicked();
+    void on_pushButton_show_Analyze_Tree_clicked();  // 显示分析树
 
-    void on_pushButton_show_FirstFollow_clicked();
+    void on_pushButton_show_FirstFollow_clicked();  // 显示FirstFollow集合
+ 
+    void on_pushButton_show_code_clicked();  // 显示代码
 
-    void on_pushButton_show_code_clicked();
+    void on_pushButton_LALR1Table_clicked();  // 显示LALR1分析表
 
-    void on_pushButton_LALR1Table_clicked();
+    void on_pushButton_show_LR1_DFA_clicked();  // 显示LR1DFA
 
-    void on_pushButton_show_LR1_DFA_clicked();
+    void on_pushButton_show_LALR_DFA_clicked();  // 显示LALR1DFA
 
-    void on_pushButton_show_LALR_DFA_clicked();
+    void on_checkBox_Program_stateChanged(int arg1);  // 源代码复选框
 
-    void on_checkBox_Program_stateChanged(int arg1);
+    void on_checkBox_Re_stateChanged(int arg1);  // 正则表达式复选框
 
-    void on_checkBox_Re_stateChanged(int arg1);
-
-    void on_checkBox_BNF_stateChanged(int arg1);
+    void on_checkBox_BNF_stateChanged(int arg1);  // BNF复选框
 
 private:
-    Ui::MainWindow *ui;
-    QString srcPath;
-    QString ignorePath;
-    QString wordRulPath;
-    QString BNFPath;
-    QString LR1Path;
-    QString LALR1Path;
-    vector<graghForWA> NFA;
-    vector<graghForWA> DFA;
-    vector<graghForWA> miniDFA;
-    vector<token> tokens;
-    IndexedSet<Edge> LR1edges;
-    IndexedSet<Edge> LALR1edges;
-    Tree *tree;
-    QString AnalyzeLog;
-    Parser *parser;
-    QString FirstFollow;
-    QString program;
-    QString bnf;
-    QString re;
-    bool wordAnalyzed;
-    bool grammarAnalyzed;
-    bool genSuccess;
-    IndexedSet<string> ignoreSigns;
-    void showAGragh(graghForWA g);
-    IndexedSet<Edge> getEdgesFromFile(string path);
-    vector<QString> split(QString str, QString pattern);
-    void loadTreeIgnore();
-    void loadTreeFuc();
-    void compressTree(Tree *node);
-    void fixTree(Tree *node);
-    bool lr1DFAgened;
-    bool lalr1DFAgened;
-    vector<IndexedSet<string>> ops;
+    Ui::MainWindow *ui;  // 主界面
+    QString srcPath;  // 源文件路径
+    QString ignorePath;  // 忽略符号路径
+    QString wordRulPath;  // 词法规则路径
+    QString BNFPath;  // BNF路径
+    QString LR1Path;  // LR1路径
+    QString LALR1Path;  // LALR1路径
+    vector<graghForWA> NFA;  // NFA图
+    vector<graghForWA> DFA;  // DFA图
+    vector<graghForWA> miniDFA;  // 最小化DFA图
+    vector<token> tokens;  // 词法分析结果
+    IndexedSet<Edge> LR1edges;  // LR1边
+    IndexedSet<Edge> LALR1edges;  // LALR1边
+    Tree *tree;  // 分析树
+    QString AnalyzeLog;  // 分析日志
+    Parser *parser;  // 语法分析器
+    QString FirstFollow;  // FirstFollow集合
+    QString program;  // 源代码
+    QString bnf;  // BNF
+    QString re;  // 正则表达式
+    bool wordAnalyzed;  // 是否词法分析
+    bool grammarAnalyzed;   // 是否语法分析
+    bool genSuccess;  // 是否生成成功
+    IndexedSet<string> ignoreSigns;  // 忽略符号
+    void showAGragh(graghForWA g);  // 显示图
+    IndexedSet<Edge> getEdgesFromFile(string path);  // 从文件中获取边
+    vector<QString> split(QString str, QString pattern);  // 分割字符串
+    void loadTreeIgnore();  // 加载忽略符号
+    void loadTreeFuc();  // 加载fixTree
+    void compressTree(Tree *node);      // 压缩树
+    void fixTree(Tree *node);  // 修正树
+    bool lr1DFAgened;  // 是否生成LR1DFA
+    bool lalr1DFAgened;  // 是否生成LALR1DFA
+    vector<IndexedSet<string>> ops;  // 操作符
 };
 
 #endif // MAINWINDOW_H

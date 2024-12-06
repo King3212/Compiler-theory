@@ -1,4 +1,20 @@
-﻿#include"globle.h"
+﻿/**
+ * @file LR1.h
+ * @brief LR1分析表生成模块的头文件
+ * 
+ * @version 1.0
+ * @date 2024-9-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-9-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
+#include"globle.h"
 #include<map>
 #include<set>
 #include<iostream>
@@ -7,18 +23,18 @@ using namespace std;
 class LR1
 {
 protected:
-    Grammar virtualGrammar;
-    vector<Grammar> grammars;
-    map<string, vector<Grammar>> grammarMap;
-    map<string, IndexedSet<string>> First;
-    map<string, IndexedSet<string>> Follow;
-    IndexedSet<State> states;
-    IndexedSet<string> signs;
-    IndexedSet<string> nonTerminals;
-    IndexedSet<Edge> edges;
-    map<string,bool> nullable;
+    Grammar virtualGrammar;  // 虚拟产生式
+    vector<Grammar> grammars;  // 文法
+    map<string, vector<Grammar>> grammarMap;  // 文法映射
+    map<string, IndexedSet<string>> First;  // First 集合
+    map<string, IndexedSet<string>> Follow;  // Follow 集合
+    IndexedSet<State> states;  // 状态集合
+    IndexedSet<string> signs; // 符号集合
+    IndexedSet<string> nonTerminals; // 非终结符集合
+    IndexedSet<Edge> edges; // 边集合
+    map<string,bool> nullable; // 可空集合
 public:
-    LR1(vector<Grammar> grammars)
+    LR1(vector<Grammar> grammars) // 构造函数
     {
         this->grammars = grammars;
         this->First = map<string, IndexedSet<string>>();
@@ -44,31 +60,31 @@ public:
 
     }
 
-    State gotoState(State state, string sign);
+    State gotoState(State state, string sign);  // 计算状态转移
 
-    void genDFA();
+    void genDFA();  // 生成DFA
 
-    void printEdge();
+    void printEdge();  // 打印边
 
-    void printState();
+    void printState();  // 打印状态
 
-    string toGraph();
+    string toGraph();  // 生成图
 
-    string toString();
+    string toString();  // 生成字符串
 
-    string getFirstFollow();
+    string getFirstFollow();  // 获取FirstFollow集合
 private:
-    void genFirst();
+    void genFirst();  // 生成First集合
 
-    void genFollow();
+    void genFollow();  // 生成Follow集合
 
-    void genNullable();
+    void genNullable();  // 生成Nullable集合
 
-    void closure(Item item, IndexedSet<Item> &result);
+    void closure(Item item, IndexedSet<Item> &result);  // 闭包
 
-    IndexedSet<string> getFirstSet(vector<string> remainingSymble,IndexedSet<string> oldLookahead);
+    IndexedSet<string> getFirstSet(vector<string> remainingSymble,IndexedSet<string> oldLookahead);  // 获取First集合
 
-    IndexedSet<string> getJumpSet(State &state);
+    IndexedSet<string> getJumpSet(State &state);  // 获取跳转集合
 
-    void genDFArec(State &state);
+    void genDFArec(State &state);  // 生成DFA
 };

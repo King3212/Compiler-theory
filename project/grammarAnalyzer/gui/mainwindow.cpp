@@ -1,8 +1,24 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
-
-MainWindow::MainWindow(QWidget *parent)
+/**
+ * @file globle.h
+ * @brief 定义了主界面的类
+ * 
+ * @version 1.0
+ * @date 2024-9-25
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2024-9-25 | 初始版本
+ */
+/**
+ * @brief 构造函数
+ * 
+ */
+// 主界面类
+MainWindow::MainWindow(QWidget *parent)  
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -12,12 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     genSuccess = false;
     ui->checkBox_Program->setChecked(true);
 }
-
+// 析构函数
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+// 初始化源文件
 void MainWindow::initSource()
 {
     QFile file("../input/Sources.txt");
@@ -42,7 +58,7 @@ void MainWindow::initSource()
         file.close();
     }
 }
-
+// 设置源文件
 void MainWindow::setSource()
 {
     QFile file("../input/Sources.txt");
@@ -54,6 +70,7 @@ void MainWindow::setSource()
     }
 }
 
+// 打开源代码
 void MainWindow::on_pushButton_saveSrc_clicked()
 {
     // 打开文件资源浏览器，选择文件并获取路径
@@ -74,6 +91,7 @@ void MainWindow::on_pushButton_saveSrc_clicked()
 }
 
 
+// 加载词法规则
 void MainWindow::on_pushButton_load_word_rul_clicked()
 {
     // 打开文件资源浏览器，选择文件并获取路径
@@ -129,6 +147,7 @@ void MainWindow::on_pushButton_load_word_rul_clicked()
 #include <string>
 #include <iostream>
 
+// 从文件中读取图的信息
 std::vector<graghForWA> getGraghFromFile(const std::string& path) {
     std::vector<graghForWA> graphs; // 存储多个图
     std::ifstream file(path); // 打开文件
@@ -200,13 +219,14 @@ std::vector<graghForWA> getGraghFromFile(const std::string& path) {
     return graphs;
 }
 
+// 展示图
 void MainWindow::showAGragh(graghForWA g){
     tableForGragh *table = new tableForGragh(this);
     table->initTable(g);
     table->show();
 }
 
-
+// 从文件中读取图的信息
 IndexedSet<Edge> MainWindow::getEdgesFromFile(string path)
 {
     IndexedSet<Edge> edges;
@@ -247,7 +267,7 @@ IndexedSet<Edge> MainWindow::getEdgesFromFile(string path)
     }
     return edges;
 }
-
+// 压缩树
 void MainWindow::compressTree(Tree* node) {
     if (!node->value.empty()) {
         return;
@@ -293,7 +313,7 @@ void MainWindow::compressTree(Tree* node) {
 }
 
 
-
+// 生成语法分析器
 void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
 {
     NFA = getGraghFromFile("../input/NFA.gh");
@@ -329,8 +349,7 @@ void MainWindow::on_pushButton_Word_NFA_clicked() // 显示NFA
     dialog->show(); // 弹出对话框
 }
 
-
-
+// 显示DFA
 void MainWindow::on_pushButton_word_DFA_clicked()// 显示DFA
 {
     DFA = getGraghFromFile("../input/DFA.gh");
@@ -366,7 +385,7 @@ void MainWindow::on_pushButton_word_DFA_clicked()// 显示DFA
     dialog->show(); // 弹出对话框
 }
 
-
+// 显示最小化DFA
 void MainWindow::on_pushButton_word_miniDFA_clicked() // 显示最小化DFA
 {
     miniDFA = getGraghFromFile("../input/miniDFA.gh");
@@ -402,7 +421,7 @@ void MainWindow::on_pushButton_word_miniDFA_clicked() // 显示最小化DFA
     dialog->show(); // 弹出对话框
 }
 
-
+// 词法分析
 void MainWindow::on_pushButton_Word_Analyze_clicked()
 {
     QString src = ui->plainTextEdit->toPlainText();
@@ -427,7 +446,7 @@ void MainWindow::on_pushButton_Word_Analyze_clicked()
     QMessageBox::information(this, "提示", "词法分析完成");
 }
 
-
+// 打开源代码
 void MainWindow::on_pushButton_openSrc_clicked() // 打开源代码
 {
      // 打开文件资源浏览器，选择文件并获取路径
@@ -458,7 +477,7 @@ void MainWindow::on_pushButton_openSrc_clicked() // 打开源代码
 
 
 
-
+// 显示词法分析结果
 void MainWindow::on_pushButton_show_result_WA_clicked() // 显示词法分析结果
 {
     QWidget *window = new QWidget();
@@ -487,7 +506,7 @@ void MainWindow::on_pushButton_show_result_WA_clicked() // 显示词法分析结
 
 }
 
-
+// 加载BNF
 void MainWindow::on_pushButton_load_BNF_clicked()
 {
      // 打开文件资源浏览器，选择文件并获取路径
@@ -535,7 +554,7 @@ void MainWindow::on_pushButton_load_BNF_clicked()
 }
 
 
-
+// 语法分析
 void MainWindow::on_pushButton_GA_run_clicked()
 {
     QString tempPath = "../input/tempSRC.prm";
@@ -598,7 +617,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
 
 
 
-
+// 显示分析日志
 void MainWindow::on_pushButton_show_log_clicked()
 {
     if (AnalyzeLog.isEmpty() || !grammarAnalyzed){
@@ -617,7 +636,7 @@ void MainWindow::on_pushButton_show_log_clicked()
     dialog->show();
 }
 
-
+// 填充分析树
 void populateTreeWidget(QTreeWidgetItem *parentItem, Tree *tree) {
     if (!tree) return;
 
@@ -632,6 +651,7 @@ void populateTreeWidget(QTreeWidgetItem *parentItem, Tree *tree) {
     }
 }
 
+// 显示分析树
 void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
 {
     if (!tree || grammarAnalyzed == false) {
@@ -676,7 +696,7 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     window->show();
 }
 
-
+// 显示First & Follow
 void MainWindow::on_pushButton_show_FirstFollow_clicked()
 {
     QString currentPath = QDir::currentPath();
@@ -701,7 +721,7 @@ void MainWindow::on_pushButton_show_FirstFollow_clicked()
     dialog->show();
 }
 
-
+// 显示词法分析器代码
 void MainWindow::on_pushButton_show_code_clicked()
 {
     QString Path = QDir::currentPath() + "/../wordAnalyzer/code.cpp";
@@ -737,6 +757,7 @@ void MainWindow::on_pushButton_show_code_clicked()
     dialog->show();
 }
 
+// 载入忽略符号
 void MainWindow::loadTreeIgnore()
 {
     vector<string>ignoreSigns = readFile("../input/TreeIgnore.txt");
@@ -766,7 +787,7 @@ vector<QString> MainWindow::split(QString str, QString pattern)
 
 
 
-
+// 显示LALR(1)分析表
 void MainWindow::on_pushButton_LALR1Table_clicked()
 {
     QString currentPath = QDir::currentPath();
@@ -776,7 +797,7 @@ void MainWindow::on_pushButton_LALR1Table_clicked()
     table->show();
 }
 
-
+// 显示LR(1)分析表
 void MainWindow::on_pushButton_show_LR1_DFA_clicked()
 {
     QString outputDir = QDir::currentPath();
@@ -815,7 +836,7 @@ void MainWindow::on_pushButton_show_LR1_DFA_clicked()
 
 }
 
-
+// 显示LALR(1)DFA
 void MainWindow::on_pushButton_show_LALR_DFA_clicked()
 {
     if (lalr1DFAgened == true){
@@ -856,7 +877,7 @@ void MainWindow::on_pushButton_show_LALR_DFA_clicked()
 
 
 
-
+// 切换到代码编辑器
 void MainWindow::on_checkBox_Program_stateChanged(int arg1)
 {
     if (arg1 == 2){
@@ -873,7 +894,7 @@ void MainWindow::on_checkBox_Program_stateChanged(int arg1)
     }
 }
 
-
+// 切换到正则表达式编辑器
 void MainWindow::on_checkBox_Re_stateChanged(int arg1)
 {
     if (arg1 == 2){
@@ -889,7 +910,7 @@ void MainWindow::on_checkBox_Re_stateChanged(int arg1)
     }
 }
 
-
+// 切换到BNF编辑器
 void MainWindow::on_checkBox_BNF_stateChanged(int arg1)
 {
     if (arg1 == 2){

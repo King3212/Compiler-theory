@@ -1,7 +1,21 @@
+/**
+ * @file tableforgragh.cpp
+ * @brief 展示表格的类的实现
+ * 
+ * @version 1.0
+ * @date 2024-9-25
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2024-9-25 | 初始版本
+ */
+
 #include "tableforgragh.h"
 #include "./ui_tableforgragh.h"
 
-tableForGragh::tableForGragh(QWidget *parent)
+tableForGragh::tableForGragh(QWidget *parent) 
     : QWidget(parent)
     , ui(new Ui::tableForGragh)
 {
@@ -12,7 +26,7 @@ tableForGragh::~tableForGragh()
 {
     delete ui;
 }
-
+// 初始化表格
 void tableForGragh::initTable(graghForWA oneGragh)
 {
     ui->label_name->setText(QString::fromStdString("name: " + oneGragh.name));
@@ -55,6 +69,7 @@ void tableForGragh::initTable(graghForWA oneGragh)
     }
 }
 
+// 初始化表格
 void tableForGragh::initTable(IndexedSet<Edge> edges,QString name)
 {
     IndexedSet<string> signs;
@@ -66,6 +81,7 @@ void tableForGragh::initTable(IndexedSet<Edge> edges,QString name)
     }
     ui->tableWidget->setColumnCount(signs.size());
     ui->tableWidget->setRowCount(max + 1);
+    // 遍历边集，将边添加到表格中
     for (auto e : edges)
     {
         if (e.type == SHIFT)
@@ -78,14 +94,17 @@ void tableForGragh::initTable(IndexedSet<Edge> edges,QString name)
         else if (e.type == GOTO)
             ui->tableWidget->setItem(e.from, signs.find(e.sign), new QTableWidgetItem(QString::fromStdString("g " + std::to_string(e.to))));
     }
+    // 设置表头
     for (auto s : signs)
     {
         ui->tableWidget->setHorizontalHeaderItem(signs.find(s), new QTableWidgetItem(QString::fromStdString(s)));
     }
+    // 设置行头
     for (int i = 0; i < max + 1; i++)
     {
         ui->tableWidget->setVerticalHeaderItem(i, new QTableWidgetItem(QString::fromStdString(std::to_string(i))));
     }
+    // 设置其他信息
     ui->label_name->setText("name: " + name);
     ui->label_start->setText("start: 0");
     ui->label_size->setText("size: " + QString::fromStdString(std::to_string(max + 1)));

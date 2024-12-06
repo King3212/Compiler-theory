@@ -1,4 +1,21 @@
-﻿#pragma execution_character_set("utf-8")
+﻿/**
+ * @file globle.h
+ * @brief 定义了全局变量和函数
+ * 
+ * @version 1.0
+ * @date 2024-4-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-4-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
+
+#pragma execution_character_set("utf-8")
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -17,6 +34,7 @@ enum ActionType // 动作类型
     ERROR
 };
 
+// 定义文法结构体
 struct Grammar{
     string left;
     vector<string> right;
@@ -62,7 +80,7 @@ struct std::hash<Item> {
     }
 };
 
-
+// 定义边结构体
 struct Edge{
     int from;
     int to;
@@ -86,7 +104,7 @@ struct std::hash<Edge> {
     }
 };
 
-
+// 定义状态结构体
 struct State{
     IndexedSet<Item> items;
     bool operator==(const State &other) const;

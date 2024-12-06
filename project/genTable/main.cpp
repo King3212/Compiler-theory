@@ -1,3 +1,17 @@
+/**
+ * @file main.cpp
+ * @brief 定义了图的数据结构和处理图的类
+ * 
+ * @version 1.0
+ * @date 2024-9-25
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2024-9-25 | 初始版本
+ */
+
 #include"../include/grammar/LALR1.h"
 #include"../include/grammar/LR1.h"
 #include"../include/grammar/globle.h"
@@ -11,6 +25,7 @@
 
 
 using namespace std;
+// 处理文法
 void process(vector<Grammar> grammars, string outputDir){
 
     // 输出LR1 DFA
@@ -55,7 +70,7 @@ void process(vector<Grammar> grammars, string outputDir){
 
 
 }
-
+// 从文件中读取文法，返回文法集合
 int main(int argc, char const *argv[]){
     if (argc != 3){
         cerr << "Usage: " << argv[0] << " <grammar file>"<< "<output dir>" << endl;

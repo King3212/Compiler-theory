@@ -1,3 +1,19 @@
+/**
+ * @file fixTree.cpp
+ * @brief 修正分析树为语法树
+ * 
+ * @version 1.0
+ * @date 2024-11-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-11-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
 #include"../grammarAnalyzer/gui/mainwindow.h"
 
 #define MAX_FIX_TYPE 3  //定义FixTree模式类型数

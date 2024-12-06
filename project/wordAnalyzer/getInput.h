@@ -1,3 +1,19 @@
+/**
+ * @file getInput.h
+ * @brief 定义了输入类
+ * 
+ * @version 1.0
+ * @date 2024-6-30
+ * @auther 20222131044
+ *  
+ * @history
+ * 版本 日期 作者 说明
+ * ------|------|------|------
+ * 1.0 | 2024-6-30 | 20222131044 | 初始版本
+ * 
+ * 
+ */
+
 #include <fstream>
 #include <iostream>
 #include <string>

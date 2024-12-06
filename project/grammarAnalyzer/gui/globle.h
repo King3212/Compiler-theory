@@ -1,12 +1,24 @@
 #ifndef GLOBLE_H
 #define GLOBLE_H
-
+/**
+ * @file globle.h
+ * @brief 主界面全局变量和函数的声明
+ * 
+ * @version 1.0
+ * @date 2024-9-25
+ * @author 20222131044
+ * 
+ * @history
+ * 版本 | 作者 | 日期 | 说明
+ * ------|------|------|------
+ * 1.0 | 20222131044 | 2024-9-25 | 初始版本
+ */
 
 
 #include <string>
 #include <unordered_set>
 #include <vector>
-
+// 定义词法分析器的边
 struct edgeForWA
 {
     int begin;
@@ -33,7 +45,7 @@ struct edgeForWA
     }
 
 };
-
+// 定义词法分析器的图
 struct graghForWA
 {
     int start;

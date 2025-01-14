@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>864</width>
-    <height>1044</height>
+    <width>902</width>
+    <height>973</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,366 +17,253 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton_openSrc">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>930</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>打开文件到编辑框</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_load_word_rul">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>930</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>载入词法正则文件</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_load_BNF">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>20</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>载入BNF语法文件</string>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>90</y>
-      <width>611</width>
-      <height>781</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_saveSrc">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>930</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>保存编辑框文本到文件</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_GA_run">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>370</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>语法分析</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_Analyze_Tree">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>440</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>查看语法树</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_LR1_DFA">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>160</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>查看LR(1)DFA</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_LALR1Table">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>230</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>查看LALR(1)分析表</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_FirstFollow">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>300</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>查看First/Follow集合</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_Word_NFA">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>720</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>查看词法NFA</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_Word_Analyze">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>580</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>词法分析</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_result_WA">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>650</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>查看词法分析结果</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_log">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>510</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>查看分析过程</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_Word_source">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>611</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>当前词法来源：</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_Grammar_source">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>50</y>
-      <width>611</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>当前语法来源：</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_word_DFA">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>790</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>查看词法DFA</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_word_miniDFA">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>860</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>查看词法最小化的DFA</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_code">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>930</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(217, 217, 217);</string>
-    </property>
-    <property name="text">
-     <string>查看词法分析器代码</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_show_LALR_DFA">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>90</y>
-      <width>191</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(160, 160, 160);</string>
-    </property>
-    <property name="text">
-     <string>查看LALR1DFA</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_Program">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>890</y>
-      <width>111</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>编辑源程序</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_Re">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>890</y>
-      <width>111</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>编辑词法</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_BNF">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>890</y>
-      <width>111</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>编辑文法</string>
-    </property>
-   </widget>
+   <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_Word_source">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>当前词法来源：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_Grammar_source">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>当前语法来源：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="plainTextEdit"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="checkBox_Program">
+            <property name="text">
+             <string>编辑源程序</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_Re">
+            <property name="text">
+             <string>编辑词法</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_BNF">
+            <property name="text">
+             <string>编辑文法</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="pushButton_openSrc">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>打开文件到编辑框</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_saveSrc">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>保存编辑框文本到文件</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QPushButton" name="pushButton_load_BNF">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>载入BNF语法文件</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_LALR_DFA">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>查看LALR1DFA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_LR1_DFA">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>查看LR(1)DFA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_LALR1Table">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>查看LALR(1)分析表</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_FirstFollow">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>查看First/Follow集合</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_load_word_rul">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>载入词法正则文件</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Word_NFA">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>查看词法NFA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_word_DFA">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>查看词法DFA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_word_miniDFA">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>查看词法最小化的DFA</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_code">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>查看词法分析器代码</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Word_Analyze">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>词法分析</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_result_WA">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(160, 160, 160);</string>
+            </property>
+            <property name="text">
+             <string>查看词法分析结果</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_GA_run">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>语法分析</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_Analyze_Tree">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>查看语法树</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_log">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(217, 217, 217);</string>
+            </property>
+            <property name="text">
+             <string>查看分析过程</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>864</width>
+     <width>902</width>
      <height>36</height>
     </rect>
    </property>

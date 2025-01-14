@@ -89,7 +89,7 @@ make run
 界面主要分为7个区域，分别为：
 
 - 文件管理
-- 源程序
+- 编辑区
 - 缓存
 - 词法分析器展示
 - 词法分析器使用
@@ -107,9 +107,13 @@ make run
 ##### 保存源程序到文件
   - 点击按钮，将会打开一个文件资源管理器，使用者可以选择文件，将源程序区的内容覆写到被选中的文件里
 
-#### $\mathit{2}$ 源程序
+#### $\mathit{2}$ 编辑区
 
-提供了一个文本框，可以输入程序或者修改载入后的程序
+- 提供了一个文本框和三个复选框，可以输入程序或者修改载入后的程序
+
+- 如果取消选择复选框，则不会保存编辑框内内容，使用缓存运行
+
+- 如果正则词法的编辑框为空，则默认使用上一次生成的词法或者正则进行操作
 
 #### $\mathit{3}$ 缓存
 
@@ -246,7 +250,7 @@ make run
 
 对于Python这类对缩进有强要求的语言，你需要了解额外的`ignore.txt`
 
-对于语法树的生成你需要了解额外的TreeIgnore.txt
+对于语法树的生成你需要了解额外的`TreeIgnore.txt`、`fixTree.txt`和`fixTree.cpp`
 
 
 ### 词法正则文件
@@ -328,6 +332,62 @@ _end
 请根据需求增加或缩减该内容
 
 
+
+### 语法树修正`fixTree`
+
+#### `fixTree.txt`
+
+```txt
+(1,op,2)->(op,(1,2))
++ - * / % ^ <= < > >= == !=
+(1,op,2)->(1,(2))
+= :=
+(op,1)->(op,(1))
+read READ write WRITE
+```
+
+- 奇数行是模式的描述，可以忽略
+
+  > (1,op,2)指的是三个子节点，(op,(1,2))指的是(1,2)作为op的子节点
+
+- 偶数行是对op的可能取值
+
+  > 通过对op所有可能的列举，可以方便进行调整
+
+#### `fixTree.cpp`
+
+这是示例的处理，需要根据模式类型对节点进行调整
+
+> ```c++
+> #define MAX_FIX_TYPE 3  //定义FixTree模式类型数
+> 
+> //这个函数将分析树进一步修正为语法树
+> void MainWindow::fixTree(Tree *node)
+> {
+>     ...
+>     // 对类型一进行处理
+>     if (node->children.size() == 3){
+>         if(ops[0].contains(node->children[1]->value) 
+>            && node->children[1]->children.size() == 0)
+>         {
+>             node->value = node->children[1]->value;
+>             node->sign = node->children[1]->sign;
+>             node->children.erase(node->children.begin()+1);
+>         }
+>     }
+>     ...
+> }
+> ```
+
+- 如果需要添加其他处理，需要对`MAX_FIX_TYPE`进行调整，以读取更多行的内容
+
+- 调整结束之后需要对程序进行再次编译，局部编译的命令如下：
+
+  ```bash
+  make gui
+  ```
+
+  
 
 ## 其他功能
 

@@ -1,5 +1,13 @@
 Gragh: 
-_if 4 12
+_1000 0 2
+ends: 
+
+edges: 
+0 1 =
+
+
+Gragh: 
+_1001 4 12
 ends: 
 
 edges: 
@@ -19,7 +27,7 @@ edges:
 
 
 Gragh: 
-_then 4 24
+_1002 4 24
 ends: 
 
 edges: 
@@ -53,7 +61,7 @@ edges:
 
 
 Gragh: 
-_else 4 24
+_1003 4 24
 ends: 
 
 edges: 
@@ -87,7 +95,7 @@ edges:
 
 
 Gragh: 
-_end 4 18
+_1004 4 18
 ends: 
 
 edges: 
@@ -114,7 +122,7 @@ edges:
 
 
 Gragh: 
-_repeat 4 36
+_1005 4 36
 ends: 
 
 edges: 
@@ -162,7 +170,7 @@ edges:
 
 
 Gragh: 
-_until 4 30
+_1006 4 30
 ends: 
 
 edges: 
@@ -203,7 +211,7 @@ edges:
 
 
 Gragh: 
-_read 4 24
+_1007 4 24
 ends: 
 
 edges: 
@@ -237,7 +245,7 @@ edges:
 
 
 Gragh: 
-_write 4 30
+_1008 4 30
 ends: 
 
 edges: 
@@ -278,7 +286,15 @@ edges:
 
 
 Gragh: 
-_plus 0 2
+_500 0 2
+ends: 
+
+edges: 
+0 1 =
+
+
+Gragh: 
+_501 0 2
 ends: 
 
 edges: 
@@ -286,7 +302,7 @@ edges:
 
 
 Gragh: 
-_minus 0 2
+_502 0 2
 ends: 
 
 edges: 
@@ -294,7 +310,7 @@ edges:
 
 
 Gragh: 
-_multiply 0 2
+_503 0 2
 ends: 
 
 edges: 
@@ -302,7 +318,7 @@ edges:
 
 
 Gragh: 
-_divide 0 2
+_504 0 2
 ends: 
 
 edges: 
@@ -310,7 +326,7 @@ edges:
 
 
 Gragh: 
-_mod 0 2
+_505 0 2
 ends: 
 
 edges: 
@@ -318,7 +334,7 @@ edges:
 
 
 Gragh: 
-_power 0 2
+_506 0 2
 ends: 
 
 edges: 
@@ -326,7 +342,7 @@ edges:
 
 
 Gragh: 
-_less 0 2
+_507 0 2
 ends: 
 
 edges: 
@@ -334,7 +350,7 @@ edges:
 
 
 Gragh: 
-_not_equal 0 4
+_508 0 4
 ends: 
 
 edges: 
@@ -344,7 +360,7 @@ edges:
 
 
 Gragh: 
-_less_equal 0 4
+_509 0 4
 ends: 
 
 edges: 
@@ -354,7 +370,7 @@ edges:
 
 
 Gragh: 
-_greater_equal 0 4
+_510 0 4
 ends: 
 
 edges: 
@@ -364,7 +380,7 @@ edges:
 
 
 Gragh: 
-_greater 0 2
+_511 0 2
 ends: 
 
 edges: 
@@ -372,7 +388,7 @@ edges:
 
 
 Gragh: 
-_equal 0 2
+_512 0 2
 ends: 
 
 edges: 
@@ -380,23 +396,7 @@ edges:
 
 
 Gragh: 
-_open_comment 0 2
-ends: 
-
-edges: 
-0 1 {
-
-
-Gragh: 
-_close_comment 0 2
-ends: 
-
-edges: 
-0 1 }
-
-
-Gragh: 
-_semicolon 0 2
+_513 0 2
 ends: 
 
 edges: 
@@ -404,7 +404,7 @@ edges:
 
 
 Gragh: 
-_assign 0 4
+_514 0 4
 ends: 
 
 edges: 
@@ -414,7 +414,15 @@ edges:
 
 
 Gragh: 
-_identifier 204 454
+_10 0 2
+ends: 
+
+edges: 
+0 1 =
+
+
+Gragh: 
+_11 204 454
 ends: 
 
 edges: 
@@ -988,7 +996,15 @@ edges:
 
 
 Gragh: 
-_number 38 40
+_20 0 2
+ends: 
+
+edges: 
+0 1 =
+
+
+Gragh: 
+_21 38 40
 ends: 
 
 edges: 
@@ -1041,5 +1057,21 @@ edges:
 38 36 
 37 36 
 37 39 
+
+
+Gragh: 
+_open_comment 0 2
+ends: 
+
+edges: 
+0 1 {
+
+
+Gragh: 
+_close_comment 0 2
+ends: 
+
+edges: 
+0 1 }
 
 

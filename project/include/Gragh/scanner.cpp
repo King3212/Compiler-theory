@@ -239,7 +239,6 @@ std::vector<std::string> split(std::string str,std::string pattern){
     }
     return result;
 }
-#include <iostream>
 /**
  * @brief 扫描器
  * 
@@ -282,6 +281,7 @@ std::vector<finalData*>* scanner(std::vector<std::string> lines){
         std::vector <std::string> temp;
         if(line == "") continue;
         temp = split(line," ");
+        if (temp[0] == ">>") continue;
         if(temp[0][0] != '_'){
             int start = std::stoi(temp[1]);
             for(int i = 2; i < temp.size(); i++){
@@ -289,16 +289,9 @@ std::vector<finalData*>* scanner(std::vector<std::string> lines){
                 start++;
             }
         }
-        else if (temp[0][0] == '_') lines.push_back(line);
-        else if (temp[0] == ">>") continue;
-        else exit(1);
+        else lines.push_back(line);
     }
-    
-    for (auto line : lines)
-    {
-        std::cout << line << std::endl;
-    }
-    exit(0);
+
     std::vector<scanData*> *datas;
     datas = scanAll(lines);
     return baseRe(replaceRe(datas));

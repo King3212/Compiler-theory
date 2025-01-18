@@ -63,11 +63,11 @@ public:
                 t.value = value;
                 tokens->back()->push_back(t);
             }
-            if (tokens->back()->back().type == "_enter"){
+            if (!tokens->back()->empty() && tokens->back()->back().type == "enter"){
                 tokens->push_back(new vector<token>());
             }
         }
-        
+
     }
     ~Tokens() // 析构函数
     {

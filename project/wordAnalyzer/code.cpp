@@ -12,7 +12,29 @@ struct token{
 
 
 
-bool _if(Input *input){
+bool _1000(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '=': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _1001(Input *input){
     std::vector<int> finalNodes = {0, 1};
     int state = 4; // 初始状态
     while(true) {
@@ -54,7 +76,7 @@ bool _if(Input *input){
     }
     return false;
 }
-bool _then(Input *input){
+bool _1002(Input *input){
     std::vector<int> finalNodes = {1, 0};
     int state = 4; // 初始状态
     while(true) {
@@ -124,7 +146,7 @@ bool _then(Input *input){
     }
     return false;
 }
-bool _else(Input *input){
+bool _1003(Input *input){
     std::vector<int> finalNodes = {1, 0};
     int state = 6; // 初始状态
     while(true) {
@@ -194,7 +216,7 @@ bool _else(Input *input){
     }
     return false;
 }
-bool _end(Input *input){
+bool _1004(Input *input){
     std::vector<int> finalNodes = {0, 1};
     int state = 6; // 初始状态
     while(true) {
@@ -250,7 +272,7 @@ bool _end(Input *input){
     }
     return false;
 }
-bool _repeat(Input *input){
+bool _1005(Input *input){
     std::vector<int> finalNodes = {1, 0};
     int state = 12; // 初始状态
     while(true) {
@@ -348,7 +370,7 @@ bool _repeat(Input *input){
     }
     return false;
 }
-bool _until(Input *input){
+bool _1006(Input *input){
     std::vector<int> finalNodes = {1, 0};
     int state = 8; // 初始状态
     while(true) {
@@ -432,7 +454,7 @@ bool _until(Input *input){
     }
     return false;
 }
-bool _read(Input *input){
+bool _1007(Input *input){
     std::vector<int> finalNodes = {1, 0};
     int state = 8; // 初始状态
     while(true) {
@@ -502,7 +524,7 @@ bool _read(Input *input){
     }
     return false;
 }
-bool _write(Input *input){
+bool _1008(Input *input){
     std::vector<int> finalNodes = {1, 0};
     int state = 8; // 初始状态
     while(true) {
@@ -586,7 +608,29 @@ bool _write(Input *input){
     }
     return false;
 }
-bool _plus(Input *input){
+bool _500(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '=': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _501(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -608,7 +652,7 @@ bool _plus(Input *input){
     }
     return false;
 }
-bool _minus(Input *input){
+bool _502(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -630,7 +674,7 @@ bool _minus(Input *input){
     }
     return false;
 }
-bool _multiply(Input *input){
+bool _503(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -652,7 +696,7 @@ bool _multiply(Input *input){
     }
     return false;
 }
-bool _divide(Input *input){
+bool _504(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -674,7 +718,7 @@ bool _divide(Input *input){
     }
     return false;
 }
-bool _mod(Input *input){
+bool _505(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -696,7 +740,7 @@ bool _mod(Input *input){
     }
     return false;
 }
-bool _power(Input *input){
+bool _506(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -718,7 +762,7 @@ bool _power(Input *input){
     }
     return false;
 }
-bool _less(Input *input){
+bool _507(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -740,7 +784,7 @@ bool _less(Input *input){
     }
     return false;
 }
-bool _not_equal(Input *input){
+bool _508(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 2; // 初始状态
     while(true) {
@@ -768,7 +812,7 @@ bool _not_equal(Input *input){
     }
     return false;
 }
-bool _less_equal(Input *input){
+bool _509(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 2; // 初始状态
     while(true) {
@@ -796,7 +840,7 @@ bool _less_equal(Input *input){
     }
     return false;
 }
-bool _greater_equal(Input *input){
+bool _510(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 2; // 初始状态
     while(true) {
@@ -824,7 +868,7 @@ bool _greater_equal(Input *input){
     }
     return false;
 }
-bool _greater(Input *input){
+bool _511(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -846,7 +890,7 @@ bool _greater(Input *input){
     }
     return false;
 }
-bool _equal(Input *input){
+bool _512(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -868,51 +912,7 @@ bool _equal(Input *input){
     }
     return false;
 }
-bool _open_comment(Input *input){
-    std::vector<int> finalNodes = {0};
-    int state = 1; // 初始状态
-    while(true) {
-        char letter = (input->getInput())[0];
-        switch(state) {
-            case 0: 
-                switch(letter) {
-                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
-                }
-                break;
-            case 1: 
-                switch(letter) {
-                    case '{': state = 0; break;
-                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
-                }
-                break;
-            default: break;
-        }
-    }
-    return false;
-}
-bool _close_comment(Input *input){
-    std::vector<int> finalNodes = {0};
-    int state = 1; // 初始状态
-    while(true) {
-        char letter = (input->getInput())[0];
-        switch(state) {
-            case 0: 
-                switch(letter) {
-                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
-                }
-                break;
-            case 1: 
-                switch(letter) {
-                    case '}': state = 0; break;
-                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
-                }
-                break;
-            default: break;
-        }
-    }
-    return false;
-}
-bool _semicolon(Input *input){
+bool _513(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 1; // 初始状态
     while(true) {
@@ -934,7 +934,7 @@ bool _semicolon(Input *input){
     }
     return false;
 }
-bool _assign(Input *input){
+bool _514(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 2; // 初始状态
     while(true) {
@@ -962,7 +962,29 @@ bool _assign(Input *input){
     }
     return false;
 }
-bool _identifier(Input *input){
+bool _10(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '=': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _11(Input *input){
     std::vector<int> finalNodes = {6, 45, 10, 14, 0, 5, 21, 22, 12, 2, 7, 8, 56, 19, 33, 41, 9, 13, 16, 54, 86, 20, 49, 18, 46, 17, 52, 11, 62, 98, 83, 60, 100, 69, 4, 103, 3, 1, 15, 82, 70, 44, 81, 87, 57, 55, 53, 36, 88, 51, 77, 50, 102, 25, 35, 73, 63, 58, 71, 79, 108, 78, 107, 48, 106, 47, 105, 104, 72, 101, 42, 30, 89, 95, 84, 26, 85, 91, 32, 23, 24, 27, 90, 31, 65, 94, 67, 96, 37, 97, 38, 99, 40, 113, 112, 110, 59, 61, 68, 76, 80, 28, 92, 93, 34, 109, 64, 75, 39, 66, 43, 29, 111, 74};
     int state = 114; // 初始状态
     while(true) {
@@ -8668,7 +8690,29 @@ bool _identifier(Input *input){
     }
     return false;
 }
-bool _number(Input *input){
+bool _20(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '=': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _21(Input *input){
     std::vector<int> finalNodes = {2, 7, 0, 1, 3, 4, 9, 8, 6, 5};
     int state = 10; // 初始状态
     while(true) {
@@ -8844,6 +8888,50 @@ bool _number(Input *input){
     }
     return false;
 }
+bool _open_comment(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '{': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _close_comment(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '}': state = 0; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
 std::vector<token> getTokens(std::string filename){ 
     Input *input = new Input(filename); 
     std::vector<token> tokens;  
@@ -8851,7 +8939,7 @@ std::vector<token> getTokens(std::string filename){
         if (!tokens.empty() && tokens.back().name == "_open_comment")
         { 
             if (!_close_comment(input)){input->goBackOneChar(); continue;} 
-            else{token newtoken; newtoken.name = "_comment"; tokens.push_back(newtoken); newtoken.name = "_close_commnet"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}
+            else{token newtoken; newtoken.name = "_comment"; tokens.push_back(newtoken); newtoken.name = "_close_comment"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}
         }
         int tokenSize = tokens.size();
         input->goBackOneChar(); 
@@ -8866,57 +8954,65 @@ std::vector<token> getTokens(std::string filename){
         else if(c == '\n') {token newtoken; newtoken.name = "_enter"; tokens.push_back(newtoken); continue;} 
         input->goBackOneChar();
         int pos = input->getPos();
-        if(_if(input)) {token newtoken; newtoken.name = "_if"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1000(input)) {token newtoken; newtoken.name = "_1000"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_then(input)) {token newtoken; newtoken.name = "_then"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1001(input)) {token newtoken; newtoken.name = "_1001"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_else(input)) {token newtoken; newtoken.name = "_else"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1002(input)) {token newtoken; newtoken.name = "_1002"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_end(input)) {token newtoken; newtoken.name = "_end"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1003(input)) {token newtoken; newtoken.name = "_1003"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_repeat(input)) {token newtoken; newtoken.name = "_repeat"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1004(input)) {token newtoken; newtoken.name = "_1004"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_until(input)) {token newtoken; newtoken.name = "_until"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1005(input)) {token newtoken; newtoken.name = "_1005"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_read(input)) {token newtoken; newtoken.name = "_read"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1006(input)) {token newtoken; newtoken.name = "_1006"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_write(input)) {token newtoken; newtoken.name = "_write"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1007(input)) {token newtoken; newtoken.name = "_1007"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_plus(input)) {token newtoken; newtoken.name = "_plus"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_1008(input)) {token newtoken; newtoken.name = "_1008"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_minus(input)) {token newtoken; newtoken.name = "_minus"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_500(input)) {token newtoken; newtoken.name = "_500"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_multiply(input)) {token newtoken; newtoken.name = "_multiply"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_501(input)) {token newtoken; newtoken.name = "_501"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_divide(input)) {token newtoken; newtoken.name = "_divide"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_502(input)) {token newtoken; newtoken.name = "_502"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_mod(input)) {token newtoken; newtoken.name = "_mod"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_503(input)) {token newtoken; newtoken.name = "_503"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_power(input)) {token newtoken; newtoken.name = "_power"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_504(input)) {token newtoken; newtoken.name = "_504"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_less(input)) {token newtoken; newtoken.name = "_less"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_505(input)) {token newtoken; newtoken.name = "_505"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_not_equal(input)) {token newtoken; newtoken.name = "_not_equal"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_506(input)) {token newtoken; newtoken.name = "_506"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_less_equal(input)) {token newtoken; newtoken.name = "_less_equal"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_507(input)) {token newtoken; newtoken.name = "_507"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_greater_equal(input)) {token newtoken; newtoken.name = "_greater_equal"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_508(input)) {token newtoken; newtoken.name = "_508"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_greater(input)) {token newtoken; newtoken.name = "_greater"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_509(input)) {token newtoken; newtoken.name = "_509"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
-        if(_equal(input)) {token newtoken; newtoken.name = "_equal"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        if(_510(input)) {token newtoken; newtoken.name = "_510"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_511(input)) {token newtoken; newtoken.name = "_511"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_512(input)) {token newtoken; newtoken.name = "_512"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_513(input)) {token newtoken; newtoken.name = "_513"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_514(input)) {token newtoken; newtoken.name = "_514"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_10(input)) {token newtoken; newtoken.name = "_10"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_11(input)) {token newtoken; newtoken.name = "_11"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_20(input)) {token newtoken; newtoken.name = "_20"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
+        else input->goBack(pos);
+        if(_21(input)) {token newtoken; newtoken.name = "_21"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
         if(_open_comment(input)) {token newtoken; newtoken.name = "_open_comment"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
         if(_close_comment(input)) {token newtoken; newtoken.name = "_close_comment"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
-        else input->goBack(pos);
-        if(_semicolon(input)) {token newtoken; newtoken.name = "_semicolon"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
-        else input->goBack(pos);
-        if(_assign(input)) {token newtoken; newtoken.name = "_assign"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
-        else input->goBack(pos);
-        if(_identifier(input)) {token newtoken; newtoken.name = "_identifier"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
-        else input->goBack(pos);
-        if(_number(input)) {token newtoken; newtoken.name = "_number"; newtoken.value = input->getTokenWord(pos);  tokens.push_back(newtoken); input->goBackOneChar(); continue; }  
         else input->goBack(pos);
         if (tokens.size() == tokenSize) {
             std::cerr << "Error: Unexpected words" << std::endl; 
@@ -8928,7 +9024,8 @@ std::vector<token> getTokens(std::string filename){
 int main(int argc,char* argv[]){ 
     std::vector<token> tokens = getTokens(argv[1]); 
     for (auto t : tokens){ 
-        std::cout << t.name << " " << t.value << std::endl; 
+        if (t.name == "_open_comment" || t.name == "_close_comment" || t.name == "_oneLine_comment_open") continue; 
+        std::cout << t.name.substr(1) << " " << t.value << std::endl; 
     } 
     return 0; 
 } 

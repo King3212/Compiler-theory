@@ -152,7 +152,7 @@ void buildtoken(std::vector<gragh *> *Gs)
     printf("        if (!tokens.empty() && tokens.back().name == \"_open_comment\")\n");
     printf("        { \n");
     printf("            if (!_close_comment(input)){input->goBackOneChar(); continue;} \n");
-    printf("            else{token newtoken; newtoken.name = \"_comment\"; tokens.push_back(newtoken); newtoken.name = \"_close_commnet\"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}\n");
+    printf("            else{token newtoken; newtoken.name = \"_comment\"; tokens.push_back(newtoken); newtoken.name = \"_close_comment\"; tokens.push_back(newtoken); input->goBackOneChar(); continue;}\n");
     printf("        }\n");
 
     //获取字符
@@ -197,7 +197,8 @@ void buildMain(){
     printf("int main(int argc,char* argv[]){ \n");
     printf("    std::vector<token> tokens = getTokens(argv[1]); \n");
     printf("    for (auto t : tokens){ \n");
-    printf("        std::cout << t.name << \" \" << t.value << std::endl; \n");
+    printf("        if (t.name == \"_open_comment\" || t.name == \"_close_comment\" || t.name == \"_oneLine_comment_open\") continue; \n");
+    printf("        std::cout << t.name.substr(1) << \" \" << t.value << std::endl; \n");
     printf("    } \n");
     printf("    return 0; \n");
     printf("} \n");
@@ -208,7 +209,6 @@ void buildProgram(std::string path)
 {
     std::vector<std::string> reLines = readFile(path);
     std::vector<std::string> tokens;
-
     buildHead();
 
     std::vector<gragh *> *Gs = textsToGraghs(reLines);

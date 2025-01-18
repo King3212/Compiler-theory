@@ -224,6 +224,22 @@ std::vector<finalData*>* baseRe(std::vector<finalData*>* reExpresses){
     return reExpresses;
 }
 
+std::vector<std::string> split(std::string str,std::string pattern){
+    std::string::size_type pos;
+    std::vector<std::string> result;
+    str+=pattern;
+    int size=str.size();
+    for(int i=0; i<size; i++){
+        pos=str.find(pattern,i);
+        if(pos<size){
+            std::string s=str.substr(i,pos-i);
+            result.push_back(s);
+            i=pos+pattern.size()-1;
+        }
+    }
+    return result;
+}
+#include <iostream>
 /**
  * @brief 扫描器
  * 
@@ -235,6 +251,54 @@ std::vector<finalData*>* scanner(std::vector<std::string> lines){
     {
         return nullptr;
     }
+    // 在此处进行预处理，将keywords和signs的定义转出来
+    /**
+     * @todo 
+     * keywords 1000= if else ...
+     * signs 500=+ - ...
+     * _open_comment = \{
+     * _close_comment = \}
+     * identifier = letter(letter|digit)*
+     * number = digit+
+     * 
+     * @output
+     * letter = [a-zA-Z]
+     * digit = [0-9]
+     * _1000 = if
+     * _1001 = else
+     * ...
+     * _500 = +
+     * _501 = -
+     * ...
+     * 
+     */
+    std::vector<std::string> tempLines;
+    tempLines = lines;
+    lines.clear();
+    lines.push_back("letter = [a-zA-Z]");
+    lines.push_back("digit = [0-9]");
+
+    for(auto line : tempLines){
+        std::vector <std::string> temp;
+        if(line == "") continue;
+        temp = split(line," ");
+        if(temp[0][0] != '_'){
+            int start = std::stoi(temp[1]);
+            for(int i = 2; i < temp.size(); i++){
+                lines.push_back("_" + std::to_string(start) + " = " + temp[i]);
+                start++;
+            }
+        }
+        else if (temp[0][0] == '_') lines.push_back(line);
+        else if (temp[0] == ">>") continue;
+        else exit(1);
+    }
+    
+    for (auto line : lines)
+    {
+        std::cout << line << std::endl;
+    }
+    exit(0);
     std::vector<scanData*> *datas;
     datas = scanAll(lines);
     return baseRe(replaceRe(datas));

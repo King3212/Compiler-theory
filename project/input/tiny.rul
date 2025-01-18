@@ -1,28 +1,20 @@
-_if = (i|I)(f|F)
-_then = (t|T)(h|H)(e|E)(n|N)
-_else = (e|E)(l|L)(s|S)(e|E)
-_end = (e|E)(n|N)(d|D)
-_repeat = (r|R)(e|E)(p|P)(e|E)(a|A)(t|T)
-_until = (u|U)(n|N)(t|T)(i|I)(l|L)
-_read = (r|R)(e|E)(a|A)(d|D)
-_write = (w|W)(r|R)(i|I)(t|T)(e|E)
-_plus = \+
-_minus = \-
-_multiply = \*
-_divide = /
-_mod = %
-_power = \^
-_less = <
-_not_equal = <>
-_less_equal = <=
-_greater_equal = >=
-_greater = >
-_equal = =
+keywords 1000 = (i|I)(f|F) (t|T)(h|H)(e|E)(n|N) (e|E)(l|L)(s|S)(e|E) (e|E)(n|N)(d|D) (r|R)(e|E)(p|P)(e|E)(a|A)(t|T) (u|U)(n|N)(t|T)(i|I)(l|L) (r|R)(e|E)(a|A)(d|D) (w|W)(r|R)(i|I)(t|T)(e|E)
+signs 500 = \+ \- \* / % \^ < <> <= >= > = ; :=
+
+>> letter定义为:[a-zA-Z]
+>> digit 定义为：[0-9]
+
+identifier 10 = letter(letter|digit)*
+number 20 = digit+
+
+>> 为了词法分析程序的正常工作，若存在注释的开闭符号需要必须声明：
+>> _open_comment = 
+>> _close_comment = 
+>> _oneLine_comment_open =
 _open_comment = \{
 _close_comment = \}
-_semicolon = ;
-_assign = :=
-letter = [a-zA-Z]
-digit = [0-9]
-_identifier = letter(letter|digit)*
-_number = digit+
+
+
+>> ">>"符号表示注释
+
+

@@ -16,7 +16,7 @@
 #include <iostream>
 #include <stack>
 #include <algorithm>
-
+#include <map>
 #include "../tokens/tokens.h"
 #include "../../include/File/File.h"
 #include "../../include/grammar/globle.h"
@@ -33,6 +33,7 @@ struct Tree // 语法树
 class Parser // 分析器
 {
 private:
+    map<int, string> signMap;  // 符号映射
     IndexedSet<Edge> edges;  // 边集合
     stack<int> stateStack;  // 状态栈
     stack<string> signStack;  // 符号栈
@@ -46,9 +47,10 @@ private:
     ActionType action();  // 动作
     void readEdges(string path);  // 读取边
 
+    
     string log;  // 日志
 public:
-    Parser(string edgesPath, vector<string> ignoreSigns);  // 构造函数
+    Parser(string edgesPath, vector<string> ignoreSigns, string signMapPath);  // 构造函数
     string getLog();  // 获取日志
     Tree *getTree();  // 获取语法树
     bool parse(string srcPath);  // 解析

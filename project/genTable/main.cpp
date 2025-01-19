@@ -26,7 +26,7 @@
 
 using namespace std;
 // 处理文法
-void process(vector<Grammar> grammars, string outputDir){
+void process(vector<Grammar> grammars, string outputDir , map<string, int> signs){
 
     // 输出LR1 DFA
     LR1 lr1 = LR1(grammars);
@@ -68,6 +68,16 @@ void process(vector<Grammar> grammars, string outputDir){
     file.close();
     cout <<"edgeOutputDIR: "+outputDir << endl;
 
+    // 输出map
+    file = ofstream(outputDir+"/signs.txt");
+    if (file.fail()){
+        cerr << "Failed to open file: " << outputDir+"/signs.txt" << endl;
+        return;
+    }
+    for(auto sign : signs){
+        file << sign.second << " " << sign.first << endl;
+    }
+    file.close();
 
 }
 // 从文件中读取文法，返回文法集合
@@ -76,8 +86,8 @@ int main(int argc, char const *argv[]){
         cerr << "Usage: " << argv[0] << " <grammar file>"<< "<output dir>" << endl;
         return 1;
     }
-    
-    vector<Grammar> grammars = getGrammarFromFile(argv[1]);
-    process(grammars, argv[2]);
+    map <string, int> signs;
+    vector<Grammar> grammars = getGrammarFromFile(argv[1], signs);
+    process(grammars, argv[2], signs);
     return 0;
 }

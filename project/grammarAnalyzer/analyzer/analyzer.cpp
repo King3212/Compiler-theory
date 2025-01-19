@@ -99,11 +99,22 @@ void Parser::readEdges(string path)
 }
 
 // 构造函数
-Parser::Parser(string path, vector<string> ignoreSigns)
+Parser::Parser(string path, vector<string> ignoreSigns, string signMapPath)
 {
     readEdges(path);
     for(auto sign : ignoreSigns){
         this->ignoreSigns.insert(sign);
+    }
+    vector<string> lines = readFile(signMapPath);
+    for(auto line : lines){
+        stringstream ss(line);
+        string sign;
+        int code;
+        ss >> code;
+        while(ss >> sign){
+            signMap[code] = sign;
+            code ++;
+        }
     }
 }
 
@@ -145,6 +156,11 @@ ActionType Parser::action()
     int state = stateStack.top();
     log += "state: " + to_string(state) + "\n";
     token oneToken = tokens->getToken();
+    if (!(oneToken.type == "space" || oneToken.type == "enter" || oneToken.type == "tab"))
+    {
+        oneToken.type = signMap[atoi(oneToken.type.c_str())];
+    }
+    
     while (ignoreSigns.contains(oneToken.type)) // 忽略符号
     {
         tokens->advanceToken();

@@ -14,7 +14,7 @@
  * 
  */
 
-#include"../grammarAnalyzer/gui/mainwindow.h"
+#include"../../grammarAnalyzer/gui/mainwindow.h"
 
 #define MAX_FIX_TYPE 3  //定义FixTree模式类型数
 
@@ -65,7 +65,7 @@ void MainWindow::fixTree(Tree *node)
 // 这个函数获取fix的参数,写入类的私有变量中
 void MainWindow::loadTreeFuc()
 {
-    QString path = QDir::currentPath() + "/../input/fixTree.txt";
+    QString path = QDir::currentPath() + "/../input/adjust/fixTree.txt";
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::information(this, "提示", "无法打开文件");

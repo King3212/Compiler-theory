@@ -601,7 +601,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
         return;
     }else{
         QString currentPath = QDir::currentPath();
-        vector<string> ignoreSigns = readFile((currentPath+"/../input/ignore.txt").toStdString());
+        vector<string> ignoreSigns = readFile((currentPath+"/../input/adjust/ignore.txt").toStdString());
         cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
         parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns, (currentPath+"/../input/signs.txt").toStdString());
     }
@@ -766,7 +766,7 @@ void MainWindow::on_pushButton_show_code_clicked()
 // 载入忽略符号
 void MainWindow::loadTreeIgnore()
 {
-    vector<string>ignoreSigns = readFile("../input/TreeIgnore.txt");
+    vector<string>ignoreSigns = readFile("../input/adjust/TreeIgnore.txt");
     for (auto sign : ignoreSigns){
         this->ignoreSigns.insert(sign);
     }

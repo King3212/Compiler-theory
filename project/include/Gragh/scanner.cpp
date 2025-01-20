@@ -284,7 +284,7 @@ std::vector<finalData*>* scanner(std::vector<std::string> lines){
         if (temp[0] == ">>") continue;
         if(temp[0][0] != '_'){
             int start = std::stoi(temp[1]);
-            for(int i = 2; i < temp.size(); i++){
+            for(int i = 3; i < temp.size(); i++){
                 lines.push_back("_" + std::to_string(start) + " = " + temp[i]);
                 start++;
             }

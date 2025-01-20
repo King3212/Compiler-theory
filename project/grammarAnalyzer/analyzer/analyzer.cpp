@@ -156,11 +156,11 @@ ActionType Parser::action()
     int state = stateStack.top();
     log += "state: " + to_string(state) + "\n";
     token oneToken = tokens->getToken();
-    if (!(oneToken.type == "space" || oneToken.type == "enter" || oneToken.type == "tab"))
+    if (!(oneToken.type == "space" || oneToken.type == "enter" || oneToken.type == "tab" || oneToken.type == "$"))
     {
         oneToken.type = signMap[atoi(oneToken.type.c_str())];
+
     }
-    
     while (ignoreSigns.contains(oneToken.type)) // 忽略符号
     {
         tokens->advanceToken();

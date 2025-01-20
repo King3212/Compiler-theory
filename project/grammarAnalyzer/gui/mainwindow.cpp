@@ -603,7 +603,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
         QString currentPath = QDir::currentPath();
         vector<string> ignoreSigns = readFile((currentPath+"/../input/ignore.txt").toStdString());
         cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
-        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns);
+        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns, (currentPath+"/../input/signs.txt").toStdString());
     }
     genSuccess = parser->parse(tempPath.toStdString());
     AnalyzeLog = QString::fromStdString(parser->getLog());
@@ -641,7 +641,13 @@ void populateTreeWidget(QTreeWidgetItem *parentItem, Tree *tree) {
     if (!tree) return;
 
     // 创建当前节点
-    QString text = QString::fromStdString(tree->sign + ": " + tree->value);
+    QString text = QString::fromStdString(tree->value);
+    // if (tree->sign == tree->value){
+    //     text = QString::fromStdString(tree->value);
+    // }
+    // else {
+    //     text = QString::fromStdString(tree->sign + " : " + tree->value);
+    // }
     QTreeWidgetItem *currentItem = new QTreeWidgetItem(parentItem, QStringList(text));
     parentItem->addChild(currentItem);
 

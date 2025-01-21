@@ -1,8 +1,0 @@
-_left_paren
-_right_paren
-_semicolon
-_right_brace
-_left_brace
-statement-list
-local-definitions
-_end

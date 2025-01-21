@@ -13,75 +13,126 @@
  * 
  * 
  */
+#include "fixTree.h"
+namespace std{
+    extern "C" {
+        void fixTree(Tree * tree){
+            if (tree->children.empty()){
+                return;
+            }
+            for (auto child : tree->children){
+                fixTree(child);
+            }
 
-#include"../../grammarAnalyzer/gui/mainwindow.h"
+            vector<Tree*> newChildren;
+            
 
-#define MAX_FIX_TYPE 3  //定义FixTree模式类型数
+            // 对特定符号进行处理
+            // exp
+            if (tree->children.size() == 3 && ops.find(tree->children[1]->sign) != ops.end()){
+                tree->value = tree->children[1]->value;
+                tree->children[1]->value = "";
+            }
 
-//这个函数将分析树进一步修正为语法树
-void MainWindow::fixTree(Tree *node)
-{
-    if (node->children.size() == 0){
-        return;
-    }
-    for (auto child : node->children){
-        fixTree(child);
-    }
+            // if
+            if (tree->children.size() > 5 && tree->children[0]->sign == "if"){
+                int hasElse = 0;
+                for (; hasElse < tree->children.size(); hasElse++){
+                    if (tree->children[hasElse]->sign == "else"){
+                        break;
+                    }
+                }
+                tree->children[0]->sign = "if+";
+                Tree* condition;
+                Tree* ifPart;
+                Tree* elsePart;
+                condition->value = "condition";
+                ifPart->value = "ifPart";
+                elsePart->value = "elsePart";
+                condition->children.push_back(tree->children[2]);
+                for (int i = 4; i < hasElse; i++){
+                    ifPart->children.push_back(tree->children[i]);
+                }
+                if (hasElse < tree->children.size()){
+                    for (int i = hasElse + 1; i < tree->children.size(); i++){
+                        elsePart->children.push_back(tree->children[i]);
+                    }
+                    tree->children[0]->children.push_back(elsePart);
+                }
+                tree->children[0]->children.push_back(condition);
+                tree->children[0]->children.push_back(ifPart);
+            }
 
-    if(!node->value.empty()){
-        return;
-    }
-    // 对类型一进行处理
-    if (node->children.size() == 3){
-        if(ops[0].contains(node->children[1]->value) && node->children[1]->children.size() == 0){
-            node->value = node->children[1]->value;
-            node->sign = node->children[1]->sign;
-            node->children.erase(node->children.begin()+1);
+            // while
+            if (tree->children.size() > 5 && tree->children[0]->sign == "while"){
+                tree->children[0]->sign = "while+";
+                Tree* condition;
+                Tree* whilePart;
+                condition->value = "condition";
+                whilePart->value = "whilePart";
+                condition->children.push_back(tree->children[2]);
+                for (int i = 4; i < tree->children.size(); i++){
+                    whilePart->children.push_back(tree->children[i]);
+                }
+                tree->children[0]->children.push_back(condition);
+                tree->children[0]->children.push_back(whilePart);
+            }
+
+            // do-while
+            if (tree->children.size() > 5 && tree->children[0]->sign == "do"){
+                tree->children[0]->sign = "do+";
+                Tree* condition;
+                Tree* doPart;
+                condition->value = "condition";
+                doPart->value = "doPart";
+                for (int i = 2; i < tree->children.size() - 2; i++){
+                    doPart->children.push_back(tree->children[i]);
+                }
+                condition->children.push_back(tree->children[tree->children.size() - 2]);
+                tree->children[0]->children.push_back(doPart);
+                tree->children[0]->children.push_back(condition);
+            }
+
+            // for
+            if (tree->children.size() > 7 && tree->children[0]->sign == "for"){
+                tree->children[0]->sign = "for+";
+                Tree* condition;
+                Tree* forPart;
+                condition->value = "condition";
+                forPart->value = "forPart";
+                for (int i = 2; i < 4; i++){
+                    condition->children.push_back(tree->children[i]);
+                }
+                for (int i = 6; i < tree->children.size(); i++){
+                    forPart->children.push_back(tree->children[i]);
+                }
+                tree->children[0]->children.push_back(condition);
+                tree->children[0]->children.push_back(forPart);
+            }
+
+
+
+            // 删除应该被忽略的符号
+            // 符号定义于fixTree.h
+            
+            for (auto child : tree->children){
+                if (ignoreSigns.find(child->sign) == ignoreSigns.end()){
+                    newChildren.push_back(child);
+                }
+            }
+            tree->children = newChildren;
+
+            // 删除value为空的符号
+            newChildren.clear();
+            for (auto child : tree->children){
+                if (!(child->value == "")){
+                    newChildren.push_back(child);
+                }else{
+                    for (auto c : child->children){
+                        newChildren.push_back(c);
+                    }
+                }
+            }
         }
     }
-    // 对类型二进行处理
-    if (node->children.size() == 3){
-        if (ops[1].contains(node->children[1]->value) && node->children[1]->children.size() == 0 && node->children[0]->children.size() == 0)
-        {
-            node->value = node->children[0]->value;
-            node->sign = node->children[0]->sign;
-            node->children.erase(node->children.begin());
-            node->children.erase(node->children.begin());
-        }
-    }
-    // 对类型三进行处理
-    if (node->children.size() == 2){
-        if (ops[2].contains(node->children[0]->value) && node->children[0]->children.size() == 0)
-        {
-            node->value = node->children[0]->value;
-            node->sign = node->children[0]->sign;
-            node->children.erase(node->children.begin());
-        }
-    }
-    // 可以添加或对前面的处理进行修改，如要添加，请记得修改宏 MAX_FIX_TYPE
-    // 修改之后请重新编译这一部分，编译命令为：make gui
-}
-
-// 这个函数获取fix的参数,写入类的私有变量中
-void MainWindow::loadTreeFuc()
-{
-    QString path = QDir::currentPath() + "/../input/adjust/fixTree.txt";
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::information(this, "提示", "无法打开文件");
-        return;
-    }
-    IndexedSet<string> temp;
-
-    for (int i = 0; i < MAX_FIX_TYPE; i++)
-    {
-        file.readLine();
-        QString line = file.readLine();
-        for(auto op: split(line," ")){
-            temp.push_back(op.toStdString());
-        }
-        ops.push_back(temp);
-        temp.clear();
-    }
-
 }

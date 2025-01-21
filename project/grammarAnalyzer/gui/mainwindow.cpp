@@ -603,7 +603,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
         QString currentPath = QDir::currentPath();
         vector<string> ignoreSigns = readFile((currentPath+"/../input/adjust/ignore.txt").toStdString());
         cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
-        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns, (currentPath+"/../input/signs.txt").toStdString());
+        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns, (currentPath+"/../build/signs.txt").toStdString());
     }
     genSuccess = parser->parse(tempPath.toStdString());
     AnalyzeLog = QString::fromStdString(parser->getLog());

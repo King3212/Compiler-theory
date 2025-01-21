@@ -33,6 +33,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 // 初始化源文件
+// 初始化词法规则
+// 初始化BNF
+// 初始化语义函数
 void MainWindow::initSource()
 {
     QFile file("../input/Sources.txt");
@@ -45,6 +48,7 @@ void MainWindow::initSource()
             wordRulPath = fileContent;
         }
         ui->label_Word_source->setText("当前词法来源："+fileContent);
+
         fileContent = in.readLine();
         if (fileContent.isEmpty()){
             fileContent = "无";
@@ -54,6 +58,14 @@ void MainWindow::initSource()
             lalr1DFAgened = true;
         }
         ui->label_Grammar_source->setText("当前文法来源："+fileContent);
+        
+        fileContent = in.readLine();
+        if (fileContent.isEmpty()){
+            fileContent = "无";
+        }else{
+            fixTreePath = fileContent;
+        }
+        ui->fixTreeSource->setText("当前语义函数来源："+fileContent);
         file.close();
     }
 }
@@ -65,6 +77,7 @@ void MainWindow::setSource()
         QTextStream out(&file);
         out << wordRulPath+"\n";
         out << BNFPath+"\n";
+        out << fixTreePath+"\n";
         file.close();
     }
 }
@@ -544,8 +557,8 @@ void MainWindow::on_pushButton_load_BNF_clicked()
 // 语法分析
 void MainWindow::on_pushButton_GA_run_clicked()
 {
-    QString tempPath = "../input/tempSRC.prm";
-
+    QString tempPath = "../build/tempSRC.prm";
+    QString program = ui->plainTextEdit->toPlainText();
     QString tempSRC= program;
 
     if (tempSRC.isEmpty()){
@@ -629,7 +642,11 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
         return;
     }
     if (genSuccess == false){
-        QMessageBox::information(this, "提示", "语法树生成失败");
+        QMessageBox::information(this, "提示", "语法分析失败");
+        return;
+    }
+    if (fixTreePath.isEmpty()){
+        QMessageBox::information(this, "提示", "请先导入语义函数");
         return;
     }
 
@@ -645,13 +662,29 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     // 创建根节点
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(treeWidget, QStringList("根节点"));
     treeWidget->addTopLevelItem(rootItem);
-    loadTreeIgnore();
     // 压缩分析树
     // compressTree(tree);
     // // 调整分析树
     // loadTreeFuc();
     // fixTree(tree);
     // 填充分析树
+    
+    /**从用户处获取语义函数 */
+    void* handle = dlopen("../build/fixTree.so", RTLD_LAZY);
+    if (!handle){
+        QMessageBox::information(this, "提示", "无法打开fixTree.so");
+        return;
+    }
+    auto fixTree = (void(*)(Tree*))dlsym(handle, "fixTree");
+    if (!fixTree){
+        QMessageBox::information(this, "提示", "无法找到fixTree");
+        return;
+    }
+
+    // 调用语义函数进行修正
+    fixTree(tree);
+
+    // 填充语法树
     populateTreeWidget(rootItem, tree);
 
     // 展开所有节点
@@ -727,14 +760,7 @@ void MainWindow::on_pushButton_show_code_clicked()
     dialog->show();
 }
 
-// 载入忽略符号
-void MainWindow::loadTreeIgnore()
-{
-    vector<string>ignoreSigns = readFile("../input/adjust/TreeIgnore.txt");
-    for (auto sign : ignoreSigns){
-        this->ignoreSigns.insert(sign);
-    }
-}
+
 
 vector<QString> MainWindow::split(QString str, QString pattern)
 {
@@ -845,8 +871,29 @@ void MainWindow::on_pushButton_show_LALR_DFA_clicked()
     
 }
 
+// 导入语义函数
+void MainWindow::on_pushButton_GrmTreeFunc_clicked()
+{
+    // 打开文件资源浏览器，选择文件并获取路径
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        tr("选择文件"),                  // 窗口标题
+        "",                              // 初始目录
+        tr("cpp文件 (*.cpp);;所有文件 (*)") // 文件类型过滤器
+    );
+    // 编译cpp文件为.so文件
+    QString currentPath = QDir::currentPath();
+    QString soPath = currentPath + "/../build/fixTree.so";
+    QString command = "g++ -shared -fPIC -g -o " + soPath + " " + filePath ;
+    if (system(command.toStdString().c_str()) == 0){
+        QMessageBox::information(this, "提示", "语义函数导入成功");
+        fixTreePath = filePath;
+        setSource();
+        initSource();
 
+    }else{
+        QMessageBox::information(this, "提示", "语义函数导入失败");
+    }
 
-
-
+}
 

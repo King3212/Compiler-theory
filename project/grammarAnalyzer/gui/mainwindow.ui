@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>682</width>
-    <height>808</height>
+    <height>812</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,6 +55,13 @@
           </property>
           <property name="text">
            <string>当前语法来源：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="fixTreeSource">
+          <property name="text">
+           <string>当前语义函数来源：</string>
           </property>
          </widget>
         </item>
@@ -251,7 +258,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_5">
+             <widget class="QPushButton" name="pushButton_GrmTreeFunc">
               <property name="styleSheet">
                <string notr="true">background-color: rgb(160, 160, 160);</string>
               </property>

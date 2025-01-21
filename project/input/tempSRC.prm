@@ -11,7 +11,7 @@ int main(void) {
     b = 20; // 第二个数
 
     // 加法和减法
-    result_add = a + b - c; // 计算和
+    result_add = a + b; // 计算和
     result_sub = a - b; // 计算差
 
     // 输出结果

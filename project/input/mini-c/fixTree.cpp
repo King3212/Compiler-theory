@@ -110,6 +110,52 @@ namespace std{
                 tree->children[0]->children.push_back(forPart);
             }
 
+            // return
+            if (tree->children.size() > 2 && tree->children[0]->sign == "return"){
+                tree->children[0]->sign = "return+";
+                Tree* returnValue;
+                returnValue->value = "returnValue";
+                for (int i = 2; i < tree->children.size(); i++){
+                    returnValue->children.push_back(tree->children[i]);
+                }
+                tree->children[0]->children.push_back(returnValue);
+            }
+
+            // assign
+            if (tree->children.size() > 2 && tree->children[1]->sign == "="){
+                tree->children[1]->sign = "assign";
+                Tree* leftValue;
+                Tree* rightValue;
+                leftValue->value = "leftValue";
+                rightValue->value = "rightValue";
+                leftValue->children.push_back(tree->children[0]);
+                rightValue->children.push_back(tree->children[2]);
+                tree->children[1]->children.push_back(leftValue);
+                tree->children[1]->children.push_back(rightValue);
+            }
+
+            // define
+            if (tree->children.size() > 2 && types.find(tree->children[0]->sign) != types.end()){
+                tree->children[0]->sign = "define";
+                Tree* type;
+                Tree* name;
+                type->value = "type";
+                name->value = "name";
+                type->children.push_back(tree->children[0]);
+                if (tree->children[1]->sign == "["){
+                    type->children[0]->value+= "[]";
+                    type->children.push_back(tree->children[2]);
+                    name->children.push_back(tree->children[4]);
+                }
+                name->children.push_back(tree->children[1]);
+
+                tree->children[0]->children.push_back(type);
+                tree->children[0]->children.push_back(name);
+                for (int i = 1; i < tree->children.size(); i++){
+                    tree->children.erase(tree->children.begin() + i);
+                }
+            }
+
 
 
             // 删除应该被忽略的符号

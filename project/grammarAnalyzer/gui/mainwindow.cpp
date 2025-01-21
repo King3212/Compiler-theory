@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     grammarAnalyzed = false;
     wordAnalyzed = false;
     genSuccess = false;
-    ui->checkBox_Program->setChecked(true);
 }
 // 析构函数
 MainWindow::~MainWindow()
@@ -267,50 +266,43 @@ IndexedSet<Edge> MainWindow::getEdgesFromFile(string path)
     }
     return edges;
 }
-// 压缩树
-void MainWindow::compressTree(Tree* node) {
-    if (!node->value.empty()) {
-        return;
-    }
-    // 递归压缩所有子节点
-    for (auto it = node->children.begin(); it != node->children.end();) {
-        compressTree(*it);
-        ++it;
-    }
-
-    // 删除无用的符号
-    for(int i = 0; i < node->children.size(); i++){
-        if (ignoreSigns.contains(node->children[i]->sign) && node->children[i]->children.size() == 0){
-            node->children.erase(node->children.begin()+i);
-            i--;
-        }
-    }
-
-    
-
-    // 如果当前节点只有一个子节点,进行合并
-    if (node->children.size() == 1) {
-        Tree* child = node->children[0];
-        node->sign = child->sign;
-        node->value = child->value;
-        node->children = child->children;
-        delete child;
-    }
-
-    
-    vector<Tree*> newChildren;
-    // 如果子节点和当前节点的符号相同，进行合并
-    for(int i = 0; i < node->children.size(); i++){
-        if (node->children[i]->sign == node->sign){
-            for (auto child : node->children[i]->children){
-                newChildren.push_back(child);
-            }
-        }else
-            newChildren.push_back(node->children[i]);
-    }
-    node->children = newChildren;
-
-}
+// // 压缩树
+// void MainWindow::compressTree(Tree* node) {
+//     if (!node->value.empty()) {
+//         return;
+//     }
+//     // 递归压缩所有子节点
+//     for (auto it = node->children.begin(); it != node->children.end();) {
+//         compressTree(*it);
+//         ++it;
+//     }
+//     // 删除无用的符号
+//     for(int i = 0; i < node->children.size(); i++){
+//         if (ignoreSigns.contains(node->children[i]->sign) && node->children[i]->children.size() == 0){
+//             node->children.erase(node->children.begin()+i);
+//             i--;
+//         }
+//     }
+//     // 如果当前节点只有一个子节点,进行合并
+//     if (node->children.size() == 1) {
+//         Tree* child = node->children[0];
+//         node->sign = child->sign;
+//         node->value = child->value;
+//         node->children = child->children;
+//         delete child;
+//     } 
+//     vector<Tree*> newChildren;
+//     // 如果子节点和当前节点的符号相同，进行合并
+//     for(int i = 0; i < node->children.size(); i++){
+//         if (node->children[i]->sign == node->sign){
+//             for (auto child : node->children[i]->children){
+//                 newChildren.push_back(child);
+//             }
+//         }else
+//             newChildren.push_back(node->children[i]);
+//     }
+//     node->children = newChildren;
+// }
 
 
 // 生成语法分析器
@@ -425,11 +417,6 @@ void MainWindow::on_pushButton_word_miniDFA_clicked() // 显示最小化DFA
 void MainWindow::on_pushButton_Word_Analyze_clicked()
 {
     QString src = ui->plainTextEdit->toPlainText();
-    if (ui->checkBox_Program->isChecked()){
-        program = src;
-    }else{
-        src = program;
-    }
     if(src == ""){
         QMessageBox::information(this, "提示", "请先输入源代码");
         return;
@@ -558,32 +545,9 @@ void MainWindow::on_pushButton_load_BNF_clicked()
 void MainWindow::on_pushButton_GA_run_clicked()
 {
     QString tempPath = "../input/tempSRC.prm";
-    if(ui->checkBox_BNF->isChecked()){
-        if (!ui->plainTextEdit->toPlainText().isEmpty()){
-            QFile file(BNFPath);
-            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream out(&file);
-                out << ui->plainTextEdit->toPlainText();
-                file.close();
-            }
-        }
-    }else if(ui->checkBox_Re->isChecked()){
-        if (!ui->plainTextEdit->toPlainText().isEmpty()){
-            QFile file(wordRulPath);
-            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream out(&file);
-                out << ui->plainTextEdit->toPlainText();
-                file.close();
-            }
-        }
-    }
-    QString tempSRC;
-    if (ui->checkBox_Program->isChecked()){
-        tempSRC = ui->plainTextEdit->toPlainText();
-        program = tempSRC;
-    }else{
-        tempSRC = program;
-    }
+
+    QString tempSRC= program;
+
     if (tempSRC.isEmpty()){
         QMessageBox::information(this, "提示", "请先输入源代码");
         return;
@@ -683,10 +647,10 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     treeWidget->addTopLevelItem(rootItem);
     loadTreeIgnore();
     // 压缩分析树
-    compressTree(tree);
-    // 调整分析树
-    loadTreeFuc();
-    fixTree(tree);
+    // compressTree(tree);
+    // // 调整分析树
+    // loadTreeFuc();
+    // fixTree(tree);
     // 填充分析树
     populateTreeWidget(rootItem, tree);
 
@@ -883,53 +847,6 @@ void MainWindow::on_pushButton_show_LALR_DFA_clicked()
 
 
 
-// 切换到代码编辑器
-void MainWindow::on_checkBox_Program_stateChanged(int arg1)
-{
-    if (arg1 == 2){
-        QString currentText = ui->plainTextEdit->toPlainText();
-        if (ui->checkBox_Re->isChecked()){
-            re = currentText;
-        }else if (ui->checkBox_BNF->isChecked()){
-            bnf = currentText;
-        }
-        ui->checkBox_Re->setChecked(false);
-        ui->checkBox_BNF->setChecked(false);
 
-        ui->plainTextEdit->setPlainText(program);
-    }
-}
 
-// 切换到正则表达式编辑器
-void MainWindow::on_checkBox_Re_stateChanged(int arg1)
-{
-    if (arg1 == 2){
-        QString currentText = ui->plainTextEdit->toPlainText();
-        if (ui->checkBox_Program->isChecked()){
-            program = currentText;
-        }else if (ui->checkBox_BNF->isChecked()){
-            bnf = currentText;
-        }
-        ui->checkBox_Program->setChecked(false);
-        ui->checkBox_BNF->setChecked(false);
-        ui->plainTextEdit->setPlainText(re);
-    }
-}
-
-// 切换到BNF编辑器
-void MainWindow::on_checkBox_BNF_stateChanged(int arg1)
-{
-    if (arg1 == 2){
-        QString currentText = ui->plainTextEdit->toPlainText();
-        if (ui->checkBox_Program->isChecked()){
-            program = currentText;
-        }else if (ui->checkBox_Re->isChecked()){
-            re = currentText;
-        }
-        ui->checkBox_Program->setChecked(false);
-        ui->checkBox_Re->setChecked(false);
-        ui->plainTextEdit->setPlainText(bnf);
-
-    }
-}
 

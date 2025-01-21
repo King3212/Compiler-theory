@@ -90,12 +90,6 @@ private slots:
 
     void on_pushButton_show_LALR_DFA_clicked();  // 显示LALR1DFA
 
-    void on_checkBox_Program_stateChanged(int arg1);  // 源代码复选框
-
-    void on_checkBox_Re_stateChanged(int arg1);  // 正则表达式复选框
-
-    void on_checkBox_BNF_stateChanged(int arg1);  // BNF复选框
-
 private:
     Ui::MainWindow *ui;  // 主界面
     QString srcPath;  // 源文件路径
@@ -125,9 +119,9 @@ private:
     IndexedSet<Edge> getEdgesFromFile(string path);  // 从文件中获取边
     vector<QString> split(QString str, QString pattern);  // 分割字符串
     void loadTreeIgnore();  // 加载忽略符号
-    void loadTreeFuc();  // 加载fixTree
-    void compressTree(Tree *node);      // 压缩树
-    void fixTree(Tree *node);  // 修正树
+    // void loadTreeFuc();  // 加载fixTree
+    // void compressTree(Tree *node);      // 压缩树
+    // void fixTree(Tree *node);  // 修正树
     bool lr1DFAgened;  // 是否生成LR1DFA
     bool lalr1DFAgened;  // 是否生成LALR1DFA
     vector<IndexedSet<string>> ops;  // 操作符

@@ -50,7 +50,6 @@ set(PROJECT_SOURCES
     tableforgragh.cpp
     tableforgragh.ui
     globle.h
-    ../../input/adjust/fixTree.cpp
     ../../include/grammar/IndexedSet.h
     ../tokens/tokens.h
     ../../include/File/File.cpp

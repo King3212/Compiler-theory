@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>682</width>
-    <height>812</height>
+    <height>932</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,7 +81,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pushButton_save_program">
             <property name="text">
              <string>保存</string>
             </property>
@@ -353,7 +353,7 @@
      <x>0</x>
      <y>0</y>
      <width>682</width>
-     <height>30</height>
+     <height>36</height>
     </rect>
    </property>
   </widget>

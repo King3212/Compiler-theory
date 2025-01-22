@@ -25,6 +25,7 @@ namespace std
 
     set<string> types = {"int", "float", "double", "void"};
 
+    set<string> emptyTypes = {"local-definitions","arguments", ""};
 }
 namespace std{
     extern "C" {
@@ -46,132 +47,78 @@ namespace std{
                 tree->children[1]->value = "";
             }
 
+            // function
+            if (tree->sign == "call"){
+                tree->value = tree->children[0]->value;
+                tree->children.erase(tree->children.begin());
+
+            }
+
             // if
-            if (tree->children.size() > 5 && tree->children[0]->sign == "if"){
-                int hasElse = 0;
-                for (; hasElse < tree->children.size(); hasElse++){
-                    if (tree->children[hasElse]->sign == "else"){
+            if (tree->sign == "condition-stmt"){
+
+
+                // save if and remove if from children
+                tree->value = tree->children[0]->value;
+                tree->children.erase(tree->children.begin());
+                // find else
+                int elseIndex = -1;
+                for (int i = 0; i < tree->children.size(); i++){
+                    if (tree->children[i]->sign == "else"){
+                        elseIndex = i;
                         break;
                     }
                 }
-                tree->children[0]->sign = "if+";
-                Tree* condition = new Tree();
-                Tree* ifPart = new Tree();
-                Tree* elsePart = new Tree();
-                condition->value = "condition";
-                ifPart->value = "ifPart";
-                elsePart->value = "elsePart";
-                condition->children.push_back(tree->children[2]);
-                for (int i = 4; i < hasElse; i++){
-                    ifPart->children.push_back(tree->children[i]);
+                // if else exists
+                if (elseIndex != -1){
+                    tree->children[elseIndex]->children = tree->children[elseIndex+1]->children;
+                    
+                    tree->children.erase(tree->children.begin()+elseIndex+1);
                 }
-                if (hasElse < tree->children.size()){
-                    for (int i = hasElse + 1; i < tree->children.size(); i++){
-                        elsePart->children.push_back(tree->children[i]);
-                    }
-                    tree->children[0]->children.push_back(elsePart);
-                }
-                tree->children[0]->children.push_back(condition);
-                tree->children[0]->children.push_back(ifPart);
-            }
-
-            // while
-            if (tree->children.size() > 5 && tree->children[0]->sign == "while"){
-                tree->children[0]->sign = "while+";
-                Tree* condition = new Tree();
-                Tree* whilePart = new Tree();
-                condition->value = "condition";
-                whilePart->value = "whilePart";
-                condition->children.push_back(tree->children[2]);
-                for (int i = 4; i < tree->children.size(); i++){
-                    whilePart->children.push_back(tree->children[i]);
-                }
-                tree->children[0]->children.push_back(condition);
-                tree->children[0]->children.push_back(whilePart);
-            }
-
-            // do-while
-            if (tree->children.size() > 5 && tree->children[0]->sign == "do"){
-                tree->children[0]->sign = "do+";
-                Tree* condition = new Tree();
-                Tree* doPart = new Tree();
-                condition->value = "condition";
-                doPart->value = "doPart";
-                for (int i = 2; i < tree->children.size() - 2; i++){
-                    doPart->children.push_back(tree->children[i]);
-                }
-                condition->children.push_back(tree->children[tree->children.size() - 2]);
-                tree->children[0]->children.push_back(doPart);
-                tree->children[0]->children.push_back(condition);
-            }
-
-            // for
-            if (tree->children.size() > 7 && tree->children[0]->sign == "for"){
-                tree->children[0]->sign = "for+";
-                Tree* condition = new Tree();
-                Tree* forPart = new Tree();
-                condition->value = "condition";
-                forPart->value = "forPart";
-                for (int i = 2; i < 4; i++){
-                    condition->children.push_back(tree->children[i]);
-                }
-                for (int i = 6; i < tree->children.size(); i++){
-                    forPart->children.push_back(tree->children[i]);
-                }
-                tree->children[0]->children.push_back(condition);
-                tree->children[0]->children.push_back(forPart);
             }
 
             // return
-            if (tree->children.size() > 2 && tree->children[0]->sign == "return"){
-                tree->children[0]->sign = "return+";
-                Tree* returnValue = new Tree();
-                returnValue->value = "returnValue";
-                for (int i = 2; i < tree->children.size(); i++){
-                    returnValue->children.push_back(tree->children[i]);
-                }
-                tree->children[0]->children.push_back(returnValue);
+            if (tree->sign == "return-stmt"){
+                tree->value = tree->children[0]->value;
+                tree->children.erase(tree->children.begin());
             }
 
-            // assign
-            if (tree->children.size() > 2 && tree->children[1]->sign == "="){
-                tree->children[1]->sign = "assign";
-                Tree* leftValue = new Tree();
-                Tree* rightValue = new Tree();
-                leftValue->value = "leftValue";
-                rightValue->value = "rightValue";
-                leftValue->children.push_back(tree->children[0]);
-                rightValue->children.push_back(tree->children[2]);
-                tree->children[1]->children.push_back(leftValue);
-                tree->children[1]->children.push_back(rightValue);
+            // while
+            if (tree->sign == "while-stmt"){
+                tree->value = tree->children[0]->value;
+                tree->children.erase(tree->children.begin());
             }
 
-            // define
-            if (tree->children.size() > 2 && types.find(tree->children[0]->sign) != types.end()){
-                tree->children[0]->sign = "define";
-                Tree* type = new Tree();
-                Tree* name = new Tree();
-                type->value = "type";
-                name->value = "name";
-                type->children.push_back(tree->children[0]);
-                if (tree->children[1]->sign == "["){
-                    type->children[0]->value+= "[]";
-                    type->children.push_back(tree->children[2]);
-                    name->children.push_back(tree->children[4]);
-                }
-                name->children.push_back(tree->children[1]);
+            // for
+            if (tree->sign == "for-stmt"){
+                tree->value = tree->children[0]->value;
+                tree->children.erase(tree->children.begin());
+            }
 
-                tree->children[0]->children.push_back(type);
-                tree->children[0]->children.push_back(name);
-                for (int i = 1; i < tree->children.size(); i++){
-                    tree->children.erase(tree->children.begin() + i);
+            // do-while
+            if (tree->sign == "do-while-stmt"){
+                tree->value = tree->children[1]->value;
+                tree->children.erase(tree->children.begin()+1);
+
+                int whileIndex = -1;
+                for (int i = 0; i < tree->children.size(); i++){
+                    if (tree->children[i]->sign == "while"){
+                        whileIndex = i;
+                        break;
+                    }
+                }
+                for (int i = 0; i < tree->children.size(); i++){
+                    if (tree->children[i]->sign == "expression"){
+                        tree->children[whileIndex]->children.push_back(tree->children[i]);
+                        tree->children.erase(tree->children.begin()+i);
+                        break;
+                    }
                 }
             }
 
-
+            //
 
             // 删除应该被忽略的符号
-            // 符号定义于fixTree.h
             
             for (auto child : tree->children){
                 if (ignoreSigns.find(child->sign) == ignoreSigns.end()){
@@ -180,18 +127,38 @@ namespace std{
             }
             tree->children = newChildren;
 
-            // // 删除value为空的符号
-            // newChildren.clear();
-            // for (auto child : tree->children){
-            //     if (!(child->value == "")){
-            //         newChildren.push_back(child);
-            //     }else{
-            //         for (auto c : child->children){
-            //             newChildren.push_back(c);
-            //         }
-            //     }
-            // }
-            // tree->children = newChildren;
+            // 删除空串
+            newChildren.clear();
+            for (auto child : tree->children){
+                if (emptyTypes.find(child->sign) == emptyTypes.end()){
+                    newChildren.push_back(child);
+                }else if (child->value != ""){
+                    newChildren.push_back(child);
+                }
+            }
+            tree->children = newChildren;
+
+            // 将只有一个子节点且节点值为空的符号合并
+            if (tree->children.size() == 1 && tree->value == ""){
+                tree->sign = tree->children[0]->sign;
+                tree->value = tree->children[0]->value;
+                tree->children = tree->children[0]->children;
+            }
+
+            // 删除value为空的符号
+            newChildren.clear();
+            for (auto child : tree->children){
+                if (!(child->value == "")){
+                    newChildren.push_back(child);
+                }else{
+                    for (auto c : child->children){
+                        newChildren.push_back(c);
+                    }
+                }
+            }
+            tree->children = newChildren;
+
+            
         }
     }
 }

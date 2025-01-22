@@ -87,7 +87,7 @@ void MainWindow::on_pushButton_saveSrc_clicked()
 {
     // 打开文件资源浏览器，选择文件并获取路径
     QString filePath = QFileDialog::getSaveFileName(this, tr("保存文件"), "", tr("所有文件 (*)"));
-
+    this->srcPath = filePath;
     // 检查用户是否选择了文件
     if (!filePath.isEmpty()) {
         QFile file(filePath);
@@ -468,10 +468,12 @@ void MainWindow::on_pushButton_openSrc_clicked() // 打开源代码
 
             // 关闭文件
             file.close();
+            this->srcPath = filePath;
         } else {
             // 如果文件无法打开，输出错误信息
             qDebug() << "无法打开文件!";
         }
+        
     }
 }
 
@@ -684,6 +686,9 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     // 调用语义函数进行修正
     fixTree(tree);
 
+    dlclose(handle);
+
+
     // 填充语法树
     populateTreeWidget(rootItem, tree);
 
@@ -895,5 +900,36 @@ void MainWindow::on_pushButton_GrmTreeFunc_clicked()
         QMessageBox::information(this, "提示", "语义函数导入失败");
     }
 
+}
+
+
+void MainWindow::on_pushButton_save_program_clicked()
+{
+    QString filePath = this->srcPath;
+    if (filePath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getSaveFileName(this, tr("保存文件"), "", tr("所有文件 (*)"));
+        this->srcPath = filePath;
+        // 检查用户是否选择了文件
+        if (!filePath.isEmpty()) {
+            QFile file(filePath);
+            if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+                QTextStream out(&file);
+                out << ui->plainTextEdit->toPlainText();
+                file.close();
+            }
+
+        }else{
+            qDebug() << "无法打开文件";
+        }
+        return;
+    }
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+        QTextStream out(&file);
+        out << ui->plainTextEdit->toPlainText();
+        file.close();
+    }
+    
 }
 

@@ -59,8 +59,9 @@ public:
 private slots:
 
     // 源文件
-    void on_pushButton_saveSrc_clicked();  // 保存源文件
-
+    void on_pushButton_saveSrc_clicked();  // 另存源文件
+    void on_pushButton_save_program_clicked(); // 保存源代码
+    void on_pushButton_openSrc_clicked();  // 打开待分析源代码
 
     // 词法分析
     void on_pushButton_load_word_rul_clicked();  // 加载词法规则
@@ -72,8 +73,6 @@ private slots:
     void on_pushButton_word_miniDFA_clicked();  // 生成最小化DFA
 
     void on_pushButton_Word_Analyze_clicked();  // 词法分析
-
-    void on_pushButton_openSrc_clicked();  // 打开待分析源代码
 
     void on_pushButton_show_result_WA_clicked();  // 显示词法分析结果
 
@@ -97,6 +96,8 @@ private slots:
     void on_pushButton_show_LALR_DFA_clicked();  // 显示LALR1DFA
 
     void on_pushButton_GrmTreeFunc_clicked();  // 导入语义函数
+
+    
 
 private:
 

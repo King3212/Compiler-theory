@@ -63,7 +63,9 @@ set(PROJECT_SOURCES
 )
 
 # 创建可执行文件
-add_executable(gui ${PROJECT_SOURCES})
+add_executable(gui ${PROJECT_SOURCES}
+    editor.h editor.cpp editor.ui
+)
 
 # 链接 Qt 库（这里只使用 QtWidgets）
 if(QT_VERSION_MAJOR EQUAL 6)

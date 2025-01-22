@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "editor.h"
 /**
  * @file globle.h
  * @brief 定义了主界面的类
@@ -38,7 +39,7 @@ MainWindow::~MainWindow()
 // 初始化语义函数
 void MainWindow::initSource()
 {
-    QFile file("../input/Sources.txt");
+    QFile file("../build/Sources.txt");
     if (file.open(QIODevice::ReadOnly|QIODevice::Text)){
         QTextStream in(&file);
         QString fileContent = in.readLine();
@@ -72,7 +73,7 @@ void MainWindow::initSource()
 // 设置源文件
 void MainWindow::setSource()
 {
-    QFile file("../input/Sources.txt");
+    QFile file("../build/Sources.txt");
     if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
         QTextStream out(&file);
         out << wordRulPath+"\n";
@@ -589,7 +590,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
     tree = parser->getTree();
     grammarAnalyzed = true;
     QMessageBox::information(this, "提示", "语法分析完成");
-
+    treeShowed = false;
     
 
 }
@@ -651,7 +652,18 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
         QMessageBox::information(this, "提示", "请先导入语义函数");
         return;
     }
-
+    if (treeShowed){
+        // 重新进行语法分析
+        QString currentPath = QDir::currentPath();
+        vector<string> ignoreSigns = readFile((currentPath+"/../input/adjust/ignore.txt").toStdString());
+        cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
+        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns, (currentPath+"/../build/signs.txt").toStdString());
+        genSuccess = parser->parse((currentPath+"/../build/tempSRC.prm").toStdString());
+        AnalyzeLog = QString::fromStdString(parser->getLog());
+        tree = parser->getTree();
+        treeShowed = false;
+    }
+    treeShowed = true;
     // 创建新窗口
     QWidget *window = new QWidget();
     window->setWindowTitle("语法树");
@@ -931,5 +943,77 @@ void MainWindow::on_pushButton_save_program_clicked()
         file.close();
     }
     
+}
+
+
+void MainWindow::on_pushButton_edit_fixTree_clicked()
+{
+    if(fixTreePath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getOpenFileName(
+            this,
+            tr("选择文件"),                  // 窗口标题
+            "",                              // 初始目录
+            tr("cpp文件 (*.cpp);;所有文件 (*)") // 文件类型过滤器
+        );
+        if (filePath.isEmpty()){
+            return;
+        }else{
+            fixTreePath = filePath;
+            setSource();
+            initSource();
+        }
+    }
+    QString currentPath = QDir::currentPath();
+    QString soPath = currentPath + "/../build/fixTree.so";
+    editor one = editor(&fixTreePath, soPath, this);
+    one.exec();
+
+}
+
+
+void MainWindow::on_pushButton_edit_grm_clicked()
+{
+    if(BNFPath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getOpenFileName(
+            this,
+            tr("选择文件"),                  // 窗口标题
+            "",                              // 初始目录
+            tr("规则文件 (*.grm);;所有文件 (*)") // 文件类型过滤器
+        );
+        if (filePath.isEmpty()){
+            return;
+        }else{
+            BNFPath = filePath;
+            setSource();
+            initSource();
+        }
+    }
+    editor one = editor(&BNFPath, "", this);
+    one.exec();
+}
+
+
+void MainWindow::on_pushButton_edit_rul_clicked()
+{
+    if(wordRulPath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getOpenFileName(
+            this,
+            tr("选择文件"),                  // 窗口标题
+            "",                              // 初始目录
+            tr("规则文件 (*.rul);;所有文件 (*)") // 文件类型过滤器
+        );
+        if (filePath.isEmpty()){
+            return;
+        }else{
+            wordRulPath = filePath;
+            setSource();
+            initSource();
+        }
+    }
+    editor one = editor(&wordRulPath, "", this);
+    one.exec();
 }
 

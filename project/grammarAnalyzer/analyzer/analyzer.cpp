@@ -204,7 +204,7 @@ ActionType Parser::action()
             signStack.push(g.left);
         }
         // goto
-        log += "reduce:\t" + g.toString() + "\n" + showSignStack() + "\n\n";
+        log += "reduce " + g.toString() + "\n" + showSignStack() + "\n\n";
         state = stateStack.top();
         Edge newEdge = getEdge(state, g.left);
         stateStack.push(newEdge.to);

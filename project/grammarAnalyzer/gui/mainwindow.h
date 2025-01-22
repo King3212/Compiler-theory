@@ -1,4 +1,4 @@
-
+#pragma once
 /**
  * @file globle.h
  * @brief 实现了主界面的类
@@ -30,6 +30,7 @@
 #include <fstream>
 #include <sstream>
 #include "tableforgragh.h"
+
 #include "QDesktopServices"
 #include "globle.h"
 #include <QVBoxLayout>
@@ -43,6 +44,7 @@ using namespace std;
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
+class editor;
 }
 QT_END_NAMESPACE
 
@@ -99,6 +101,12 @@ private slots:
 
     
 
+    void on_pushButton_edit_fixTree_clicked();
+
+    void on_pushButton_edit_grm_clicked();
+
+    void on_pushButton_edit_rul_clicked();
+
 private:
 
     Ui::MainWindow *ui;  // 主界面
@@ -136,6 +144,7 @@ private:
     bool genSuccess;  // 语法树是否生成成功
     bool lr1DFAgened;  // 是否生成LR1DFA
     bool lalr1DFAgened;  // 是否生成LALR1DFA
+    bool treeShowed;  // 是否显示过语法树
 
     // 函数
     void showAGragh(graghForWA g);  // 显示图

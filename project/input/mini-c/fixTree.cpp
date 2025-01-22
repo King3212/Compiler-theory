@@ -23,9 +23,6 @@ namespace std
     
     set<string> ops = {"+", "-", "*", "/", ">", "<", "^", "%", "<=", ">=", "==", "!="};
 
-    set<string> types = {"int", "float", "double", "void"};
-
-    set<string> emptyTypes = {"local-definitions","arguments", ""};
 }
 namespace std{
     extern "C" {
@@ -89,12 +86,6 @@ namespace std{
                 tree->children.erase(tree->children.begin());
             }
 
-            // for
-            if (tree->sign == "for-stmt"){
-                tree->value = tree->children[0]->value;
-                tree->children.erase(tree->children.begin());
-            }
-
             // do-while
             if (tree->sign == "do-while-stmt"){
                 tree->value = tree->children[1]->value;
@@ -116,23 +107,33 @@ namespace std{
                 }
             }
 
-            //
+            // expression
+            if (tree->sign == "expression" && tree->children.size() == 3){
+                tree->value = tree->children[0]->value; // name
+                
+                tree->children[0]->value = "";
+                tree->children[1]->value = "";
+                return;
+            }
+
+            // function definition
+            if (tree->sign == "function-definition"){
+                tree->sign += "+";
+                tree->value = tree->children[1]->value;
+                tree->children[1]->value = "";
+            }
+
+            // variable definition
+            if (tree->sign == "variable-definition"){
+
+                tree->value = tree->children[1]->value;
+                tree->children[1]->value = "";
+            }
 
             // 删除应该被忽略的符号
             
             for (auto child : tree->children){
                 if (ignoreSigns.find(child->sign) == ignoreSigns.end()){
-                    newChildren.push_back(child);
-                }
-            }
-            tree->children = newChildren;
-
-            // 删除空串
-            newChildren.clear();
-            for (auto child : tree->children){
-                if (emptyTypes.find(child->sign) == emptyTypes.end()){
-                    newChildren.push_back(child);
-                }else if (child->value != ""){
                     newChildren.push_back(child);
                 }
             }
@@ -157,7 +158,6 @@ namespace std{
                 }
             }
             tree->children = newChildren;
-
             
         }
     }

@@ -101,11 +101,11 @@ private slots:
 
     
 
-    void on_pushButton_edit_fixTree_clicked();
+    void on_pushButton_edit_fixTree_clicked(); // 编辑语义函数
 
-    void on_pushButton_edit_grm_clicked();
+    void on_pushButton_edit_grm_clicked(); // 编辑BNF
 
-    void on_pushButton_edit_rul_clicked();
+    void on_pushButton_edit_rul_clicked();  // 编辑词法规则
 
 private:
 

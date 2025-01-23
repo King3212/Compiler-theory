@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>758</width>
-    <height>695</height>
+    <width>878</width>
+    <height>662</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,22 @@
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <family>Microsoft Himalaya</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>编译原理项目</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QLabel" name="label_Word_source">
           <property name="styleSheet">
@@ -43,6 +59,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="fixTreeSource">
+          <property name="text">
+           <string>当前语义函数来源：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPlainTextEdit" name="plainTextEdit"/>
         </item>
         <item>
@@ -58,7 +81,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pushButton_save_program">
             <property name="text">
              <string>保存</string>
             </property>
@@ -79,21 +102,21 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="pushButton_edit_fixTree">
             <property name="text">
              <string>编辑语义函数</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="pushButton_edit_grm">
             <property name="text">
              <string>编辑语法文件</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="pushButton_edit_rul">
             <property name="text">
              <string>编辑词法文件</string>
             </property>
@@ -104,194 +127,282 @@
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QLabel" name="label">
-            <property name="font">
-             <font>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>文法操作</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="font">
+               <font>
+                <family>Microsoft Himalaya</family>
+                <pointsize>10</pointsize>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>词法</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_load_word_rul">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(160, 160, 160);</string>
+              </property>
+              <property name="text">
+               <string>载入词法正则文件</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_Word_Analyze">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(160, 160, 160);</string>
+              </property>
+              <property name="text">
+               <string>词法分析</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_result_WA">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看词法分析结果</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_Word_NFA">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看词法NFA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_word_DFA">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看词法DFA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_word_miniDFA">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看词法最小化的DFA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_code">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看词法分析器代码</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_load_BNF">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(160, 160, 160);</string>
-            </property>
-            <property name="text">
-             <string>载入BNF语法文件</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_GA_run">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(160, 160, 160);</string>
-            </property>
-            <property name="text">
-             <string>语法分析</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_log">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看分析过程</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_Analyze_Tree">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看语法树</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_LALR_DFA">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看LALR1DFA</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_LR1_DFA">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看LR(1)DFA</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_LALR1Table">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看LALR(1)分析表</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_FirstFollow">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看First/Follow集合</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_2">
-            <property name="font">
-             <font>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>词法操作</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_load_word_rul">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(160, 160, 160);</string>
-            </property>
-            <property name="text">
-             <string>载入词法正则文件</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_Word_Analyze">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(160, 160, 160);</string>
-            </property>
-            <property name="text">
-             <string>词法分析</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_result_WA">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看词法分析结果</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_Word_NFA">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看词法NFA</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_word_DFA">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看词法DFA</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_word_miniDFA">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看词法最小化的DFA</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_show_code">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(217, 217, 217);</string>
-            </property>
-            <property name="text">
-             <string>查看词法分析器代码</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="font">
+               <font>
+                <family>Microsoft Himalaya</family>
+                <pointsize>10</pointsize>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>文法</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_load_BNF">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(160, 160, 160);</string>
+              </property>
+              <property name="text">
+               <string>载入BNF语法文件</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_GA_run">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(160, 160, 160);</string>
+              </property>
+              <property name="text">
+               <string>语法分析</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_log">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看分析过程</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_GrmTreeFunc">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(160, 160, 160);</string>
+              </property>
+              <property name="text">
+               <string>导入语义函数</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_Analyze_Tree">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看语法树</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_LALR_DFA">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看LALR1DFA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_LR1_DFA">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看LR(1)DFA</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_LALR1Table">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看LALR(1)分析表</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_show_FirstFollow">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(217, 217, 217);</string>
+              </property>
+              <property name="text">
+               <string>查看First/Follow集合</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -306,8 +417,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>758</width>
-     <height>30</height>
+     <width>878</width>
+     <height>36</height>
     </rect>
    </property>
   </widget>

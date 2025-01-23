@@ -36,9 +36,31 @@ public:
     
 };
 
+namespace std
+{
+    void addEnter(std::string filename){ // 在文件末尾添加一个换行符{
+        // 打开文件查看文件末尾是否有换行符
+        ifstream file1(filename, ios::in);
+        file1.seekg(-1, ios::end);
+        char c;
+        file1.get(c);
+        file1.close();
+        if (c != '\n' || c != 'd') // 如果文件末尾没有换行符
+        {
+            ofstream file2(filename, ios::app);
+            file2 << "\n"; // 在文件末尾添加一个换行符
+            file2.close();
+        }
+    
+    }
+} // namespace std
+
+
+
 // 构造函数，打开文件
 Input::Input(std::string filename) : filename(filename)
 {
+    addEnter(filename);
     file.open(filename, std::ifstream::in); // 打开文件
     if (!file.is_open())
     {

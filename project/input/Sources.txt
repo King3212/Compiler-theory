@@ -1,2 +1,0 @@
-/home/king3212/Documents/Compiler-theory/project/input/mini-c/miniC.rul
-/home/king3212/Documents/Compiler-theory/project/input/mini-c/miniC.grm

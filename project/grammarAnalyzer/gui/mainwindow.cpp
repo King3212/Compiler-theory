@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "editor.h"
 /**
  * @file globle.h
  * @brief 定义了主界面的类
@@ -26,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     grammarAnalyzed = false;
     wordAnalyzed = false;
     genSuccess = false;
-    ui->checkBox_Program->setChecked(true);
 }
 // 析构函数
 MainWindow::~MainWindow()
@@ -34,9 +34,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 // 初始化源文件
+// 初始化词法规则
+// 初始化BNF
+// 初始化语义函数
 void MainWindow::initSource()
 {
-    QFile file("../input/Sources.txt");
+    QFile file("../build/Sources.txt");
     if (file.open(QIODevice::ReadOnly|QIODevice::Text)){
         QTextStream in(&file);
         QString fileContent = in.readLine();
@@ -46,6 +49,7 @@ void MainWindow::initSource()
             wordRulPath = fileContent;
         }
         ui->label_Word_source->setText("当前词法来源："+fileContent);
+
         fileContent = in.readLine();
         if (fileContent.isEmpty()){
             fileContent = "无";
@@ -55,17 +59,26 @@ void MainWindow::initSource()
             lalr1DFAgened = true;
         }
         ui->label_Grammar_source->setText("当前文法来源："+fileContent);
+        
+        fileContent = in.readLine();
+        if (fileContent.isEmpty()){
+            fileContent = "无";
+        }else{
+            fixTreePath = fileContent;
+        }
+        ui->fixTreeSource->setText("当前语义函数来源："+fileContent);
         file.close();
     }
 }
 // 设置源文件
 void MainWindow::setSource()
 {
-    QFile file("../input/Sources.txt");
+    QFile file("../build/Sources.txt");
     if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
         QTextStream out(&file);
         out << wordRulPath+"\n";
         out << BNFPath+"\n";
+        out << fixTreePath+"\n";
         file.close();
     }
 }
@@ -75,7 +88,7 @@ void MainWindow::on_pushButton_saveSrc_clicked()
 {
     // 打开文件资源浏览器，选择文件并获取路径
     QString filePath = QFileDialog::getSaveFileName(this, tr("保存文件"), "", tr("所有文件 (*)"));
-
+    this->srcPath = filePath;
     // 检查用户是否选择了文件
     if (!filePath.isEmpty()) {
         QFile file(filePath);
@@ -267,50 +280,43 @@ IndexedSet<Edge> MainWindow::getEdgesFromFile(string path)
     }
     return edges;
 }
-// 压缩树
-void MainWindow::compressTree(Tree* node) {
-    if (!node->value.empty()) {
-        return;
-    }
-    // 递归压缩所有子节点
-    for (auto it = node->children.begin(); it != node->children.end();) {
-        compressTree(*it);
-        ++it;
-    }
-
-    // 删除无用的符号
-    for(int i = 0; i < node->children.size(); i++){
-        if (ignoreSigns.contains(node->children[i]->sign) && node->children[i]->children.size() == 0){
-            node->children.erase(node->children.begin()+i);
-            i--;
-        }
-    }
-
-    
-
-    // 如果当前节点只有一个子节点,进行合并
-    if (node->children.size() == 1) {
-        Tree* child = node->children[0];
-        node->sign = child->sign;
-        node->value = child->value;
-        node->children = child->children;
-        delete child;
-    }
-
-    
-    vector<Tree*> newChildren;
-    // 如果子节点和当前节点的符号相同，进行合并
-    for(int i = 0; i < node->children.size(); i++){
-        if (node->children[i]->sign == node->sign){
-            for (auto child : node->children[i]->children){
-                newChildren.push_back(child);
-            }
-        }else
-            newChildren.push_back(node->children[i]);
-    }
-    node->children = newChildren;
-
-}
+// // 压缩树
+// void MainWindow::compressTree(Tree* node) {
+//     if (!node->value.empty()) {
+//         return;
+//     }
+//     // 递归压缩所有子节点
+//     for (auto it = node->children.begin(); it != node->children.end();) {
+//         compressTree(*it);
+//         ++it;
+//     }
+//     // 删除无用的符号
+//     for(int i = 0; i < node->children.size(); i++){
+//         if (ignoreSigns.contains(node->children[i]->sign) && node->children[i]->children.size() == 0){
+//             node->children.erase(node->children.begin()+i);
+//             i--;
+//         }
+//     }
+//     // 如果当前节点只有一个子节点,进行合并
+//     if (node->children.size() == 1) {
+//         Tree* child = node->children[0];
+//         node->sign = child->sign;
+//         node->value = child->value;
+//         node->children = child->children;
+//         delete child;
+//     } 
+//     vector<Tree*> newChildren;
+//     // 如果子节点和当前节点的符号相同，进行合并
+//     for(int i = 0; i < node->children.size(); i++){
+//         if (node->children[i]->sign == node->sign){
+//             for (auto child : node->children[i]->children){
+//                 newChildren.push_back(child);
+//             }
+//         }else
+//             newChildren.push_back(node->children[i]);
+//     }
+//     node->children = newChildren;
+// }
 
 
 // 生成语法分析器
@@ -425,11 +431,6 @@ void MainWindow::on_pushButton_word_miniDFA_clicked() // 显示最小化DFA
 void MainWindow::on_pushButton_Word_Analyze_clicked()
 {
     QString src = ui->plainTextEdit->toPlainText();
-    if (ui->checkBox_Program->isChecked()){
-        program = src;
-    }else{
-        src = program;
-    }
     if(src == ""){
         QMessageBox::information(this, "提示", "请先输入源代码");
         return;
@@ -468,10 +469,12 @@ void MainWindow::on_pushButton_openSrc_clicked() // 打开源代码
 
             // 关闭文件
             file.close();
+            this->srcPath = filePath;
         } else {
             // 如果文件无法打开，输出错误信息
             qDebug() << "无法打开文件!";
         }
+        
     }
 }
 
@@ -557,33 +560,10 @@ void MainWindow::on_pushButton_load_BNF_clicked()
 // 语法分析
 void MainWindow::on_pushButton_GA_run_clicked()
 {
-    QString tempPath = "../input/tempSRC.prm";
-    if(ui->checkBox_BNF->isChecked()){
-        if (!ui->plainTextEdit->toPlainText().isEmpty()){
-            QFile file(BNFPath);
-            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream out(&file);
-                out << ui->plainTextEdit->toPlainText();
-                file.close();
-            }
-        }
-    }else if(ui->checkBox_Re->isChecked()){
-        if (!ui->plainTextEdit->toPlainText().isEmpty()){
-            QFile file(wordRulPath);
-            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream out(&file);
-                out << ui->plainTextEdit->toPlainText();
-                file.close();
-            }
-        }
-    }
-    QString tempSRC;
-    if (ui->checkBox_Program->isChecked()){
-        tempSRC = ui->plainTextEdit->toPlainText();
-        program = tempSRC;
-    }else{
-        tempSRC = program;
-    }
+    QString tempPath = "../build/tempSRC.prm";
+    QString program = ui->plainTextEdit->toPlainText();
+    QString tempSRC= program;
+
     if (tempSRC.isEmpty()){
         QMessageBox::information(this, "提示", "请先输入源代码");
         return;
@@ -610,7 +590,7 @@ void MainWindow::on_pushButton_GA_run_clicked()
     tree = parser->getTree();
     grammarAnalyzed = true;
     QMessageBox::information(this, "提示", "语法分析完成");
-
+    treeShowed = false;
     
 
 }
@@ -665,10 +645,25 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
         return;
     }
     if (genSuccess == false){
-        QMessageBox::information(this, "提示", "语法树生成失败");
+        QMessageBox::information(this, "提示", "语法分析失败");
         return;
     }
-
+    if (fixTreePath.isEmpty()){
+        QMessageBox::information(this, "提示", "请先导入语义函数");
+        return;
+    }
+    if (treeShowed){
+        // 重新进行语法分析
+        QString currentPath = QDir::currentPath();
+        vector<string> ignoreSigns = readFile((currentPath+"/../input/adjust/ignore.txt").toStdString());
+        cout << "Path: " << currentPath.toStdString()+"/LALR1Edge.txt" << endl;
+        parser = new Parser((currentPath+"/LALR1Edge.txt").toStdString(),ignoreSigns, (currentPath+"/../build/signs.txt").toStdString());
+        genSuccess = parser->parse((currentPath+"/../build/tempSRC.prm").toStdString());
+        AnalyzeLog = QString::fromStdString(parser->getLog());
+        tree = parser->getTree();
+        treeShowed = false;
+    }
+    treeShowed = true;
     // 创建新窗口
     QWidget *window = new QWidget();
     window->setWindowTitle("语法树");
@@ -681,13 +676,32 @@ void MainWindow::on_pushButton_show_Analyze_Tree_clicked()
     // 创建根节点
     QTreeWidgetItem *rootItem = new QTreeWidgetItem(treeWidget, QStringList("根节点"));
     treeWidget->addTopLevelItem(rootItem);
-    loadTreeIgnore();
     // 压缩分析树
-    compressTree(tree);
-    // 调整分析树
-    loadTreeFuc();
-    fixTree(tree);
+    // compressTree(tree);
+    // // 调整分析树
+    // loadTreeFuc();
+    // fixTree(tree);
     // 填充分析树
+    
+    /**从用户处获取语义函数 */
+    void* handle = dlopen("../build/fixTree.so", RTLD_LAZY);
+    if (!handle){
+        QMessageBox::information(this, "提示", "无法打开fixTree.so");
+        return;
+    }
+    auto fixTree = (void(*)(Tree*))dlsym(handle, "fixTree");
+    if (!fixTree){
+        QMessageBox::information(this, "提示", "无法找到fixTree");
+        return;
+    }
+
+    // 调用语义函数进行修正
+    fixTree(tree);
+
+    dlclose(handle);
+
+
+    // 填充语法树
     populateTreeWidget(rootItem, tree);
 
     // 展开所有节点
@@ -763,14 +777,7 @@ void MainWindow::on_pushButton_show_code_clicked()
     dialog->show();
 }
 
-// 载入忽略符号
-void MainWindow::loadTreeIgnore()
-{
-    vector<string>ignoreSigns = readFile("../input/adjust/TreeIgnore.txt");
-    for (auto sign : ignoreSigns){
-        this->ignoreSigns.insert(sign);
-    }
-}
+
 
 vector<QString> MainWindow::split(QString str, QString pattern)
 {
@@ -881,55 +888,132 @@ void MainWindow::on_pushButton_show_LALR_DFA_clicked()
     
 }
 
-
-
-// 切换到代码编辑器
-void MainWindow::on_checkBox_Program_stateChanged(int arg1)
+// 导入语义函数
+void MainWindow::on_pushButton_GrmTreeFunc_clicked()
 {
-    if (arg1 == 2){
-        QString currentText = ui->plainTextEdit->toPlainText();
-        if (ui->checkBox_Re->isChecked()){
-            re = currentText;
-        }else if (ui->checkBox_BNF->isChecked()){
-            bnf = currentText;
-        }
-        ui->checkBox_Re->setChecked(false);
-        ui->checkBox_BNF->setChecked(false);
+    // 打开文件资源浏览器，选择文件并获取路径
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        tr("选择文件"),                  // 窗口标题
+        "",                              // 初始目录
+        tr("cpp文件 (*.cpp);;所有文件 (*)") // 文件类型过滤器
+    );
+    // 编译cpp文件为.so文件
+    QString currentPath = QDir::currentPath();
+    QString soPath = currentPath + "/../build/fixTree.so";
+    QString command = "g++ -shared -fPIC -g -o " + soPath + " " + filePath ;
+    if (system(command.toStdString().c_str()) == 0){
+        QMessageBox::information(this, "提示", "语义函数导入成功");
+        fixTreePath = filePath;
+        setSource();
+        initSource();
 
-        ui->plainTextEdit->setPlainText(program);
+    }else{
+        QMessageBox::information(this, "提示", "语义函数导入失败");
     }
+
 }
 
-// 切换到正则表达式编辑器
-void MainWindow::on_checkBox_Re_stateChanged(int arg1)
+
+void MainWindow::on_pushButton_save_program_clicked()
 {
-    if (arg1 == 2){
-        QString currentText = ui->plainTextEdit->toPlainText();
-        if (ui->checkBox_Program->isChecked()){
-            program = currentText;
-        }else if (ui->checkBox_BNF->isChecked()){
-            bnf = currentText;
+    QString filePath = this->srcPath;
+    if (filePath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getSaveFileName(this, tr("保存文件"), "", tr("所有文件 (*)"));
+        this->srcPath = filePath;
+        // 检查用户是否选择了文件
+        if (!filePath.isEmpty()) {
+            QFile file(filePath);
+            if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+                QTextStream out(&file);
+                out << ui->plainTextEdit->toPlainText();
+                file.close();
+            }
+
+        }else{
+            qDebug() << "无法打开文件";
         }
-        ui->checkBox_Program->setChecked(false);
-        ui->checkBox_BNF->setChecked(false);
-        ui->plainTextEdit->setPlainText(re);
+        return;
     }
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly|QIODevice::Text)){
+        QTextStream out(&file);
+        out << ui->plainTextEdit->toPlainText();
+        file.close();
+    }
+    
 }
 
-// 切换到BNF编辑器
-void MainWindow::on_checkBox_BNF_stateChanged(int arg1)
-{
-    if (arg1 == 2){
-        QString currentText = ui->plainTextEdit->toPlainText();
-        if (ui->checkBox_Program->isChecked()){
-            program = currentText;
-        }else if (ui->checkBox_Re->isChecked()){
-            re = currentText;
-        }
-        ui->checkBox_Program->setChecked(false);
-        ui->checkBox_Re->setChecked(false);
-        ui->plainTextEdit->setPlainText(bnf);
 
+void MainWindow::on_pushButton_edit_fixTree_clicked()
+{
+    if(fixTreePath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getOpenFileName(
+            this,
+            tr("选择文件"),                  // 窗口标题
+            "",                              // 初始目录
+            tr("cpp文件 (*.cpp);;所有文件 (*)") // 文件类型过滤器
+        );
+        if (filePath.isEmpty()){
+            return;
+        }else{
+            fixTreePath = filePath;
+            setSource();
+            initSource();
+        }
     }
+    QString currentPath = QDir::currentPath();
+    QString soPath = currentPath + "/../build/fixTree.so";
+    editor one = editor(&fixTreePath, soPath, this);
+    one.exec();
+
+}
+
+
+void MainWindow::on_pushButton_edit_grm_clicked()
+{
+    if(BNFPath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getOpenFileName(
+            this,
+            tr("选择文件"),                  // 窗口标题
+            "",                              // 初始目录
+            tr("规则文件 (*.grm);;所有文件 (*)") // 文件类型过滤器
+        );
+        if (filePath.isEmpty()){
+            return;
+        }else{
+            BNFPath = filePath;
+            setSource();
+            initSource();
+        }
+    }
+    editor one = editor(&BNFPath, "", this);
+    one.exec();
+}
+
+
+void MainWindow::on_pushButton_edit_rul_clicked()
+{
+    if(wordRulPath.isEmpty()){
+        // 打开文件资源浏览器，选择文件并获取路径
+        QString filePath = QFileDialog::getOpenFileName(
+            this,
+            tr("选择文件"),                  // 窗口标题
+            "",                              // 初始目录
+            tr("规则文件 (*.rul);;所有文件 (*)") // 文件类型过滤器
+        );
+        if (filePath.isEmpty()){
+            return;
+        }else{
+            wordRulPath = filePath;
+            setSource();
+            initSource();
+        }
+    }
+    editor one = editor(&wordRulPath, "", this);
+    one.exec();
 }
 

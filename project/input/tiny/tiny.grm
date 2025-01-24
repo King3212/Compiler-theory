@@ -1,6 +1,6 @@
 == token ==
 1000 if then else  end repeat until read write
-500 + - * / % ^ < <> <= >= > =  ; :=
+500 + - * / % ^ <> <= < >= > =  ; :=
 10 identifier
 20 number
 

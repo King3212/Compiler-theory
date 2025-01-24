@@ -1,0 +1,8 @@
+{
+    Test program if
+}
+if 0 < x then
+    fact := 1
+else
+    fact := 2
+end

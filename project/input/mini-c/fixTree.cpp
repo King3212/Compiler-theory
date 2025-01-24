@@ -130,6 +130,12 @@ namespace std{
                 tree->children[1]->value = "";
             }
 
+            //variable
+            if (tree->sign == "variable"){
+                tree->value = tree->children[0]->value;
+                tree->children[0]->value = "";
+            }
+
             // 删除应该被忽略的符号
             
             for (auto child : tree->children){

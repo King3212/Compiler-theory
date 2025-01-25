@@ -48,12 +48,13 @@ namespace std{
             if (tree->sign == "if-stmt"){
                 tree->value = tree->children[0]->value;
                 tree->children[0]->value = "";
-                tree->children[2]->children = tree->children[3]->children;
-                tree->children[3]->value = "";
+                tree->children[2]->children.push_back(tree->children[3]);
                 if(tree->children[4]->sign == "else"){
-                    tree->children[4]->children = tree->children[6]->children;
-                    tree->children[5]->value = "";
+                    tree->children[4]->children.push_back( tree->children[5]);
+                    tree->children.erase(tree->children.begin()+5);
+                    tree->children[6]->value = "";
                 }
+                tree->children.erase(tree->children.begin()+3);
 
             }
 

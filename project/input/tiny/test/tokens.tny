@@ -1,0 +1,29 @@
+{ 
+    test tokens 
+}
+read x; { input an integer }
+if 0 < x then { don't compute if x <= 0 }
+  fact := 1;
+  repeat
+    fact := fact * x;
+    x := x - 1
+  until x = 0;
+  write fact  { output factorial of x }
+else
+  write 0 { output 0 if x <= 0 }
+end;
+
+{ Additional statements to include all signs }
+y := 10 + 5; { addition }
+z := y - 3; { subtraction }
+w := z * 2; { multiplication }
+v := w / 4; { division }
+u := v % 3; { modulus }
+t := u ^ 2; { exponentiation }
+s := t < 10; { less than }
+r := s <> true; { not equal }
+q := r <= false; { less than or equal }
+p := q >= true; { greater than or equal }
+o := p > false; { greater than }
+n := o = true; { equal }
+m := n { assignment }

@@ -31,12 +31,12 @@ void process(vector<Grammar> grammars, string outputDir , map<string, int> signs
     // 输出LR1 DFA
     LR1 lr1 = LR1(grammars);
     lr1.genDFA();
-    ofstream file(outputDir+"/LR1DFA.dot");
+    ofstream file(outputDir+"/LR1Edge.txt");
     if (file.fail()){
-        cerr << "Failed to open file: " << outputDir+"/LR1DFA.dot" << endl;
+        cerr << "Failed to open file: " << outputDir+"/LR1Edge.txt" << endl;
         return;
     }
-    file << lr1.toGraph();
+    file << lr1.toString();
     file.close();
 
     // 输出LALR1 分析表
@@ -47,15 +47,6 @@ void process(vector<Grammar> grammars, string outputDir , map<string, int> signs
         return;
     }
     file << lalr1.toString();
-    file.close();
-
-    // 输出LALR1 DFA
-    file = ofstream(outputDir+"/LALR1DFA.dot");
-    if (file.fail()){
-        cerr << "Failed to open file: " << outputDir+"/LALR1DFA.dot" << endl;
-        return;
-    }
-    file << lalr1.toGraph();
     file.close();
 
     // 输出FirstFollow集合

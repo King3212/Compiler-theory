@@ -720,28 +720,6 @@ bool _505(Input *input){
 }
 bool _506(Input *input){
     std::vector<int> finalNodes = {0};
-    int state = 1; // 初始状态
-    while(true) {
-        char letter = (input->getInput())[0];
-        switch(state) {
-            case 0: 
-                switch(letter) {
-                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
-                }
-                break;
-            case 1: 
-                switch(letter) {
-                    case '<': state = 0; break;
-                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
-                }
-                break;
-            default: break;
-        }
-    }
-    return false;
-}
-bool _507(Input *input){
-    std::vector<int> finalNodes = {0};
     int state = 2; // 初始状态
     while(true) {
         char letter = (input->getInput())[0];
@@ -768,7 +746,7 @@ bool _507(Input *input){
     }
     return false;
 }
-bool _508(Input *input){
+bool _507(Input *input){
     std::vector<int> finalNodes = {0};
     int state = 2; // 初始状态
     while(true) {
@@ -788,6 +766,28 @@ bool _508(Input *input){
             case 2: 
                 switch(letter) {
                     case '<': state = 1; break;
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            default: break;
+        }
+    }
+    return false;
+}
+bool _508(Input *input){
+    std::vector<int> finalNodes = {0};
+    int state = 1; // 初始状态
+    while(true) {
+        char letter = (input->getInput())[0];
+        switch(state) {
+            case 0: 
+                switch(letter) {
+                    default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
+                }
+                break;
+            case 1: 
+                switch(letter) {
+                    case '<': state = 0; break;
                     default: return std::find(finalNodes.begin(), finalNodes.end(), state) != finalNodes.end();
                 }
                 break;

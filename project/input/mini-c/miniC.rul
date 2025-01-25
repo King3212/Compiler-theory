@@ -3,11 +3,11 @@
 >> _close_comment = 
 >> _oneLine_comment_open =
 
-_open_comment = \/\* 
+_open_comment = \/\*
 _close_comment = \*\/
 _oneLine_comment_open = \/\/
 
-keywords 1000 = if then else while do return void int float double
+keywords 1000 = if else while do return void int float double
 signs 50 = \+ - \* \/ \% \^ <= < >= > == != = ; , \( \) \[ \] \{ \}
 
 >> letter定义为:[a-zA-Z]

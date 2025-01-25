@@ -219,15 +219,7 @@ edges:
 
 
 Gragh: 
-_506 0 2
-ends: 
-1 
-edges: 
-0 1 <
-
-
-Gragh: 
-_507 0 3
+_506 0 3
 ends: 
 2 
 edges: 
@@ -236,12 +228,20 @@ edges:
 
 
 Gragh: 
-_508 0 3
+_507 0 3
 ends: 
 2 
 edges: 
 0 1 <
 1 2 =
+
+
+Gragh: 
+_508 0 2
+ends: 
+1 
+edges: 
+0 1 <
 
 
 Gragh: 

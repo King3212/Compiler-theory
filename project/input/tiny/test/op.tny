@@ -1,0 +1,8 @@
+y := 10 + 5 - 3 * 2 / 4 % 3 ^ 2; 
+s := t < 10; { less than }
+r := s <> true; { not equal }
+q := r <= false; { less than or equal }
+p := q >= true; { greater than or equal }
+o := p > false; { greater than }
+n := o = true; { equal }
+m := n { assignment }

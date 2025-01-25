@@ -810,81 +810,58 @@ void MainWindow::on_pushButton_LALR1Table_clicked()
     table->show();
 }
 
-// 显示LR(1)分析表
+// 显示LR(1)DFA边集
 void MainWindow::on_pushButton_show_LR1_DFA_clicked()
 {
-    QString outputDir = QDir::currentPath();
-    if (lr1DFAgened == true){
-        QString pdfPath = outputDir+"/LR1.pdf";
-        QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
-    }else{
-        QMessageBox* msgBox = new QMessageBox(this);
-        msgBox->setText("正在生成LR(1)DFA的向量图，请稍候...");
-        msgBox->setWindowTitle("提示");
-        msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
-        msgBox->show();
-
-        
-
-        QString command = "dot -Tpdf "+outputDir+"/LR1DFA.dot -o "+outputDir+"/LR1.pdf";
-        
-        // 启动异步执行
-        QTimer::singleShot(1000, this, [=]() {
-            // 执行命令
-            if(system(command.toStdString().c_str()) != 0){
-                QMessageBox::information(this, "提示", "LR1DFA生成失败");
-                return;
-            }else{
-                QMessageBox::information(this, "提示", "LR1DFA生成成功");
-                lr1DFAgened = true;
-                QString pdfPath = outputDir+"/LR1.pdf";
-                QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
-            }
-            msgBox->close();
-            msgBox->deleteLater();
-            
-        }
-        );
+    // 读取文件
+    QString currentPath = QDir::currentPath();
+    QString path = currentPath + "/LR1Edge.txt";
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::information(this, "提示", "无法打开文件");
+        return;
     }
+    QString content = file.readAll();
+    file.close();
+    
+    QDialog *dialog = new QDialog();
+    dialog->setWindowTitle("LR(1)DFA边集");
+    dialog->resize(400, 300);
+
+    QPlainTextEdit *textEdit = new QPlainTextEdit(dialog);
+    textEdit->setPlainText(content);
+    textEdit->setReadOnly(true);
+    textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
+
+    dialog->show();
 
 }
 
-// 显示LALR(1)DFA
+// 显示LALR(1)DFA边集
 void MainWindow::on_pushButton_show_LALR_DFA_clicked()
 {
-    if (lalr1DFAgened == true){
-        QString outputDir = QDir::currentPath();
-        QString pdfPath = outputDir+"/LALR1.pdf";
-        QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
-    }else{
-        QMessageBox* msgBox = new QMessageBox(this);
-        msgBox->setText("正在生成LALR(1)DFA的向量图，请稍候...");
-        msgBox->setWindowTitle("提示");
-        msgBox->setStandardButtons(QMessageBox::NoButton); // 去掉按钮
-        msgBox->show();
-
-        QString outputDir = QDir::currentPath();
-
-        QString command = "dot -Tpdf "+outputDir+"/LALR1DFA.dot -o "+outputDir+"/LALR1.pdf";
-
-        // 启动异步执行
-        QTimer::singleShot(1000, this, [=]() {
-            // 执行命令
-            if(system(command.toStdString().c_str()) != 0){
-                QMessageBox::information(this, "提示", "LALR1DFA生成失败");
-                return;
-            }else{
-                lalr1DFAgened = true;
-                QMessageBox::information(this, "提示", "LALR1DFA生成成功");
-                QString pdfPath = outputDir+"/LALR1.pdf";
-                QDesktopServices::openUrl(QUrl::fromLocalFile(pdfPath));
-            }
-            msgBox->close();
-            msgBox->deleteLater();
-            
-        }
-        );
+    // 读取文件
+    QString currentPath = QDir::currentPath();
+    QString path = currentPath + "/LALR1Edge.txt";
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::information(this, "提示", "无法打开文件");
+        return;
     }
+    QString content = file.readAll();
+    file.close();
+
+    QDialog *dialog = new QDialog();
+    dialog->setWindowTitle("LALR(1)DFA边集");
+    dialog->resize(400, 300);
+
+    QPlainTextEdit *textEdit = new QPlainTextEdit(dialog);
+    textEdit->setPlainText(content);
+    textEdit->setReadOnly(true);
+    textEdit->setGeometry(10, 10, 380, 280); // 边距为 10
+
+    dialog->show();
+    
     
 }
 

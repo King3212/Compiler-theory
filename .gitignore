@@ -1,9 +1,10 @@
 .vscode
-project/build
-project/upload*
+build
+upload*
 project.zip
 Labs
 *.vscode
-project/.qtcreator
+.qtcreator
 *.pdf
-*.doc
+doc
+project.qtcreator

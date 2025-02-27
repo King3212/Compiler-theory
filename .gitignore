@@ -4,4 +4,6 @@ project/upload*
 project.zip
 Labs
 *.vscode
-project\.qtcreator
+project/.qtcreator
+*.pdf
+*.doc

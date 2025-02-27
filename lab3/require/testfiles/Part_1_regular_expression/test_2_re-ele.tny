@@ -1,6 +1,0 @@
-re == 12345;
-re == abcde;
-re == 123abc;
-re == abc123;
-re == 123abc123;
-re == abc123abc

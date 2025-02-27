@@ -1,9 +1,0 @@
-if (1 < 2 stmt-sequence;  {错误：缺少右括号}
-
-if (1 < 2) stmt-sequence else ; {错误：缺少else后的语句}
-
-if 1 < 2) stmt-sequence;  {错误：缺少左括号}
-
-if (1 < 2) stmt-sequence else stmt-sequence  {错误：缺少结束分号}
-
-if (1 < 2)  {错误：缺少stmt-sequence}

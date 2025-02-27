@@ -1,9 +1,7 @@
 .vscode
-project1/GUI/build
-lab2/GUI/build
-lab1/GUI-VERTION/build
-lab4/gui/build
-lab3/GUI/build
 project/build
 project/upload*
 project.zip
+Labs
+*.vscode
+project\.qtcreator

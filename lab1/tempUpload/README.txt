@@ -1,5 +1,0 @@
-build目录内有Windows下的可执行文件
-CLI-TEST目录下是测试部分
-GUI-VERSION目录是最终编译带GUI的版本
-
-使用Qt5开发，开发平台是Linux，再Windows上再次编译，对中文兼容性不佳。

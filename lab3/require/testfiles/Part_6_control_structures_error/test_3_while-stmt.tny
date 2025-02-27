@@ -1,9 +1,0 @@
-while (1 < 2 stmt-sequence;  {错误：缺少右括号}
-
-while 1 < 2) stmt-sequence;  {错误：缺少左括号}
-
-while (1 < 2) stmt-sequence;  {错误：缺少结束endwhile}
-
-while (1 < 2) endwhile; {错误：缺少stmt-sequence}
-
-while (1 < 2) stmt-sequence endwhile {错误：endwhile后缺少分号，在最后一句可以缺少，stmt语法的一部分}

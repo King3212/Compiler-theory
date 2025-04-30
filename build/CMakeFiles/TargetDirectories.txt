@@ -1,0 +1,9 @@
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/gui.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/edit_cache.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/rebuild_cache.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/list_install_components.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/install.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/install/local.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/install/strip.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/gui_autogen_timestamp_deps.dir
+/home/king3212/Documents/Compiler-theory/project/build/CMakeFiles/gui_autogen.dir

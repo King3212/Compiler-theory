@@ -1,0 +1,217 @@
+
+
+[program]
+
+First: definition-list definition variable-definition function-definition type-indicator int float double void 
+
+Follow: 
+
+
+[definition-list]
+
+First: definition-list definition variable-definition function-definition type-indicator int float double void 
+
+Follow: variable-definition function-definition type-indicator int float double void 
+
+
+[definition]
+
+First: variable-definition function-definition type-indicator int float double void 
+
+Follow: variable-definition function-definition type-indicator int float double void 
+
+
+[variable-definition]
+
+First: type-indicator int float double void 
+
+Follow: variable-definition function-definition type-indicator int float double void statement @ expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num } 
+
+
+[type-indicator]
+
+First: int float double void 
+
+Follow: id 
+
+
+[function-definition]
+
+First: int float double void type-indicator 
+
+Follow: variable-definition function-definition type-indicator int float double void 
+
+
+[parameters]
+
+First: parameter-list void parameter int float double type-indicator 
+
+Follow: ) 
+
+
+[parameter-list]
+
+First: parameter-list parameter int float double void type-indicator 
+
+Follow: ) , 
+
+
+[parameter]
+
+First: int float double void type-indicator 
+
+Follow: ) , 
+
+
+[compound-stmt]
+
+First: { 
+
+Follow: variable-definition function-definition type-indicator int float double void } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[local-definitions]
+
+First: type-indicator variable-definition @ int float double void 
+
+Follow: statement @ expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num } type-indicator int float double void 
+
+
+[statement-list]
+
+First: statement @ expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num 
+
+
+[statement]
+
+First: expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[expression-stmt]
+
+First: expression ; variable simple-expression id additive-expression term factor ( call num 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[condition-stmt]
+
+First: if 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[while-stmt]
+
+First: while 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[dowhile-stmt]
+
+First: do 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[return-stmt]
+
+First: return 
+
+Follow: } expression-stmt { compound-stmt condition-stmt while-stmt dowhile-stmt return-stmt expression ; if while do return variable simple-expression id additive-expression term factor ( call num else 
+
+
+[expression]
+
+First: variable simple-expression id additive-expression term factor ( call num 
+
+Follow: ; ) ] , 
+
+
+[variable]
+
+First: id 
+
+Follow: = <= < > >= == != ; ) + - * / % ^ ] , 
+
+
+[simple-expression]
+
+First: additive-expression term factor ( id variable call num 
+
+Follow: ; ) ] , 
+
+
+[relop]
+
+First: <= < > >= == != 
+
+Follow: additive-expression term factor ( id variable call num 
+
+
+[additive-expression]
+
+First: additive-expression term factor ( id variable call num 
+
+Follow: <= < > >= == != ; ) + - ] , 
+
+
+[addop]
+
+First: + - 
+
+Follow: term factor ( id variable call num 
+
+
+[term]
+
+First: term factor ( id variable call num 
+
+Follow: <= < > >= == != ; ) + - * / % ^ ] , 
+
+
+[mulop]
+
+First: * / % ^ 
+
+Follow: ( id variable call num 
+
+
+[factor]
+
+First: ( id variable call num 
+
+Follow: <= < > >= == != ; ) + - * / % ^ ] , 
+
+
+[call]
+
+First: id 
+
+Follow: <= < > >= == != ; ) + - * / % ^ ] , 
+
+
+[arguments]
+
+First: argument-list @ variable simple-expression expression id additive-expression term factor ( call num 
+
+Follow: ) 
+
+
+[argument-list]
+
+First: argument-list variable simple-expression expression id additive-expression term factor ( call num 
+
+Follow: ) , 
+
+
+[S']
+
+First: 
+
+Follow: 

@@ -1,10 +1,5 @@
-.vscode
-build
-upload*
-project.zip
-Labs
-*.vscode
+.vscode/
+upload
+test/
+pic
 .qtcreator
-*.pdf
-doc
-project.qtcreator
